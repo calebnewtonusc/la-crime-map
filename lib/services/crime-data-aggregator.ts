@@ -1,7 +1,7 @@
 // Crime Data Aggregator
 // Fetches and aggregates real LAPD crime data for all neighborhoods
 
-import { fetchRecentCrimeData, fetchCrimeDataByDateRange } from './lapd-api'
+import { fetchLAPDCrimeData } from './lapd-api'
 import { aggregateLegacyCrimeByNeighborhood, updateDateRange } from './neighborhood-mapper'
 import { NeighborhoodCrimeData } from './lapd-api-types'
 import { NeighborhoodFeature, NeighborhoodGeoJSON } from '../data/types'
@@ -44,36 +44,13 @@ export async function aggregateCrimeDataForNeighborhoods(
     startDate.setDate(startDate.getDate() - days)
 
     // Fetch crime data from LAPD API
-    const crimeResponse = await fetchRecentCrimeData(days)
+    const crimeData = await fetchLAPDCrimeData()
 
-    if (crimeResponse.error) {
-      console.error('Error fetching crime data:', crimeResponse.error)
-      return {
-        neighborhoods: [],
-        metadata: {
-          totalIncidents: 0,
-          dateRange: {
-            start: startDate.toISOString(),
-            end: endDate.toISOString(),
-          },
-          lastUpdated: new Date().toISOString(),
-          dataSource: 'LAPD Open Data Portal',
-          neighborhoods: 0,
-          dataQuality: {
-            mappedIncidents: 0,
-            unmappedIncidents: 0,
-            percentageMapped: 0,
-          },
-        },
-        error: crimeResponse.error,
-      }
-    }
-
-    console.log(`Received ${crimeResponse.data.length} crime incidents`)
+    console.log(`Received ${crimeData.length} crime incidents`)
 
     // Aggregate by neighborhood
     const aggregation = aggregateLegacyCrimeByNeighborhood(
-      crimeResponse.data,
+      crimeData,
       neighborhoodGeoJSON.features
     )
 
@@ -84,7 +61,7 @@ export async function aggregateCrimeDataForNeighborhoods(
     const neighborhoodsArray = Array.from(aggregation.values())
 
     // Calculate data quality metrics
-    const totalIncidents = crimeResponse.data.length
+    const totalIncidents = crimeData.length
     const mappedIncidents = neighborhoodsArray.reduce((sum, n) => sum + n.incidentCount, 0)
     const unmappedIncidents = totalIncidents - mappedIncidents
     const percentageMapped = totalIncidents > 0 ? (mappedIncidents / totalIncidents) * 100 : 0
@@ -98,7 +75,7 @@ export async function aggregateCrimeDataForNeighborhoods(
           end: endDate.toISOString(),
         },
         lastUpdated: new Date().toISOString(),
-        dataSource: crimeResponse.source,
+        dataSource: 'LAPD Open Data Portal (data.lacity.org)',
         neighborhoods: neighborhoodsArray.length,
         dataQuality: {
           mappedIncidents,
@@ -143,7 +120,7 @@ export async function aggregateCrimeDataByDateRange(
     console.log(`Fetching crime data from ${startDate.toISOString()} to ${endDate.toISOString()}...`)
 
     // Fetch crime data from LAPD API
-    const crimeResponse = await fetchCrimeDataByDateRange(startDate, endDate)
+    const crimeResponse = await fetchLAPDCrimeData(startDate, endDate)
 
     if (crimeResponse.error) {
       console.error('Error fetching crime data:', crimeResponse.error)
@@ -168,11 +145,11 @@ export async function aggregateCrimeDataByDateRange(
       }
     }
 
-    console.log(`Received ${crimeResponse.data.length} crime incidents`)
+    console.log(`Received ${crimeData.length} crime incidents`)
 
     // Aggregate by neighborhood
     const aggregation = aggregateLegacyCrimeByNeighborhood(
-      crimeResponse.data,
+      crimeData,
       neighborhoodGeoJSON.features
     )
 
@@ -183,7 +160,7 @@ export async function aggregateCrimeDataByDateRange(
     const neighborhoodsArray = Array.from(aggregation.values())
 
     // Calculate data quality metrics
-    const totalIncidents = crimeResponse.data.length
+    const totalIncidents = crimeData.length
     const mappedIncidents = neighborhoodsArray.reduce((sum, n) => sum + n.incidentCount, 0)
     const unmappedIncidents = totalIncidents - mappedIncidents
     const percentageMapped = totalIncidents > 0 ? (mappedIncidents / totalIncidents) * 100 : 0
@@ -197,7 +174,7 @@ export async function aggregateCrimeDataByDateRange(
           end: endDate.toISOString(),
         },
         lastUpdated: new Date().toISOString(),
-        dataSource: crimeResponse.source,
+        dataSource: 'LAPD Open Data Portal (data.lacity.org)',
         neighborhoods: neighborhoodsArray.length,
         dataQuality: {
           mappedIncidents,
