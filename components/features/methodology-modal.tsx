@@ -55,7 +55,7 @@ export function MethodologyModal({ isOpen, onClose }: MethodologyModalProps) {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ type: 'spring', duration: 0.5 }}
-                className="relative bg-white dark:bg-dark-bg-secondary rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+                className="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="methodology-title"
@@ -93,10 +93,10 @@ export function MethodologyModal({ isOpen, onClose }: MethodologyModalProps) {
 
                   {/* Overview */}
                   <section className="space-y-3">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                       Overview
                     </h3>
-                    <p className="text-sm text-gray-700 dark:text-dark-text-secondary leading-relaxed">
+                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                       Our safety scores are calculated using a multi-factor weighted algorithm that combines crime statistics,
                       per-capita normalization, and percentile ranking to provide a comprehensive neighborhood safety rating from 0-100.
                     </p>
@@ -104,26 +104,26 @@ export function MethodologyModal({ isOpen, onClose }: MethodologyModalProps) {
 
                   {/* Formula Breakdown */}
                   <section className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                       <Calculator className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                       Formula Breakdown
                     </h3>
 
-                    <div className="bg-gray-50 dark:bg-dark-bg-tertiary p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                      <div className="text-gray-900 dark:text-dark-text-primary">
+                    <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                      <div className="text-gray-900 dark:text-gray-100">
                         Safety Score = 100 - (Weighted Crime Index × 100)
                       </div>
-                      <div className="text-gray-600 dark:text-dark-text-tertiary mt-2 text-xs">
+                      <div className="text-gray-600 dark:text-gray-400 mt-2 text-xs">
                         where Weighted Crime Index is normalized to 0-1 range
                       </div>
                     </div>
 
                     <div className="space-y-3">
-                      <h4 className="font-medium text-gray-900 dark:text-dark-text-primary text-sm">
+                      <h4 className="font-medium text-gray-900 dark:text-gray-100 text-sm">
                         Crime Index Calculation:
                       </h4>
                       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                        <div className="font-mono text-xs space-y-2 text-gray-800 dark:text-dark-text-secondary">
+                        <div className="font-mono text-xs space-y-2 text-gray-800 dark:text-gray-300">
                           <div>Crime Index = (</div>
                           <div className="pl-4">Violent Crime × 0.40 +</div>
                           <div className="pl-4">Break-ins × 0.25 +</div>
@@ -137,7 +137,7 @@ export function MethodologyModal({ isOpen, onClose }: MethodologyModalProps) {
 
                   {/* Weighting Factors */}
                   <section className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                       <BarChart3 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                       Weighting Factors
                     </h3>
@@ -180,7 +180,7 @@ export function MethodologyModal({ isOpen, onClose }: MethodologyModalProps) {
 
                   {/* Normalization Process */}
                   <section className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                       <Percent className="w-5 h-5 text-green-600 dark:text-green-400" />
                       Normalization Process
                     </h3>
@@ -206,17 +206,17 @@ export function MethodologyModal({ isOpen, onClose }: MethodologyModalProps) {
 
                   {/* Confidence Intervals */}
                   <section className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                       <TrendingUp className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
                       Confidence Intervals
                     </h3>
 
-                    <p className="text-sm text-gray-700 dark:text-dark-text-secondary leading-relaxed">
+                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                       Each crime statistic includes a 95% confidence interval calculated using standard error estimation.
                       This helps account for:
                     </p>
 
-                    <ul className="space-y-2 text-sm text-gray-700 dark:text-dark-text-secondary">
+                    <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                       <li className="flex items-start gap-2">
                         <span className="text-cyan-600 dark:text-cyan-400 mt-0.5">•</span>
                         <span>Sample size variations across neighborhoods</span>
@@ -231,10 +231,10 @@ export function MethodologyModal({ isOpen, onClose }: MethodologyModalProps) {
                       </li>
                     </ul>
 
-                    <div className="bg-gray-50 dark:bg-dark-bg-tertiary p-4 rounded-lg">
-                      <div className="text-xs font-mono text-gray-800 dark:text-dark-text-secondary">
+                    <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                      <div className="text-xs font-mono text-gray-800 dark:text-gray-300">
                         CI = mean ± (1.96 × SE)
-                        <div className="text-gray-600 dark:text-dark-text-tertiary mt-1">
+                        <div className="text-gray-600 dark:text-gray-400 mt-1">
                           where SE = standard deviation / √n
                         </div>
                       </div>
@@ -243,7 +243,7 @@ export function MethodologyModal({ isOpen, onClose }: MethodologyModalProps) {
 
                   {/* Limitations */}
                   <section className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                       <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                       Known Limitations
                     </h3>
@@ -284,9 +284,9 @@ export function MethodologyModal({ isOpen, onClose }: MethodologyModalProps) {
                 </div>
 
                 {/* Footer */}
-                <div className="sticky bottom-0 bg-gray-50 dark:bg-dark-bg-tertiary border-t border-gray-200 dark:border-gray-700 p-4">
+                <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-700 p-4">
                   <div className="flex items-center justify-between flex-wrap gap-3">
-                    <div className="text-xs text-gray-600 dark:text-dark-text-tertiary">
+                    <div className="text-xs text-gray-600 dark:text-gray-400">
                       Methodology version 1.0.0 | Last updated: January 2025
                     </div>
                     <button
@@ -317,8 +317,8 @@ function WeightBar({ label, weight, color, description }: WeightBarProps) {
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-sm">
-        <span className="font-medium text-gray-900 dark:text-dark-text-primary">{label}</span>
-        <span className="font-semibold text-gray-700 dark:text-dark-text-secondary">{weight}%</span>
+        <span className="font-medium text-gray-900 dark:text-gray-100">{label}</span>
+        <span className="font-semibold text-gray-700 dark:text-gray-300">{weight}%</span>
       </div>
       <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
         <motion.div
@@ -328,7 +328,7 @@ function WeightBar({ label, weight, color, description }: WeightBarProps) {
           className={`h-full ${color} rounded-full`}
         />
       </div>
-      <p className="text-xs text-gray-600 dark:text-dark-text-tertiary">{description}</p>
+      <p className="text-xs text-gray-600 dark:text-gray-400">{description}</p>
     </div>
   )
 }
@@ -341,15 +341,15 @@ interface ProcessCardProps {
 
 function ProcessCard({ step, title, description }: ProcessCardProps) {
   return (
-    <div className="flex items-start gap-3 p-4 bg-white dark:bg-dark-bg-primary border border-gray-200 dark:border-gray-700 rounded-lg">
+    <div className="flex items-start gap-3 p-4 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg">
       <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-green-600 to-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
         {step}
       </div>
       <div className="flex-1 min-w-0">
-        <h4 className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm mb-1">
+        <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1">
           {title}
         </h4>
-        <p className="text-xs text-gray-600 dark:text-dark-text-tertiary leading-relaxed">
+        <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
           {description}
         </p>
       </div>

@@ -43,11 +43,11 @@ export function MetricCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4 }}
-      className={`bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-card p-lg shadow-card hover:shadow-card-hover transition-all duration-200 relative ${className}`}
+      className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card p-lg shadow-card hover:shadow-card-hover transition-all duration-200 relative ${className}`}
     >
       <div className="flex items-start justify-between mb-md gap-sm">
         <div className="flex items-center gap-xs flex-1">
-          <h3 className="text-body-sm text-gray-600 dark:text-dark-text-secondary font-semibold">
+          <h3 className="text-body-sm text-gray-600 dark:text-gray-300 font-semibold">
             {label}
           </h3>
           {tooltip && (
@@ -82,7 +82,7 @@ export function MetricCard({
 
       <div className="flex-1">
         <div className="flex items-baseline gap-xs mb-sm">
-          <p className="text-display-sm font-bold text-gray-900 dark:text-dark-text-primary tabular-nums">
+          <p className="text-display-sm font-bold text-gray-900 dark:text-gray-100 tabular-nums">
             <AnimatedNumber value={value} ariaLabel={`${label}: ${value}`} />
           </p>
           <span className="text-body-xs text-gray-500 dark:text-gray-400 font-medium">per month</span>

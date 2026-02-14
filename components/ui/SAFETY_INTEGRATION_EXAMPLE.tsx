@@ -44,21 +44,21 @@ export function SafetyScoringDemo() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg-primary p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             Safety Scoring Integration Demo
           </h1>
-          <p className="text-gray-600 dark:text-dark-text-secondary">
+          <p className="text-gray-600 dark:text-gray-300">
             Transforming raw crime numbers into meaningful insights
           </p>
         </div>
 
         {/* Safety Badges Showcase */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Safety Badges
           </h2>
 
@@ -70,10 +70,10 @@ export function SafetyScoringDemo() {
 
         {/* Enhanced Metric Cards */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Enhanced Metric Cards (Beverly Hills)
           </h2>
-          <p className="text-gray-600 dark:text-dark-text-secondary">
+          <p className="text-gray-600 dark:text-gray-300">
             Raw numbers now include context: comparisons, percentiles, and explanations
           </p>
 
@@ -115,7 +115,7 @@ export function SafetyScoringDemo() {
 
         {/* Side-by-side comparison */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Side-by-Side Comparison
           </h2>
 
@@ -170,11 +170,11 @@ export function SafetyScoringDemo() {
 
         {/* Implementation Code Example */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             How to Use in Your Code
           </h2>
 
-          <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
             <pre className="text-sm text-gray-800 dark:text-gray-200 overflow-x-auto">
 {`import { MetricCard } from '@/components/ui/metric-card'
 import { SafetyBadge } from '@/components/ui/safety-badge'
@@ -231,13 +231,13 @@ function NeighborhoodSafetyCard({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary">
+      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
         {neighborhood.name}
       </h3>
 
       <SafetyBadgeWithDescription safetyScore={safetyScore} />
 
-      <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-4 space-y-2">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-600 dark:text-gray-400">vs LA Average:</span>
           <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">

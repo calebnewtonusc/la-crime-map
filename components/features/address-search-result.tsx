@@ -152,7 +152,7 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg"
+        className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg"
       >
         <div className="flex items-start gap-3 mb-4">
           <div className="p-2 bg-neon-cyan/10 dark:bg-neon-cyan/20 rounded-lg">
@@ -160,12 +160,12 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
           </div>
           <div className="flex-1">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Your Address</h3>
-            <p className="text-lg text-gray-900 dark:text-dark-text-primary">{address}</p>
+            <p className="text-lg text-gray-900 dark:text-gray-100">{address}</p>
           </div>
         </div>
 
         <div className={`p-4 ${safetyInfo.bgColor} border ${safetyInfo.borderColor} rounded-lg`}>
-          <p className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary">
+          <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Your address is in <span className="text-neon-cyan">{neighborhoodName}</span>
           </p>
         </div>
@@ -181,11 +181,11 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
         >
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className={`p-3 ${safetyInfo.textColor} bg-white dark:bg-dark-bg-primary rounded-lg`}>
+              <div className={`p-3 ${safetyInfo.textColor} bg-white dark:bg-gray-950 rounded-lg`}>
                 <SafetyIcon className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                   {safetyInfo.rating}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Safety Rating</p>
@@ -226,9 +226,9 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg"
+          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg"
         >
-          <h3 className="text-xl font-bold text-gray-900 dark:text-dark-text-primary mb-4">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             See Full Crime Breakdown
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -239,16 +239,16 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
               return (
                 <div
                   key={metric}
-                  className="bg-gray-50 dark:bg-dark-bg-primary border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+                  className="bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg p-4"
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                    <h4 className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm">
+                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
                       {label}
                     </h4>
                   </div>
                   <div className="flex items-end justify-between">
-                    <div className="text-3xl font-bold text-gray-900 dark:text-dark-text-primary">
+                    <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                       {comparison.value}
                     </div>
                     <div className={`flex items-center gap-1 text-sm font-medium ${
@@ -281,16 +281,16 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-dark-bg-secondary dark:to-dark-bg-primary
+        className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-950
                    border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg"
       >
-        <h3 className="text-xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
           What should I know?
         </h3>
         <h4 className="text-lg font-semibold text-neon-cyan mb-2">
           {verdict.title}
         </h4>
-        <p className="text-gray-700 dark:text-dark-text-secondary leading-relaxed">
+        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
           {verdict.description}
         </p>
       </motion.div>

@@ -26,12 +26,12 @@ export function LoadingSkeleton({ className = '', variant = 'text', count = 1 }:
   if (variant === 'map') {
     return (
       <div className={`relative ${className}`} role="status" aria-label="Loading map">
-        <div className="absolute inset-0 bg-gray-100 dark:bg-dark-bg-secondary rounded-xl overflow-hidden">
+        <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden">
           {shimmer}
         </div>
         <div className="absolute top-6 left-6 right-6 space-y-4">
-          <div className="h-5 bg-gray-300/60 dark:bg-dark-bg-tertiary/60 rounded-lg w-1/3" />
-          <div className="h-4 bg-gray-300/40 dark:bg-dark-bg-tertiary/40 rounded-lg w-1/4" />
+          <div className="h-5 bg-gray-300/60 dark:bg-gray-700/60 rounded-lg w-1/3" />
+          <div className="h-4 bg-gray-300/40 dark:bg-gray-700/40 rounded-lg w-1/4" />
         </div>
       </div>
     )
@@ -39,12 +39,12 @@ export function LoadingSkeleton({ className = '', variant = 'text', count = 1 }:
 
   if (variant === 'card') {
     return (
-      <div className={`relative overflow-hidden rounded-xl bg-gray-100 dark:bg-dark-bg-secondary p-6 ${className}`} role="status" aria-label="Loading content">
+      <div className={`relative overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800 p-6 ${className}`} role="status" aria-label="Loading content">
         {shimmer}
         <div className="space-y-3 relative z-10">
-          <div className="h-5 bg-gray-300/60 dark:bg-dark-bg-tertiary/60 rounded-lg w-3/4" />
-          <div className="h-4 bg-gray-300/40 dark:bg-dark-bg-tertiary/40 rounded-lg w-1/2" />
-          <div className="h-4 bg-gray-300/40 dark:bg-dark-bg-tertiary/40 rounded-lg w-5/6" />
+          <div className="h-5 bg-gray-300/60 dark:bg-gray-700/60 rounded-lg w-3/4" />
+          <div className="h-4 bg-gray-300/40 dark:bg-gray-700/40 rounded-lg w-1/2" />
+          <div className="h-4 bg-gray-300/40 dark:bg-gray-700/40 rounded-lg w-5/6" />
         </div>
       </div>
     )
@@ -52,15 +52,15 @@ export function LoadingSkeleton({ className = '', variant = 'text', count = 1 }:
 
   if (variant === 'metric') {
     return (
-      <div className={`relative overflow-hidden rounded-xl bg-gray-100 dark:bg-dark-bg-secondary p-6 ${className}`} role="status" aria-label="Loading metric">
+      <div className={`relative overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800 p-6 ${className}`} role="status" aria-label="Loading metric">
         {shimmer}
         <div className="space-y-4 relative z-10">
           <div className="flex items-center justify-between">
-            <div className="h-4 bg-gray-300/60 dark:bg-dark-bg-tertiary/60 rounded-lg w-1/3" />
-            <div className="w-12 h-12 bg-gray-300/60 dark:bg-dark-bg-tertiary/60 rounded-lg" />
+            <div className="h-4 bg-gray-300/60 dark:bg-gray-700/60 rounded-lg w-1/3" />
+            <div className="w-12 h-12 bg-gray-300/60 dark:bg-gray-700/60 rounded-lg" />
           </div>
-          <div className="h-8 bg-gray-300/60 dark:bg-dark-bg-tertiary/60 rounded-lg w-2/3" />
-          <div className="h-3 bg-gray-300/40 dark:bg-dark-bg-tertiary/40 rounded-lg w-1/2" />
+          <div className="h-8 bg-gray-300/60 dark:bg-gray-700/60 rounded-lg w-2/3" />
+          <div className="h-3 bg-gray-300/40 dark:bg-gray-700/40 rounded-lg w-1/2" />
         </div>
       </div>
     )
@@ -68,7 +68,7 @@ export function LoadingSkeleton({ className = '', variant = 'text', count = 1 }:
 
   if (variant === 'button') {
     return (
-      <div className={`relative overflow-hidden rounded-lg bg-gray-200 dark:bg-dark-bg-tertiary h-11 ${className}`} role="status" aria-label="Loading">
+      <div className={`relative overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700 h-11 ${className}`} role="status" aria-label="Loading">
         {shimmer}
       </div>
     )
@@ -80,7 +80,7 @@ export function LoadingSkeleton({ className = '', variant = 'text', count = 1 }:
       <div className={`space-y-2 ${className}`} role="status" aria-label="Loading content">
         {Array.from({ length: count }).map((_, i) => (
           <div key={i} className="relative overflow-hidden">
-            <div className={`h-4 bg-gray-200 dark:bg-dark-bg-secondary rounded ${i === count - 1 ? 'w-2/3' : 'w-full'}`}>
+            <div className={`h-4 bg-gray-200 dark:bg-gray-800 rounded ${i === count - 1 ? 'w-2/3' : 'w-full'}`}>
               {shimmer}
             </div>
           </div>
@@ -91,7 +91,7 @@ export function LoadingSkeleton({ className = '', variant = 'text', count = 1 }:
 
   return (
     <div className={`relative overflow-hidden rounded ${className}`} role="status" aria-label="Loading">
-      <div className="h-4 bg-gray-200 dark:bg-dark-bg-secondary">
+      <div className="h-4 bg-gray-200 dark:bg-gray-800">
         {shimmer}
       </div>
     </div>
@@ -101,7 +101,7 @@ export function LoadingSkeleton({ className = '', variant = 'text', count = 1 }:
 export function MapSkeleton() {
   return (
     <div
-      className="w-full h-[calc(100vh-4rem)] bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 dark:from-dark-bg-primary dark:via-dark-bg-secondary dark:to-dark-bg-primary rounded-2xl overflow-hidden relative border-2 border-gray-200 dark:border-gray-700 shadow-2xl"
+      className="w-full h-[calc(100vh-4rem)] bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 dark:from-gray-950 dark:via-dark-bg-secondary dark:to-gray-950 rounded-2xl overflow-hidden relative border-2 border-gray-200 dark:border-gray-700 shadow-2xl"
       role="status"
       aria-live="polite"
       aria-label="Loading crime map"
@@ -151,11 +151,11 @@ export function MapSkeleton() {
         <motion.p
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="text-lg font-semibold text-gray-700 dark:text-dark-text-primary mb-2"
+          className="text-lg font-semibold text-gray-700 dark:text-gray-100 mb-2"
         >
           Loading LA Crime Map
         </motion.p>
-        <p className="text-sm text-gray-600 dark:text-dark-text-secondary">
+        <p className="text-sm text-gray-600 dark:text-gray-300">
           Preparing neighborhood data...
         </p>
       </motion.div>
@@ -165,12 +165,12 @@ export function MapSkeleton() {
         <motion.div
           animate={{ width: ['40%', '60%', '40%'] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="h-3 bg-gray-300/50 dark:bg-dark-bg-tertiary/50 rounded-full"
+          className="h-3 bg-gray-300/50 dark:bg-gray-700/50 rounded-full"
         />
         <motion.div
           animate={{ width: ['30%', '50%', '30%'] }}
           transition={{ duration: 2, delay: 0.3, repeat: Infinity }}
-          className="h-3 bg-gray-300/50 dark:bg-dark-bg-tertiary/50 rounded-full w-24"
+          className="h-3 bg-gray-300/50 dark:bg-gray-700/50 rounded-full w-24"
         />
       </div>
 

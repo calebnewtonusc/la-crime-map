@@ -312,8 +312,8 @@ export default function SearchPage() {
                     placeholder="Search any LA address... (e.g., 1234 Sunset Blvd, Silver Lake)"
                     disabled={isSearching}
                     className="w-full pl-16 pr-40 py-5 text-lg border-2 border-gray-300 dark:border-gray-600
-                             rounded-2xl bg-white dark:bg-dark-bg-secondary
-                             text-gray-900 dark:text-dark-text-primary
+                             rounded-2xl bg-white dark:bg-gray-800
+                             text-gray-900 dark:text-gray-100
                              placeholder-gray-400 dark:placeholder-gray-500
                              focus:border-la-sunset-purple focus:ring-4 focus:ring-la-sunset-purple/20
                              transition-all duration-200 outline-none
@@ -359,13 +359,13 @@ export default function SearchPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     className="absolute z-50 w-full max-w-4xl mx-auto mt-2 bg-white
-                             dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700
+                             dark:bg-gray-800 border border-gray-200 dark:border-gray-700
                              rounded-2xl shadow-2xl overflow-hidden left-0 right-0"
                   >
                     <div className="flex items-center justify-between px-6 py-4 border-b
                                   border-gray-200 dark:border-gray-700">
                       <div className="flex items-center gap-2 text-sm font-medium
-                                    text-gray-700 dark:text-dark-text-secondary">
+                                    text-gray-700 dark:text-gray-300">
                         <History className="w-4 h-4" />
                         <span>Recent Searches</span>
                       </div>
@@ -393,7 +393,7 @@ export default function SearchPage() {
                           <MapPin className="w-5 h-5 text-gray-400 group-hover:text-la-sunset-purple
                                            flex-shrink-0" />
                           <div className="flex-1 min-w-0">
-                            <p className="text-gray-900 dark:text-dark-text-primary font-medium
+                            <p className="text-gray-900 dark:text-gray-100 font-medium
                                         truncate group-hover:text-la-sunset-purple transition-colors">
                               {item.neighborhoodName}
                             </p>
@@ -439,7 +439,7 @@ export default function SearchPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-white dark:bg-dark-bg-secondary border border-gray-200
+                className="bg-white dark:bg-gray-800 border border-gray-200
                          dark:border-gray-700 rounded-2xl p-6 mb-6 shadow-lg"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -631,7 +631,7 @@ function ResultCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
       onClick={onClick}
-      className={`bg-white dark:bg-dark-bg-secondary border-2 border-gray-200
+      className={`bg-white dark:bg-gray-800 border-2 border-gray-200
                 dark:border-gray-700 rounded-2xl overflow-hidden shadow-lg
                 hover:shadow-2xl transition-all duration-300 cursor-pointer
                 hover:border-la-sunset-purple ${
@@ -644,7 +644,7 @@ function ResultCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
               <MapPin className="w-5 h-5 text-la-sunset-purple flex-shrink-0" />
-              <h3 className="font-bold text-xl text-gray-900 dark:text-dark-text-primary truncate">
+              <h3 className="font-bold text-xl text-gray-900 dark:text-gray-100 truncate">
                 {neighborhoodName}
               </h3>
             </div>
@@ -725,7 +725,7 @@ function ResultCard({
                     <div key={label} className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
                       <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{label}</p>
                       <div className="flex items-end justify-between">
-                        <p className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
+                        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                           {value}
                         </p>
                         <div className={`flex items-center gap-1 text-xs font-medium ${
@@ -771,12 +771,12 @@ function EmptyState({ filterBy }: { filterBy: FilterOption }) {
       exit={{ opacity: 0, scale: 0.95 }}
       className="max-w-2xl mx-auto text-center py-16"
     >
-      <div className="bg-white dark:bg-dark-bg-secondary border-2 border-dashed
+      <div className="bg-white dark:bg-gray-800 border-2 border-dashed
                     border-gray-300 dark:border-gray-600 rounded-2xl p-12">
         {filterBy === 'saved' ? (
           <>
             <Bookmark className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
               No Saved Locations Yet
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -786,7 +786,7 @@ function EmptyState({ filterBy }: { filterBy: FilterOption }) {
         ) : filterBy === 'history' ? (
           <>
             <History className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
               No Search History
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -796,7 +796,7 @@ function EmptyState({ filterBy }: { filterBy: FilterOption }) {
         ) : (
           <>
             <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
               Ready to Explore LA?
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -809,7 +809,7 @@ function EmptyState({ filterBy }: { filterBy: FilterOption }) {
                   <Search className="w-5 h-5 text-la-sunset-purple" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-dark-text-primary mb-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
                     Powerful Search
                   </h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -822,7 +822,7 @@ function EmptyState({ filterBy }: { filterBy: FilterOption }) {
                   <Filter className="w-5 h-5 text-la-sunset-pink" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-dark-text-primary mb-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
                     Smart Filters
                   </h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -835,7 +835,7 @@ function EmptyState({ filterBy }: { filterBy: FilterOption }) {
                   <Bookmark className="w-5 h-5 text-la-sunset-orange" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-dark-text-primary mb-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
                     Save & Compare
                   </h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">

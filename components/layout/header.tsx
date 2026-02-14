@@ -24,7 +24,7 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-dark-bg-primary/95 backdrop-blur-lg shadow-sm"
+      className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-950/95 backdrop-blur-lg shadow-sm"
     >
       <div className="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl">
         <div className="flex h-16 sm:h-18 items-center justify-between gap-lg">
@@ -37,10 +37,10 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
               </div>
             </div>
             <div className="flex flex-col">
-              <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-dark-text-primary tracking-tight">
+              <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">
                 LA Crime Map
               </h1>
-              <p className="text-xs text-gray-600 dark:text-dark-text-tertiary hidden sm:block font-medium">
+              <p className="text-xs text-gray-600 dark:text-gray-400 hidden sm:block font-medium">
                 Real-time crime statistics
               </p>
             </div>
@@ -52,19 +52,19 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
             <nav className="flex items-center gap-xxs">
               <a
                 href="/"
-                className="px-md py-sm text-body-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary rounded-button transition-all duration-200"
+                className="px-md py-sm text-body-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-button transition-all duration-200"
               >
                 Map
               </a>
               <a
                 href="/search"
-                className="px-md py-sm text-body-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary rounded-button transition-all duration-200"
+                className="px-md py-sm text-body-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-button transition-all duration-200"
               >
                 Search
               </a>
               <a
                 href="/recommendations"
-                className="px-md py-sm text-body-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary rounded-button transition-all duration-200"
+                className="px-md py-sm text-body-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-button transition-all duration-200"
               >
                 Recommendations
               </a>
@@ -82,7 +82,7 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="min-w-touch min-h-touch p-sm rounded-button bg-gray-100 dark:bg-dark-bg-secondary hover:bg-gray-200 dark:hover:bg-dark-bg-tertiary transition-all duration-200 flex items-center justify-center shadow-sm"
+                className="min-w-touch min-h-touch p-sm rounded-button bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 flex items-center justify-center shadow-sm"
                 aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               >
                 {theme === 'dark' ? (
@@ -101,7 +101,7 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="min-w-touch min-h-touch p-sm rounded-button bg-gray-100 dark:bg-dark-bg-secondary hover:bg-gray-200 dark:hover:bg-dark-bg-tertiary transition-all duration-200 flex items-center justify-center shadow-sm"
+                className="min-w-touch min-h-touch p-sm rounded-button bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 flex items-center justify-center shadow-sm"
                 aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               >
                 {theme === 'dark' ? (
@@ -116,14 +116,14 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onMobileMenuToggle}
-                className="min-w-touch min-h-touch p-sm rounded-button bg-gray-100 dark:bg-dark-bg-secondary hover:bg-gray-200 dark:hover:bg-dark-bg-tertiary transition-all duration-200 flex items-center justify-center shadow-sm"
+                className="min-w-touch min-h-touch p-sm rounded-button bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 flex items-center justify-center shadow-sm"
                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={mobileMenuOpen}
               >
                 {mobileMenuOpen ? (
-                  <X className="w-5 h-5 text-gray-700 dark:text-dark-text-primary" />
+                  <X className="w-5 h-5 text-gray-700 dark:text-gray-100" />
                 ) : (
-                  <Menu className="w-5 h-5 text-gray-700 dark:text-dark-text-primary" />
+                  <Menu className="w-5 h-5 text-gray-700 dark:text-gray-100" />
                 )}
               </motion.button>
             )}

@@ -54,7 +54,7 @@ export function DataSources({ className = '', compact = false }: DataSourcesProp
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className={`flex flex-wrap items-center gap-4 text-xs text-gray-600 dark:text-dark-text-tertiary ${className}`}
+        className={`flex flex-wrap items-center gap-4 text-xs text-gray-600 dark:text-gray-400 ${className}`}
       >
         <div className="flex items-center gap-1.5">
           <Clock className="w-3.5 h-3.5" />
@@ -76,7 +76,7 @@ export function DataSources({ className = '', compact = false }: DataSourcesProp
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden ${className}`}
+      className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden ${className}`}
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 p-6">
@@ -96,7 +96,7 @@ export function DataSources({ className = '', compact = false }: DataSourcesProp
 
         {/* Primary Source */}
         <div className="space-y-3">
-          <h4 className="font-semibold text-gray-900 dark:text-dark-text-primary flex items-center gap-2">
+          <h4 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
             <Shield className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             Primary Data Source
           </h4>
@@ -131,28 +131,28 @@ export function DataSources({ className = '', compact = false }: DataSourcesProp
 
         {/* Update Information */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-50 dark:bg-dark-bg-tertiary rounded-lg">
+          <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <Clock className="w-4 h-4 text-green-600 dark:text-green-400" />
-              <span className="text-sm font-medium text-gray-700 dark:text-dark-text-secondary">Last Updated</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Last Updated</span>
             </div>
-            <div className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary">
+            <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               {formatRelativeTime(lastUpdated)}
             </div>
-            <div className="text-xs text-gray-600 dark:text-dark-text-tertiary mt-1">
+            <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
               {formatDate(lastUpdated)}
             </div>
           </div>
 
-          <div className="p-4 bg-gray-50 dark:bg-dark-bg-tertiary rounded-lg">
+          <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <RefreshCw className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              <span className="text-sm font-medium text-gray-700 dark:text-dark-text-secondary">Update Frequency</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Update Frequency</span>
             </div>
-            <div className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary">
+            <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               Every 24 hours
             </div>
-            <div className="text-xs text-gray-600 dark:text-dark-text-tertiary mt-1">
+            <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
               Next: {formatDate(nextUpdate)}
             </div>
           </div>
@@ -160,7 +160,7 @@ export function DataSources({ className = '', compact = false }: DataSourcesProp
 
         {/* Data Processing Pipeline */}
         <div className="space-y-3">
-          <h4 className="font-semibold text-gray-900 dark:text-dark-text-primary">
+          <h4 className="font-semibold text-gray-900 dark:text-gray-100">
             Data Processing Pipeline
           </h4>
           <div className="space-y-2">
@@ -212,15 +212,15 @@ interface ProcessStepProps {
 
 function ProcessStep({ number, title, description }: ProcessStepProps) {
   return (
-    <div className="flex items-start gap-3 p-3 bg-white dark:bg-dark-bg-primary border border-gray-200 dark:border-gray-700 rounded-lg">
+    <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-lg">
       <div className="flex-shrink-0 w-6 h-6 bg-blue-600 dark:bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
         {number}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="font-medium text-gray-900 dark:text-dark-text-primary text-sm">
+        <div className="font-medium text-gray-900 dark:text-gray-100 text-sm">
           {title}
         </div>
-        <div className="text-xs text-gray-600 dark:text-dark-text-tertiary mt-0.5">
+        <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
           {description}
         </div>
       </div>

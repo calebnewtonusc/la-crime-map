@@ -63,7 +63,7 @@ export function Legend({ className = '', showDetails = false }: LegendProps) {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
       className={`
-        bg-white dark:bg-dark-bg-secondary
+        bg-white dark:bg-gray-800
         border-2 border-gray-200 dark:border-gray-700
         rounded-2xl shadow-2xl overflow-hidden
         backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95
@@ -80,10 +80,10 @@ export function Legend({ className = '', showDetails = false }: LegendProps) {
               <MapPin className="w-5 h-5 text-neon-cyan dark:text-neon-cyan" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-dark-text-primary">
+              <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">
                 Crime Level Guide
               </h3>
-              <p className="text-xs text-gray-600 dark:text-dark-text-tertiary">
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Los Angeles Neighborhoods
               </p>
             </div>
@@ -96,7 +96,7 @@ export function Legend({ className = '', showDetails = false }: LegendProps) {
               p-2 rounded-lg transition-all
               ${isExpanded
                 ? 'bg-neon-cyan/10 text-neon-cyan'
-                : 'hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary text-gray-600 dark:text-dark-text-secondary'
+                : 'hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary text-gray-600 dark:text-gray-300'
               }
             `}
             aria-label={isExpanded ? 'Collapse legend details' : 'Expand legend details'}
@@ -134,7 +134,7 @@ export function Legend({ className = '', showDetails = false }: LegendProps) {
                   w-full flex items-center gap-3 p-3 rounded-xl
                   transition-all cursor-pointer
                   ${isItemExpanded
-                    ? 'bg-gradient-to-br from-gray-50 to-gray-100 dark:from-dark-bg-tertiary dark:to-dark-bg-primary shadow-lg'
+                    ? 'bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-950 shadow-lg'
                     : 'hover:bg-gray-50 dark:hover:bg-dark-bg-tertiary'
                   }
                 `}
@@ -156,7 +156,7 @@ export function Legend({ className = '', showDetails = false }: LegendProps) {
                 {/* Label and Range */}
                 <div className="flex-1 text-left">
                   <div className="flex items-baseline gap-2 mb-1">
-                    <span className="text-sm font-bold text-gray-900 dark:text-dark-text-primary">
+                    <span className="text-sm font-bold text-gray-900 dark:text-gray-100">
                       {item.label}
                     </span>
                     <span className={`
@@ -168,7 +168,7 @@ export function Legend({ className = '', showDetails = false }: LegendProps) {
                       {item.range}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-600 dark:text-dark-text-secondary">
+                  <p className="text-xs text-gray-600 dark:text-gray-300">
                     {item.description}
                   </p>
                 </div>
@@ -193,13 +193,13 @@ export function Legend({ className = '', showDetails = false }: LegendProps) {
                     transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
-                    <div className="mt-2 ml-[60px] p-3 rounded-lg bg-gray-50 dark:bg-dark-bg-primary border border-gray-200 dark:border-gray-700">
-                      <p className="text-xs font-semibold text-gray-700 dark:text-dark-text-secondary mb-2">
+                    <div className="mt-2 ml-[60px] p-3 rounded-lg bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700">
+                      <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Common in:
                       </p>
                       <div className="space-y-1">
                         {item.examples.map((example, i) => (
-                          <div key={i} className="flex items-center gap-2 text-xs text-gray-600 dark:text-dark-text-tertiary">
+                          <div key={i} className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                             <div className={`w-1.5 h-1.5 rounded-full ${item.color}`} />
                             {example}
                           </div>
@@ -229,15 +229,15 @@ export function Legend({ className = '', showDetails = false }: LegendProps) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-5 py-4 bg-gradient-to-br from-gray-50 to-white dark:from-dark-bg-primary dark:to-dark-bg-secondary border-t-2 border-gray-200 dark:border-gray-700">
+            <div className="px-5 py-4 bg-gradient-to-br from-gray-50 to-white dark:from-gray-950 dark:to-gray-800 border-t-2 border-gray-200 dark:border-gray-700">
               <div className="space-y-3">
                 <div className="flex items-start gap-2">
                   <TrendingUp className="w-4 h-4 text-neon-cyan mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-xs font-semibold text-gray-900 dark:text-dark-text-primary mb-1">
+                    <p className="text-xs font-semibold text-gray-900 dark:text-gray-100 mb-1">
                       How We Calculate Crime Levels
                     </p>
-                    <p className="text-xs text-gray-600 dark:text-dark-text-tertiary leading-relaxed">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
                       Crime levels are calculated based on reported incidents per neighborhood,
                       normalized by area and population density. Data is sourced from LAPD and
                       updated regularly for accuracy.
@@ -248,10 +248,10 @@ export function Legend({ className = '', showDetails = false }: LegendProps) {
                 <div className="flex items-start gap-2">
                   <Info className="w-4 h-4 text-la-sunset-purple mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-xs font-semibold text-gray-900 dark:text-dark-text-primary mb-1">
+                    <p className="text-xs font-semibold text-gray-900 dark:text-gray-100 mb-1">
                       Understanding the Data
                     </p>
-                    <p className="text-xs text-gray-600 dark:text-dark-text-tertiary leading-relaxed">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
                       Click any neighborhood on the map to see detailed crime statistics,
                       trends, and historical data. Colors indicate relative safety levels
                       compared to LA County averages.

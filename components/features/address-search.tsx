@@ -183,10 +183,10 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-8 px-4"
       >
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3">
           Search Your Address
         </h2>
-        <p className="text-lg text-gray-600 dark:text-dark-text-secondary max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           Find out which neighborhood you're in and view detailed crime statistics for your area
         </p>
       </motion.div>
@@ -220,7 +220,7 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
               placeholder="Try '1234 Sunset Blvd' or 'Silver Lake'..."
               disabled={isSearching}
               className="w-full pl-14 pr-32 py-4 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl
-                       bg-white dark:bg-dark-bg-secondary text-gray-900 dark:text-dark-text-primary
+                       bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
                        placeholder-gray-400 dark:placeholder-gray-500
                        focus:border-neon-cyan focus:ring-4 focus:ring-neon-cyan/20 dark:focus:ring-neon-cyan/30
                        transition-all duration-200 outline-none
@@ -268,11 +268,11 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="absolute z-50 w-full mt-2 bg-white dark:bg-dark-bg-secondary
+              className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800
                        border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl overflow-hidden"
             >
               <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-dark-text-secondary">
+                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                   <History className="w-4 h-4" />
                   <span>Recent Searches</span>
                 </div>
@@ -293,7 +293,7 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
                              transition-colors flex items-center gap-3 group"
                   >
                     <MapPin className="w-4 h-4 text-gray-400 group-hover:text-neon-cyan flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-dark-text-secondary group-hover:text-gray-900 dark:group-hover:text-dark-text-primary
+                    <span className="text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-dark-text-primary
                                    truncate flex-1">
                       {item.address}
                     </span>
@@ -374,12 +374,12 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
 // Info Tip Component
 function InfoTip({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="bg-gray-50 dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+    <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-2">
         <div className="text-neon-cyan">{icon}</div>
-        <h3 className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm">{title}</h3>
+        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm">{title}</h3>
       </div>
-      <p className="text-xs text-gray-600 dark:text-dark-text-tertiary leading-relaxed">{description}</p>
+      <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{description}</p>
     </div>
   )
 }

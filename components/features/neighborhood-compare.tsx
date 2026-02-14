@@ -417,7 +417,7 @@ export function NeighborhoodCompare({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={shareComparison}
-            className="flex items-center gap-2 bg-white dark:bg-dark-bg-secondary border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-bg-tertiary transition-colors"
+            className="flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-bg-tertiary transition-colors"
           >
             {copiedUrl ? (
               <>
@@ -435,7 +435,7 @@ export function NeighborhoodCompare({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={exportComparison}
-            className="flex items-center gap-2 bg-white dark:bg-dark-bg-secondary border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-bg-tertiary transition-colors"
+            className="flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-bg-tertiary transition-colors"
           >
             <Download className="w-4 h-4" />
             <span className="text-sm font-medium">Export</span>
@@ -445,7 +445,7 @@ export function NeighborhoodCompare({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onClose}
-              className="p-2 bg-white dark:bg-dark-bg-secondary border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-bg-tertiary transition-colors"
+              className="p-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-bg-tertiary transition-colors"
             >
               <X className="w-4 h-4" />
             </motion.button>
@@ -457,7 +457,7 @@ export function NeighborhoodCompare({
       <div className="relative">
         <button
           onClick={() => setShowDropdown(!showDropdown)}
-          className="w-full flex items-center justify-between bg-white dark:bg-dark-bg-secondary border-2 border-gray-300 dark:border-gray-700 rounded-xl px-4 py-3 hover:border-neon-cyan dark:hover:border-neon-purple transition-colors"
+          className="w-full flex items-center justify-between bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl px-4 py-3 hover:border-neon-cyan dark:hover:border-neon-purple transition-colors"
         >
           <span className="text-gray-700 dark:text-gray-300">
             {selectedNeighborhoods.length === 0
@@ -477,7 +477,7 @@ export function NeighborhoodCompare({
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="absolute z-50 w-full mt-2 bg-white dark:bg-dark-bg-secondary border border-gray-300 dark:border-gray-700 rounded-xl shadow-xl max-h-96 overflow-y-auto"
+              className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-xl max-h-96 overflow-y-auto"
             >
               {availableNeighborhoods.map(name => {
                 const isSelected = selectedNeighborhoods.includes(name)
@@ -539,7 +539,7 @@ export function NeighborhoodCompare({
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-dark-bg-secondary rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
           >
             {/* Mobile: Stacked Cards */}
             <div className="lg:hidden space-y-4 p-4">
@@ -642,7 +642,7 @@ export function NeighborhoodCompare({
             {/* Desktop: Table */}
             <div className="hidden lg:block overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 dark:bg-dark-bg-tertiary">
+                <thead className="bg-gray-50 dark:bg-gray-700">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">
                       Metric
@@ -804,7 +804,7 @@ export function NeighborhoodCompare({
                   </tr>
 
                   {/* Recommendation */}
-                  <tr className="bg-gray-50 dark:bg-dark-bg-tertiary">
+                  <tr className="bg-gray-50 dark:bg-gray-700">
                     <td className="px-6 py-4 font-semibold flex items-center gap-2">
                       <Info className="w-5 h-5 text-blue-500" />
                       Recommendation
@@ -836,7 +836,7 @@ export function NeighborhoodCompare({
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white dark:bg-dark-bg-secondary rounded-2xl border border-gray-200 dark:border-gray-700 p-6"
+              className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6"
             >
               <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
                 Crime Metrics Comparison
@@ -875,7 +875,7 @@ export function NeighborhoodCompare({
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white dark:bg-dark-bg-secondary rounded-2xl border border-gray-200 dark:border-gray-700 p-6"
+              className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6"
             >
               <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
                 Safety Profile

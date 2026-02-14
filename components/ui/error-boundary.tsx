@@ -43,10 +43,10 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 mb-6">
               <AlertTriangle className="w-10 h-10 text-red-600 dark:text-red-400" aria-hidden="true" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
               Something Went Wrong
             </h2>
-            <p className="text-base text-gray-600 dark:text-dark-text-secondary mb-6 leading-relaxed">
+            <p className="text-base text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
               We encountered an unexpected error while loading this content. Please try refreshing the page.
             </p>
             <button
@@ -76,10 +76,10 @@ export function ErrorState({ message, onRetry }: { message?: string; onRetry?: (
         <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 mb-6">
           <AlertTriangle className="w-10 h-10 text-red-600 dark:text-red-400" aria-hidden="true" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
           Unable to Load Data
         </h2>
-        <p className="text-base text-gray-600 dark:text-dark-text-secondary mb-6 leading-relaxed">
+        <p className="text-base text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
           {message || 'We are experiencing difficulty loading this information. Please try again.'}
         </p>
         {onRetry && (

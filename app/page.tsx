@@ -24,7 +24,7 @@ const AIChatAssistant = dynamic(() => import('@/components/features').then(mod =
 const AISmartInsights = dynamic(() => import('@/components/features').then(mod => ({ default: mod.AISmartInsights })), {
   ssr: false,
   loading: () => (
-    <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 animate-pulse">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 animate-pulse">
       <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
       <div className="space-y-3">
         <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
@@ -224,7 +224,7 @@ export default function Home() {
           </div>
 
           {/* Interactive Map Section */}
-          <div id="explore-map" className="bg-gray-50 dark:bg-dark-bg-primary py-12 sm:py-16">
+          <div id="explore-map" className="bg-gray-50 dark:bg-gray-950 py-12 sm:py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -233,10 +233,10 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
                 className="text-center max-w-3xl mx-auto"
               >
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                   Explore Every Neighborhood
                 </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-300">
+                <p className="text-lg text-gray-700 dark:text-gray-300">
                   Click on any area to see detailed crime statistics from Oct-Dec 2024
                 </p>
               </motion.div>
@@ -258,15 +258,15 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2, duration: 0.6 }}
-                className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden"
+                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden"
               >
-                <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-dark-bg-secondary dark:to-dark-bg-tertiary">
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
                     {selectedMetric === 'violentCrime' ? 'Violent Crime' :
                      selectedMetric === 'carTheft' ? 'Car Theft' :
                      selectedMetric === 'breakIns' ? 'Break-ins' : 'Petty Theft'} Map
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-2">
+                  <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mt-2">
                     Darker shades = higher crime rates. Showing Q4 2024 data (Oct-Dec).
                   </p>
                 </div>
@@ -290,7 +290,7 @@ export default function Home() {
           </div>
 
           {/* How It Works Section */}
-          <div id="how-it-works" className="py-16 sm:py-24 bg-white dark:bg-dark-bg-secondary">
+          <div id="how-it-works" className="py-16 sm:py-24 bg-white dark:bg-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -349,7 +349,7 @@ export default function Home() {
           </div>
 
           {/* Data Trust Section */}
-          <div className="py-12 sm:py-16 bg-gray-50 dark:bg-dark-bg-primary">
+          <div className="py-12 sm:py-16 bg-gray-50 dark:bg-gray-950">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -431,7 +431,7 @@ function FeatureCard({ number, title, description, icon }: FeatureCardProps) {
       variants={fadeInUp}
       className="relative group"
     >
-      <div className="h-full bg-white dark:bg-dark-bg-tertiary border border-gray-200 dark:border-gray-700 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+      <div className="h-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
         <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-la-sunset-orange to-la-sunset-pink rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
           {number}
         </div>

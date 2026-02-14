@@ -39,7 +39,7 @@ export function TrustSignalsDemo() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-lg text-gray-600 dark:text-dark-text-secondary max-w-3xl mx-auto"
+          className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
         >
           Building trust through transparency, open data, and clear communication
         </motion.p>
@@ -75,14 +75,14 @@ export function TrustSignalsDemo() {
       {/* Section 1: Data Sources (Compact Mode) */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             1. Compact Data Sources Badge
           </h2>
-          <p className="text-sm text-gray-600 dark:text-dark-text-secondary">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Use this in headers or above maps to show data freshness
           </p>
         </div>
-        <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
           <DataSources compact />
         </div>
         <details className="text-sm">
@@ -101,10 +101,10 @@ export function TrustSignalsDemo() {
       {/* Section 2: Data Sources (Full Card) */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             2. Full Data Sources Card
           </h2>
-          <p className="text-sm text-gray-600 dark:text-dark-text-secondary">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Complete data transparency with update status, processing pipeline, and disclaimers
           </p>
         </div>
@@ -125,14 +125,14 @@ export function TrustSignalsDemo() {
       {/* Section 3: Methodology Modal */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             3. Methodology Modal
           </h2>
-          <p className="text-sm text-gray-600 dark:text-dark-text-secondary">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Detailed explanation of safety score calculations with formulas, weights, and limitations
           </p>
         </div>
-        <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
           <button
             onClick={() => setMethodologyOpen(true)}
             className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
@@ -140,7 +140,7 @@ export function TrustSignalsDemo() {
             <Calculator className="w-5 h-5" />
             Open Methodology Modal
           </button>
-          <p className="text-xs text-gray-600 dark:text-dark-text-tertiary mt-3">
+          <p className="text-xs text-gray-600 dark:text-gray-400 mt-3">
             Click to see the full methodology explanation with formulas, weighting factors, and confidence intervals
           </p>
         </div>
@@ -174,10 +174,10 @@ return (
       {/* Section 4: About Section */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             4. About Section
           </h2>
-          <p className="text-sm text-gray-600 dark:text-dark-text-secondary">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Mission statement, trust badges, tech stack, attribution, and contact information
           </p>
         </div>
@@ -198,14 +198,14 @@ return (
       {/* Section 5: Footer */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             5. Enhanced Footer
           </h2>
-          <p className="text-sm text-gray-600 dark:text-dark-text-secondary">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             The footer is already integrated into MainLayout with trust signals, data update status, and report inaccuracy button
           </p>
         </div>
-        <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,10 +213,10 @@ return (
               </svg>
               <span className="font-medium">Footer automatically included in MainLayout</span>
             </div>
-            <p className="text-sm text-gray-600 dark:text-dark-text-tertiary">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Scroll to the bottom of any page to see the enhanced footer with:
             </p>
-            <ul className="text-sm text-gray-600 dark:text-dark-text-tertiary space-y-1 ml-6">
+            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 ml-6">
               <li>• Last data update timestamp</li>
               <li>• LAPD Open Data source link</li>
               <li>• Methodology link (opens modal)</li>
@@ -322,7 +322,7 @@ function QuickTrustCard({ icon, title, description, color }: QuickTrustCardProps
         {icon}
       </div>
       <h3 className={`${c.title} font-semibold mb-2`}>{title}</h3>
-      <p className="text-sm text-gray-700 dark:text-dark-text-secondary">{description}</p>
+      <p className="text-sm text-gray-700 dark:text-gray-300">{description}</p>
     </div>
   )
 }

@@ -852,7 +852,7 @@ export function SmartRecommendationsEngine() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-dark-bg-primary dark:via-dark-bg-secondary dark:to-dark-bg-secondary">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-gray-950 dark:via-dark-bg-secondary dark:to-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <AnimatePresence mode="wait">
           {step === 'wizard' && (
@@ -1478,7 +1478,7 @@ function ResultsView({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-dark-bg-secondary rounded-3xl shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center"
+          className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center"
         >
           <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -1559,7 +1559,7 @@ function CompareView({ neighborhoods, onBack, onRemove, calculateSafetyScore }: 
       </div>
 
       {/* Comparison Table */}
-      <div className="bg-white dark:bg-dark-bg-secondary rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gradient-to-r from-la-sunset-orange/10 via-la-sunset-pink/10 to-la-sunset-purple/10 dark:from-la-sunset-orange/5 dark:via-la-sunset-pink/5 dark:to-la-sunset-purple/5">
@@ -1752,7 +1752,7 @@ function CompareView({ neighborhoods, onBack, onRemove, calculateSafetyScore }: 
             key={neighborhood.name}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-dark-bg-secondary rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6"
           >
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{neighborhood.name}</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 italic">
@@ -1809,7 +1809,7 @@ function DiscoverView({ neighborhood, onBack, onShuffle, onSave, isSaved, calcul
       exit={{ opacity: 0, scale: 0.9 }}
       className="max-w-4xl mx-auto"
     >
-      <div className="bg-white dark:bg-dark-bg-secondary rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-neon-cyan to-neon-purple p-8 text-white text-center">
           <motion.div

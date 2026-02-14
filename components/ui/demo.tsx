@@ -34,21 +34,21 @@ export function UIComponentsDemo() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg-primary p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             UI Components Demo
           </h1>
-          <p className="text-gray-600 dark:text-dark-text-secondary">
+          <p className="text-gray-600 dark:text-gray-300">
             Interactive showcase of all UI components
           </p>
         </div>
 
         {/* Search Bar Section */}
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Search Bar
           </h2>
           <SearchBar
@@ -58,7 +58,7 @@ export function UIComponentsDemo() {
             className="max-w-2xl"
           />
           {selectedNeighborhood && (
-            <p className="mt-4 text-sm text-gray-600 dark:text-dark-text-secondary">
+            <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
               Selected: <strong>{selectedNeighborhood}</strong>
             </p>
           )}
@@ -66,7 +66,7 @@ export function UIComponentsDemo() {
 
         {/* Info Cards Section */}
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Info Cards
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -130,13 +130,13 @@ export function UIComponentsDemo() {
 
         {/* Two Column Layout */}
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Legend and Filter Panel
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Legend */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary mb-3">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
                 Map Legend
               </h3>
               <Legend showDetails={false} />
@@ -144,7 +144,7 @@ export function UIComponentsDemo() {
 
             {/* Filter Panel */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary mb-3">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
                 Filter Panel
               </h3>
               <FilterPanel
@@ -154,11 +154,11 @@ export function UIComponentsDemo() {
               />
 
               {/* Filter State Display */}
-              <div className="mt-4 p-4 bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl">
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-2">
+              <div className="mt-4 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl">
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
                   Current Filter State:
                 </h4>
-                <pre className="text-xs text-gray-600 dark:text-dark-text-secondary overflow-auto">
+                <pre className="text-xs text-gray-600 dark:text-gray-300 overflow-auto">
                   {JSON.stringify(filters, null, 2)}
                 </pre>
               </div>
@@ -168,19 +168,19 @@ export function UIComponentsDemo() {
 
         {/* Component Grid */}
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             All Components at a Glance
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-dark-text-secondary">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Legend Component
               </h3>
               <Legend showDetails={true} />
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-dark-text-secondary">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Search Component
               </h3>
               <SearchBar
@@ -190,7 +190,7 @@ export function UIComponentsDemo() {
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-dark-text-secondary">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Info Card Variant
               </h3>
               <InfoCard
@@ -205,7 +205,7 @@ export function UIComponentsDemo() {
         </section>
 
         {/* Footer */}
-        <footer className="text-center text-sm text-gray-600 dark:text-dark-text-tertiary pt-8 border-t border-gray-200 dark:border-gray-700">
+        <footer className="text-center text-sm text-gray-600 dark:text-gray-400 pt-8 border-t border-gray-200 dark:border-gray-700">
           <p>
             LA Crime Map - UI Components Library
           </p>

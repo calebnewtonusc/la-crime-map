@@ -40,11 +40,11 @@ export function CrimeDashboardExample() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg-primary">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Header */}
-      <header className="bg-white dark:bg-dark-bg-secondary border-b border-gray-200 dark:border-gray-700 py-4 px-6">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-4">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             LA Crime Map Dashboard
           </h1>
 
@@ -89,13 +89,13 @@ export function CrimeDashboardExample() {
           {/* Map Section - Takes up 3 columns on large screens */}
           <div className="lg:col-span-3">
             {/* Map Container */}
-            <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-lg">
-              <div className="relative h-[600px] bg-gray-100 dark:bg-dark-bg-tertiary">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-lg">
+              <div className="relative h-[600px] bg-gray-100 dark:bg-gray-700">
                 {/* Your Map Component Goes Here */}
-                <div className="absolute inset-0 flex items-center justify-center text-gray-500 dark:text-dark-text-tertiary">
+                <div className="absolute inset-0 flex items-center justify-center text-gray-500 dark:text-gray-400">
                   {selectedNeighborhood ? (
                     <div className="text-center">
-                      <p className="text-xl font-bold text-gray-900 dark:text-dark-text-primary">
+                      <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
                         {selectedNeighborhood.name}
                       </p>
                       <p className="text-sm mt-2">
@@ -155,27 +155,27 @@ export function CrimeDashboardExample() {
             />
 
             {/* Additional Info Panel */}
-            <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-3">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
                 Current Selection
               </h3>
               {selectedNeighborhood ? (
                 <div className="space-y-2 text-sm">
                   <div>
-                    <span className="text-gray-600 dark:text-dark-text-secondary">Neighborhood:</span>
-                    <p className="font-medium text-gray-900 dark:text-dark-text-primary">
+                    <span className="text-gray-600 dark:text-gray-300">Neighborhood:</span>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">
                       {selectedNeighborhood.name}
                     </p>
                   </div>
                   <div>
-                    <span className="text-gray-600 dark:text-dark-text-secondary">Safety Score:</span>
-                    <p className="font-medium text-gray-900 dark:text-dark-text-primary">
+                    <span className="text-gray-600 dark:text-gray-300">Safety Score:</span>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">
                       {selectedNeighborhood.safetyScore?.toFixed(1) || 'N/A'}
                     </p>
                   </div>
                   <div>
-                    <span className="text-gray-600 dark:text-dark-text-secondary">Total Incidents:</span>
-                    <p className="font-medium text-gray-900 dark:text-dark-text-primary">
+                    <span className="text-gray-600 dark:text-gray-300">Total Incidents:</span>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">
                       {(
                         selectedNeighborhood.violentCrime +
                         selectedNeighborhood.carTheft +
@@ -186,33 +186,33 @@ export function CrimeDashboardExample() {
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-gray-600 dark:text-dark-text-secondary">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   No neighborhood selected. Use the search bar or click on the map.
                 </p>
               )}
             </div>
 
             {/* Active Filters Display */}
-            <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-3">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
                 Active Filters
               </h3>
               <div className="space-y-2 text-xs">
                 <div>
-                  <span className="text-gray-600 dark:text-dark-text-secondary">Crime Types:</span>
-                  <p className="text-gray-900 dark:text-dark-text-primary">
+                  <span className="text-gray-600 dark:text-gray-300">Crime Types:</span>
+                  <p className="text-gray-900 dark:text-gray-100">
                     {filters.crimeTypes.length} selected
                   </p>
                 </div>
                 <div>
-                  <span className="text-gray-600 dark:text-dark-text-secondary">Period:</span>
-                  <p className="text-gray-900 dark:text-dark-text-primary">
+                  <span className="text-gray-600 dark:text-gray-300">Period:</span>
+                  <p className="text-gray-900 dark:text-gray-100">
                     {filters.dateRange}
                   </p>
                 </div>
                 <div>
-                  <span className="text-gray-600 dark:text-dark-text-secondary">Safety Range:</span>
-                  <p className="text-gray-900 dark:text-dark-text-primary">
+                  <span className="text-gray-600 dark:text-gray-300">Safety Range:</span>
+                  <p className="text-gray-900 dark:text-gray-100">
                     {filters.safetyRange[0]} - {filters.safetyRange[1]}
                   </p>
                 </div>

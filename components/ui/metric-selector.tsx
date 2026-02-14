@@ -49,9 +49,9 @@ export function MetricSelector({ selectedMetric, onChange, className = '' }: Met
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className={`bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm ${className}`}
+      className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm ${className}`}
     >
-      <h2 className="text-lg font-bold text-gray-900 dark:text-dark-text-primary mb-6">
+      <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-6">
         Select Crime Type
       </h2>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -93,7 +93,7 @@ export function MetricSelector({ selectedMetric, onChange, className = '' }: Met
                   ${
                     isSelected
                       ? `${colors.bg} ${colors.text}`
-                      : 'bg-gray-100 dark:bg-dark-bg-tertiary text-gray-600 dark:text-dark-text-secondary'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                   }
                 `}
               >
@@ -103,13 +103,13 @@ export function MetricSelector({ selectedMetric, onChange, className = '' }: Met
                 <p
                   className={`text-base sm:text-sm font-bold mb-1 ${
                     isSelected
-                      ? 'text-gray-900 dark:text-dark-text-primary'
-                      : 'text-gray-700 dark:text-dark-text-secondary'
+                      ? 'text-gray-900 dark:text-gray-100'
+                      : 'text-gray-700 dark:text-gray-300'
                   }`}
                 >
                   {metricLabels[metric]}
                 </p>
-                <p className="text-sm sm:text-xs text-gray-500 dark:text-dark-text-tertiary line-clamp-2 leading-relaxed">
+                <p className="text-sm sm:text-xs text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
                   {metricDescriptions[metric]}
                 </p>
               </div>

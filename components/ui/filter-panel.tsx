@@ -82,7 +82,7 @@ export function FilterPanel({
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className={`bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden ${className}`}
+      className={`bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden ${className}`}
       role="region"
       aria-label="Filter options"
     >
@@ -96,7 +96,7 @@ export function FilterPanel({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Filter className="w-5 h-5 text-neon-cyan dark:text-neon-purple" aria-hidden="true" />
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               Filters
             </h3>
             {isFiltersModified && (
@@ -120,7 +120,7 @@ export function FilterPanel({
                   e.stopPropagation()
                   handleReset()
                 }}
-                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:text-gray-900 dark:text-dark-text-secondary dark:hover:text-dark-text-primary transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple"
+                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-dark-text-primary transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple"
                 aria-label="Reset all filters to default"
               >
                 <RotateCcw className="w-5 h-5" aria-hidden="true" />
@@ -132,7 +132,7 @@ export function FilterPanel({
                 animate={{ rotate: isExpanded ? 180 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <ChevronDown className="w-5 h-5 text-gray-600 dark:text-dark-text-secondary" aria-hidden="true" />
+                <ChevronDown className="w-5 h-5 text-gray-600 dark:text-gray-300" aria-hidden="true" />
               </motion.div>
             )}
           </div>
@@ -152,7 +152,7 @@ export function FilterPanel({
             <div className="p-4 space-y-6">
               {/* Crime Types */}
               <div>
-                <label className="block text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-3">
+                <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
                   Crime Types
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -182,7 +182,7 @@ export function FilterPanel({
                           className={`p-2 rounded-lg transition-colors ${
                             isSelected
                               ? 'bg-neon-cyan text-white dark:bg-la-sunset-purple'
-                              : 'bg-gray-100 dark:bg-dark-bg-tertiary text-gray-600 dark:text-dark-text-secondary'
+                              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                           }`}
                         >
                           <Icon className="w-5 h-5" aria-hidden="true" />
@@ -191,13 +191,13 @@ export function FilterPanel({
                           <div
                             className={`text-base sm:text-sm font-medium ${
                               isSelected
-                                ? 'text-gray-900 dark:text-dark-text-primary'
-                                : 'text-gray-700 dark:text-dark-text-secondary'
+                                ? 'text-gray-900 dark:text-gray-100'
+                                : 'text-gray-700 dark:text-gray-300'
                             }`}
                           >
                             {option.label}
                           </div>
-                          <div className="text-sm sm:text-xs text-gray-500 dark:text-dark-text-tertiary truncate">
+                          <div className="text-sm sm:text-xs text-gray-500 dark:text-gray-400 truncate">
                             {option.description}
                           </div>
                         </div>
@@ -209,7 +209,7 @@ export function FilterPanel({
 
               {/* Date Range */}
               <div>
-                <label className="block text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-3">
+                <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
                   Time Period
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -228,7 +228,7 @@ export function FilterPanel({
                         className={`px-4 py-3 min-h-touch rounded-lg text-base sm:text-sm font-medium transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-dark-bg-secondary ${
                           isSelected
                             ? 'bg-neon-cyan text-white dark:bg-la-sunset-purple focus:ring-neon-cyan dark:focus:ring-la-sunset-purple shadow-sm'
-                            : 'bg-gray-100 text-gray-700 dark:bg-dark-bg-tertiary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 focus:ring-gray-300 dark:focus:ring-gray-600'
+                            : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus:ring-gray-300 dark:focus:ring-gray-600'
                         }`}
                         role="radio"
                         aria-checked={isSelected}
@@ -243,13 +243,13 @@ export function FilterPanel({
 
               {/* Safety Score Range */}
               <div>
-                <label className="block text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-3">
+                <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
                   Safety Score Range
                 </label>
                 <div className="space-y-3">
                   <div className="flex items-center gap-4">
                     <div className="flex-1">
-                      <label htmlFor="safety-min" className="block text-xs text-gray-600 dark:text-dark-text-tertiary mb-1">
+                      <label htmlFor="safety-min" className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
                         Minimum
                       </label>
                       <input
@@ -261,16 +261,16 @@ export function FilterPanel({
                         onChange={(e) => setSafetyMin(Number(e.target.value))}
                         onMouseUp={handleSafetyRangeChange}
                         onTouchEnd={handleSafetyRangeChange}
-                        className="w-full h-2 bg-gray-200 dark:bg-dark-bg-tertiary rounded-lg appearance-none cursor-pointer accent-neon-cyan dark:accent-neon-purple"
+                        className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-neon-cyan dark:accent-neon-purple"
                         aria-label="Minimum safety score"
                       />
-                      <div className="text-center text-sm font-semibold text-gray-900 dark:text-dark-text-primary mt-1">
+                      <div className="text-center text-sm font-semibold text-gray-900 dark:text-gray-100 mt-1">
                         {safetyMin}
                       </div>
                     </div>
 
                     <div className="flex-1">
-                      <label htmlFor="safety-max" className="block text-xs text-gray-600 dark:text-dark-text-tertiary mb-1">
+                      <label htmlFor="safety-max" className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
                         Maximum
                       </label>
                       <input
@@ -282,16 +282,16 @@ export function FilterPanel({
                         onChange={(e) => setSafetyMax(Number(e.target.value))}
                         onMouseUp={handleSafetyRangeChange}
                         onTouchEnd={handleSafetyRangeChange}
-                        className="w-full h-2 bg-gray-200 dark:bg-dark-bg-tertiary rounded-lg appearance-none cursor-pointer accent-neon-cyan dark:accent-neon-purple"
+                        className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-neon-cyan dark:accent-neon-purple"
                         aria-label="Maximum safety score"
                       />
-                      <div className="text-center text-sm font-semibold text-gray-900 dark:text-dark-text-primary mt-1">
+                      <div className="text-center text-sm font-semibold text-gray-900 dark:text-gray-100 mt-1">
                         {safetyMax}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-dark-text-secondary">
+                  <div className="flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                     <span className="font-medium">{safetyMin}</span>
                     <span>—</span>
                     <span className="font-medium">{safetyMax}</span>
@@ -303,10 +303,10 @@ export function FilterPanel({
               <div>
                 <label className="flex items-center justify-between cursor-pointer group">
                   <div>
-                    <div className="text-sm font-semibold text-gray-900 dark:text-dark-text-primary mb-1">
+                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">
                       Show Only Sufficient Data
                     </div>
-                    <div className="text-xs text-gray-600 dark:text-dark-text-tertiary">
+                    <div className="text-xs text-gray-600 dark:text-gray-400">
                       Filter neighborhoods with high-quality data
                     </div>
                   </div>

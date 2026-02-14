@@ -173,7 +173,7 @@ export function SearchBar({
       >
         <div className="relative">
           <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-dark-text-tertiary pointer-events-none"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-400 pointer-events-none"
             aria-hidden="true"
           />
           <input
@@ -188,7 +188,7 @@ export function SearchBar({
             onFocus={() => setIsOpen(true)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="w-full pl-12 pr-12 py-3.5 bg-white dark:bg-dark-bg-secondary border-2 border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-dark-text-tertiary focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple focus:border-neon-cyan dark:focus:border-la-sunset-purple transition-all duration-200 shadow-sm hover:border-gray-300 dark:hover:border-gray-600"
+            className="w-full pl-12 pr-12 py-3.5 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-dark-text-tertiary focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple focus:border-neon-cyan dark:focus:border-la-sunset-purple transition-all duration-200 shadow-sm hover:border-gray-300 dark:hover:border-gray-600"
             aria-label="Search Los Angeles neighborhoods"
             aria-autocomplete="list"
             aria-controls="search-results"
@@ -207,7 +207,7 @@ export function SearchBar({
                 setQuery('')
                 inputRef.current?.focus()
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 dark:text-dark-text-tertiary dark:hover:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary transition-all focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple"
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary transition-all focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple"
               aria-label="Clear search query"
             >
               <X className="w-4 h-4" aria-hidden="true" />
@@ -224,15 +224,15 @@ export function SearchBar({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="absolute top-full mt-2 w-full bg-white dark:bg-dark-bg-secondary border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl overflow-hidden z-50"
+            className="absolute top-full mt-2 w-full bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl overflow-hidden z-50"
             id="search-results"
             role="listbox"
           >
             {!query && showPopularSearches && (
-              <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-dark-bg-primary">
+              <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950">
                 <div className="flex items-center gap-2">
                   <TrendingUp className="w-4 h-4 text-neon-cyan dark:text-neon-purple" aria-hidden="true" />
-                  <span className="text-xs font-semibold text-gray-600 dark:text-dark-text-secondary">
+                  <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
                     Popular Neighborhoods
                   </span>
                 </div>
@@ -265,10 +265,10 @@ export function SearchBar({
                     />
 
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-gray-900 dark:text-dark-text-primary">
+                      <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                         {neighborhood.name}
                       </div>
-                      <div className="text-xs text-gray-600 dark:text-dark-text-tertiary mt-0.5">
+                      <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
                         Safety Score: {neighborhood.safetyScore?.toFixed(0) || 'N/A'} •
                         Total Crimes: {(
                           neighborhood.violentCrime +
@@ -299,7 +299,7 @@ export function SearchBar({
 
             {query && searchResults.length === 0 && (
               <div className="px-4 py-8 text-center">
-                <p className="text-sm text-gray-600 dark:text-dark-text-secondary">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   No neighborhoods found for &ldquo;{query}&rdquo;
                 </p>
               </div>

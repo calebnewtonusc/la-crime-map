@@ -54,31 +54,32 @@ export function calculateCrimeStats(data: NeighborhoodGeoJSON): CrimeStats {
 export function getNeighborhoodCrimeLevel(neighborhood: NeighborhoodData, metric: CrimeMetric): 'low' | 'medium' | 'high' {
   const value = neighborhood[metric]
 
-  // Tighter thresholds for 90-day period (Q4 2024: Oct-Dec)
-  // Calibrated to create balanced green/yellow/red distribution
+  // CALIBRATED TO ACTUAL DATA RANGES (Q4 2024: Oct-Dec)
+  // Data ranges: Violent 2-11, Car Theft 4-15, Break-ins 5-18, Petty Theft 8-25
+  // Thresholds designed for balanced 33/33/33 green/yellow/red distribution
 
   if (metric === 'violentCrime') {
-    if (value <= 30) return 'low'     // Bottom 33%: <30 violent crimes
-    if (value <= 80) return 'medium'  // Middle 33%: 30-80
-    return 'high'                     // Top 33%: >80
+    if (value <= 5) return 'low'     // Bottom 33%: safest areas (2-5)
+    if (value <= 8) return 'medium'  // Middle 33%: moderate risk (6-8)
+    return 'high'                     // Top 33%: highest risk (9-11+)
   }
 
   if (metric === 'carTheft') {
-    if (value <= 40) return 'low'     // Bottom 33%: <40 car thefts
-    if (value <= 100) return 'medium' // Middle 33%: 40-100
-    return 'high'                     // Top 33%: >100
+    if (value <= 7) return 'low'     // Bottom 33%: safest areas (4-7)
+    if (value <= 11) return 'medium' // Middle 33%: moderate risk (8-11)
+    return 'high'                     // Top 33%: highest risk (12-15+)
   }
 
   if (metric === 'breakIns') {
-    if (value <= 50) return 'low'     // Bottom 33%: <50 break-ins
-    if (value <= 120) return 'medium' // Middle 33%: 50-120
-    return 'high'                     // Top 33%: >120
+    if (value <= 9) return 'low'     // Bottom 33%: safest areas (5-9)
+    if (value <= 13) return 'medium' // Middle 33%: moderate risk (10-13)
+    return 'high'                     // Top 33%: highest risk (14-18+)
   }
 
   // pettyTheft - most common crime type
-  if (value <= 100) return 'low'     // Bottom 33%: <100 petty thefts
-  if (value <= 250) return 'medium'  // Middle 33%: 100-250
-  return 'high'                      // Top 33%: >250
+  if (value <= 13) return 'low'     // Bottom 33%: safest areas (8-13)
+  if (value <= 19) return 'medium'  // Middle 33%: moderate risk (14-19)
+  return 'high'                      // Top 33%: highest risk (20-25+)
 }
 
 export function getCrimeColor(level: 'low' | 'medium' | 'high', isDark: boolean = false): string {

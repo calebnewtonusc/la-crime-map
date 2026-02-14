@@ -42,7 +42,7 @@ export default function HomeWithTrustSignals() {
           className="min-h-screen"
         >
           {/* Hero Section */}
-          <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-dark-bg-primary dark:via-dark-bg-secondary dark:to-dark-bg-primary py-16 px-4 sm:px-6 lg:px-8">
+          <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-gray-950 dark:via-dark-bg-secondary dark:to-gray-950 py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
               <motion.div
                 className="text-center space-y-4 mb-8"
@@ -53,7 +53,7 @@ export default function HomeWithTrustSignals() {
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-neon-cyan via-blue-400 to-neon-purple bg-clip-text text-transparent">
                   LA Crime Map
                 </h1>
-                <p className="text-lg sm:text-xl text-gray-300 dark:text-dark-text-secondary max-w-3xl mx-auto">
+                <p className="text-lg sm:text-xl text-gray-300 dark:text-gray-300 max-w-3xl mx-auto">
                   Visualize crime data across Los Angeles neighborhoods with interactive maps and real-time statistics
                 </p>
 
@@ -94,15 +94,15 @@ export default function HomeWithTrustSignals() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden"
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden"
             >
               <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                   Crime Map by {selectedMetric === 'violentCrime' ? 'Violent Crime' :
                              selectedMetric === 'carTheft' ? 'Car Theft' :
                              selectedMetric === 'breakIns' ? 'Break-ins' : 'Petty Theft'}
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-dark-text-tertiary mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Click on neighborhoods to view detailed information
                 </p>
               </div>
@@ -252,17 +252,17 @@ function InfoCard({ title, description, icon }: InfoCardProps) {
         y: -4,
         transition: { type: 'spring', stiffness: 400, damping: 17 }
       }}
-      className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+      className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
     >
       <div className="flex items-center gap-3 mb-3">
         <div className="p-2 bg-neon-cyan/10 dark:bg-neon-cyan/20 rounded-lg text-neon-cyan">
           {icon}
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           {title}
         </h3>
       </div>
-      <p className="text-sm text-gray-600 dark:text-dark-text-secondary leading-relaxed">
+      <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
         {description}
       </p>
     </motion.div>

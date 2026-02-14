@@ -17,7 +17,7 @@ import { motion } from 'framer-motion'
  */
 export function ComparisonPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg-primary py-8 px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         <NeighborhoodCompare />
       </div>
@@ -83,7 +83,7 @@ export function ComparisonModal() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              className="relative bg-gray-50 dark:bg-dark-bg-primary rounded-2xl shadow-2xl w-full max-w-7xl my-8 p-6"
+              className="relative bg-gray-50 dark:bg-gray-950 rounded-2xl shadow-2xl w-full max-w-7xl my-8 p-6"
             >
               <NeighborhoodCompare onClose={() => setIsOpen(false)} />
             </motion.div>
@@ -122,7 +122,7 @@ export function MapPopupWithCompare({ neighborhoodName }: { neighborhoodName: st
   return (
     <div className="space-y-4">
       {/* Your existing popup content */}
-      <div className="p-4 bg-white dark:bg-dark-bg-secondary rounded-lg">
+      <div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
         <h3 className="font-bold text-lg mb-2">{neighborhoodName}</h3>
         {/* Crime stats, etc. */}
       </div>

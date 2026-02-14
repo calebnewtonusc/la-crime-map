@@ -38,11 +38,11 @@ export function SearchWithMap({ defaultMetric = 'violentCrime', className = '' }
           {/* Map Toggle Button (Mobile) */}
           <button
             onClick={() => setShowMap(!showMap)}
-            className="w-full sm:hidden flex items-center justify-between bg-white dark:bg-dark-bg-secondary
+            className="w-full sm:hidden flex items-center justify-between bg-white dark:bg-gray-800
                      border border-gray-200 dark:border-gray-700 rounded-xl p-4 mb-4
                      hover:bg-gray-50 dark:hover:bg-dark-bg-primary transition-colors"
           >
-            <span className="font-semibold text-gray-900 dark:text-dark-text-primary">
+            <span className="font-semibold text-gray-900 dark:text-gray-100">
               View on Map
             </span>
             {showMap ? (
@@ -59,10 +59,10 @@ export function SearchWithMap({ defaultMetric = 'violentCrime', className = '' }
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden"
+                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden"
               >
                 <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary mb-3">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
                     {searchResult.neighborhoodName} on Map
                   </h2>
 
@@ -101,7 +101,7 @@ export function SearchWithMap({ defaultMetric = 'violentCrime', className = '' }
                 </div>
 
                 {/* Map Legend */}
-                <div className="p-4 bg-gray-50 dark:bg-dark-bg-primary border-t border-gray-200 dark:border-gray-700">
+                <div className="p-4 bg-gray-50 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between flex-wrap gap-4">
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-gray-600 dark:text-gray-400">Risk Level:</span>

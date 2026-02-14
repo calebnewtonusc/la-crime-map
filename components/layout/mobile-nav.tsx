@@ -39,11 +39,11 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-16 bottom-0 w-64 bg-white dark:bg-dark-bg-primary border-l border-gray-200 dark:border-gray-800 z-50 md:hidden overflow-y-auto"
+            className="fixed right-0 top-16 bottom-0 w-64 bg-white dark:bg-gray-950 border-l border-gray-200 dark:border-gray-800 z-50 md:hidden overflow-y-auto"
             aria-label="Mobile navigation"
           >
             <div className="p-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary mb-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Navigation
               </h2>
               <ul className="space-y-2" role="list">
@@ -62,7 +62,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                         className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
                           isActive
                             ? 'bg-neon-cyan/10 text-neon-cyan dark:bg-neon-cyan/20'
-                            : 'hover:bg-gray-100 dark:hover:bg-dark-bg-secondary text-gray-700 dark:text-dark-text-secondary'
+                            : 'hover:bg-gray-100 dark:hover:bg-dark-bg-secondary text-gray-700 dark:text-gray-300'
                         }`}
                         aria-current={isActive ? 'page' : undefined}
                       >
@@ -74,7 +74,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                         />
                         <div className="flex-1 min-w-0">
                           <div className="font-medium">{item.label}</div>
-                          <div className="text-xs text-gray-500 dark:text-dark-text-tertiary mt-0.5">
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                             {item.description}
                           </div>
                         </div>

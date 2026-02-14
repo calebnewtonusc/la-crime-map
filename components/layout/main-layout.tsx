@@ -19,7 +19,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg-primary flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
       <Header
         onMobileMenuToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
         mobileMenuOpen={mobileMenuOpen}

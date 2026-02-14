@@ -40,7 +40,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-white dark:bg-dark-bg-secondary border-t border-gray-200 dark:border-gray-700 mt-20">
+    <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-20">
       <div className="max-w-7xl mx-auto px-6 py-12">
 
         {/* Top Section - Data Trust Signals */}
