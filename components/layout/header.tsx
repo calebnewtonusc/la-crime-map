@@ -44,6 +44,34 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
+            {/* Navigation Links */}
+            <nav className="flex items-center gap-2">
+              <a
+                href="/"
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                Map
+              </a>
+              <a
+                href="/search"
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                Search
+              </a>
+              <a
+                href="/recommendations"
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                Recommendations
+              </a>
+              <a
+                href="/ai-demo"
+                className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-sunset-orange to-sunset-pink text-white rounded-lg hover:opacity-90 transition-opacity"
+              >
+                AI Features
+              </a>
+            </nav>
+
             {/* Theme Toggle */}
             {mounted && (
               <motion.button
