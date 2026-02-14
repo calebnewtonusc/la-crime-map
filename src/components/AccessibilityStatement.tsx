@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './AccessibilityStatement.css';
 
 export const AccessibilityStatement: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t } = useTranslation();
 
   return (

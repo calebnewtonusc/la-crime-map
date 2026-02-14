@@ -24,6 +24,7 @@ const AppWrapper: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('map');
   const [currentPage, setCurrentPage] = useState<'app' | 'accessibility-statement'>('app');
   const [neighborhoods, setNeighborhoods] = useState<NeighborhoodData[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedMetric, setSelectedMetric] = useState<CrimeMetric>('violentCrime');
   const [loading, setLoading] = useState<boolean>(true);
 

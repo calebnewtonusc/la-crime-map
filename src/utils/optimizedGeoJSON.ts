@@ -112,10 +112,12 @@ export function clearColorCache(): void {
   colorCache.clear();
 }
 
-export default {
+const optimizedGeoJSON = {
   calculateBounds,
   getColorMemoized,
   optimizeGeoJSON,
   createPropertyLookup,
   clearColorCache
 };
+
+export default optimizedGeoJSON;

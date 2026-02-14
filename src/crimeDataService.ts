@@ -4,8 +4,7 @@ import cache from './utils/cacheService';
 import {
   enhanceCrimeData,
   calculateCountyAverages,
-  EnhancedCrimeData,
-  CrimeStats
+  EnhancedCrimeData
 } from './utils/crimeAnalytics';
 
 export interface NeighborhoodData extends EnhancedCrimeData {

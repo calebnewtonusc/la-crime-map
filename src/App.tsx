@@ -12,7 +12,7 @@ import DataQualityBadge from './components/DataQualityBadge';
 import EmptyState from './components/EmptyState';
 import ErrorState from './components/ErrorState';
 import { useTheme } from './hooks/useTheme';
-import { getCrimeRateColor, getRiskLevel } from './theme';
+import { getRiskLevel } from './theme';
 
 // Lazy load the map component for better initial load performance
 const CrimeMap = lazy(() => import('./components/CrimeMap'));
@@ -230,6 +230,7 @@ function App() {
   );
 
   // Handle neighborhood selection for compare mode
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const toggleNeighborhoodSelection = useCallback((name: string) => {
     if (!compareMode) return;
 

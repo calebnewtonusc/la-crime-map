@@ -169,7 +169,7 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
         avgValue: Math.round(baseValue)
       };
     });
-  }, [stats, neighborhoods.length, selectedMetric]);
+  }, [stats, neighborhoods.length]);
 
   // Export to CSV function
   const exportToCSV = () => {

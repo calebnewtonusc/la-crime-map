@@ -320,7 +320,7 @@ export function getDataQuality(date: Date, sampleSize: number): DataQuality {
   };
 }
 
-export default {
+const theme = {
   colorScales,
   brandColors,
   lightTheme,
@@ -333,3 +333,5 @@ export default {
   getRiskLevel,
   getDataQuality,
 };
+
+export default theme;
