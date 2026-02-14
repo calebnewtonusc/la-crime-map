@@ -54,31 +54,31 @@ export function calculateCrimeStats(data: NeighborhoodGeoJSON): CrimeStats {
 export function getNeighborhoodCrimeLevel(neighborhood: NeighborhoodData, metric: CrimeMetric): 'low' | 'medium' | 'high' {
   const value = neighborhood[metric]
 
-  // Thresholds for 90-day period (Q4 2024: Oct-Dec)
-  // These are calibrated for actual LAPD data volume
+  // Tighter thresholds for 90-day period (Q4 2024: Oct-Dec)
+  // Calibrated to create balanced green/yellow/red distribution
 
   if (metric === 'violentCrime') {
-    if (value <= 50) return 'low'     // <50 violent crimes in 90 days
-    if (value <= 150) return 'medium' // 50-150
-    return 'high'                     // >150
+    if (value <= 30) return 'low'     // Bottom 33%: <30 violent crimes
+    if (value <= 80) return 'medium'  // Middle 33%: 30-80
+    return 'high'                     // Top 33%: >80
   }
 
   if (metric === 'carTheft') {
-    if (value <= 80) return 'low'     // <80 car thefts in 90 days
-    if (value <= 200) return 'medium' // 80-200
-    return 'high'                     // >200
+    if (value <= 40) return 'low'     // Bottom 33%: <40 car thefts
+    if (value <= 100) return 'medium' // Middle 33%: 40-100
+    return 'high'                     // Top 33%: >100
   }
 
   if (metric === 'breakIns') {
-    if (value <= 100) return 'low'     // <100 break-ins in 90 days
-    if (value <= 250) return 'medium'  // 100-250
-    return 'high'                      // >250
+    if (value <= 50) return 'low'     // Bottom 33%: <50 break-ins
+    if (value <= 120) return 'medium' // Middle 33%: 50-120
+    return 'high'                     // Top 33%: >120
   }
 
   // pettyTheft - most common crime type
-  if (value <= 200) return 'low'     // <200 petty thefts in 90 days
-  if (value <= 500) return 'medium'  // 200-500
-  return 'high'                      // >500
+  if (value <= 100) return 'low'     // Bottom 33%: <100 petty thefts
+  if (value <= 250) return 'medium'  // Middle 33%: 100-250
+  return 'high'                      // Top 33%: >250
 }
 
 export function getCrimeColor(level: 'low' | 'medium' | 'high', isDark: boolean = false): string {

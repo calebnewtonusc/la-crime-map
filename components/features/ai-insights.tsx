@@ -133,19 +133,19 @@ export function AISmartInsights() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ y: -4 }}
-            className="bg-gradient-to-br from-gray-50 to-white dark:from-dark-bg-tertiary dark:to-dark-bg-secondary rounded-button p-md border border-gray-200 dark:border-gray-600 hover:shadow-card-hover transition-all duration-200"
+            className="bg-white dark:bg-gray-800 rounded-button p-md border border-gray-200 dark:border-gray-700 hover:shadow-card-hover transition-all duration-200"
           >
             {/* Icon & Title */}
             <div className="flex items-start gap-sm mb-sm">
               <div
                 className={`bg-gradient-to-br ${getColor(
                   insight.type
-                )} text-white rounded-button p-sm flex-shrink-0 shadow-sm`}
+                )} text-white rounded-button p-sm flex-shrink-0 shadow-lg`}
               >
                 {getIcon(insight.type)}
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-heading-sm font-bold text-gray-900 dark:text-white mb-xs">
+                <h3 className="text-heading-sm font-bold text-gray-900 dark:text-gray-100 mb-xs">
                   {insight.title}
                 </h3>
                 <p className="text-body-sm text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -160,7 +160,7 @@ export function AISmartInsights() {
                 {insight.neighborhoods.map((neighborhood, nIdx) => (
                   <span
                     key={nIdx}
-                    className="text-caption bg-white dark:bg-dark-bg-tertiary text-gray-700 dark:text-gray-200 px-sm py-xxs rounded-badge border border-gray-300 dark:border-gray-500 font-medium"
+                    className="text-caption bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-sm py-xxs rounded-badge border border-gray-300 dark:border-gray-600 font-medium"
                   >
                     {neighborhood}
                   </span>

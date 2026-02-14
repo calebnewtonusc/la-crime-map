@@ -36,14 +36,14 @@ export async function aggregateCrimeDataForNeighborhoods(
   days: number = 365
 ): Promise<AggregatedCrimeResponse> {
   try {
-    console.log(`Fetching crime data for last ${days} days...`)
+    console.log(`Fetching crime data for recent period...`)
 
-    // Calculate date range
-    const endDate = new Date()
-    const startDate = new Date()
-    startDate.setDate(startDate.getDate() - days)
+    // CRITICAL FIX: Use ACTUAL available data dates (Q4 2024)
+    // NOT calculated from current date (which could be in the future)
+    const endDate = new Date('2024-12-31')
+    const startDate = new Date('2024-10-01')
 
-    // Fetch crime data from LAPD API
+    // Fetch crime data from LAPD API (uses hardcoded Q4 2024 dates internally)
     const crimeData = await fetchLAPDCrimeData()
 
     console.log(`Received ${crimeData.length} crime incidents`)
