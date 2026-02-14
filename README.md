@@ -1,4 +1,70 @@
-# Getting Started with Create React App
+# LA Crime Map
+
+An interactive map visualization of **real crime statistics** from the Los Angeles Open Data Portal across LA neighborhoods. View crime data by neighborhood with color-coded polygons and interactive features.
+
+## Features
+
+- **Real Crime Data** from LA City Open Data API (updated automatically)
+- Interactive neighborhood boundary polygons on Leaflet map
+- Color-coded visualization based on crime severity
+- Multiple crime metrics: Violent Crime, Car Theft, Break-ins, Petty Theft
+- Hover effects to highlight neighborhoods on map and stats panel
+- Click neighborhoods to view detailed crime statistics in popup
+- Synchronized stats panel showing all neighborhoods with current metric
+- Color legend for easy interpretation
+
+## Data Source
+
+This app uses real crime data from the **Los Angeles Open Data Portal**:
+- **API**: https://data.lacity.org/resource/2nrs-mtv8.json
+- **Dataset**: Crime Data from 2020 to Present
+- **Update Frequency**: Data is fetched for the most recent 4-week period
+- **Coverage**: All 21 LAPD Community Police Station areas
+
+### Crime Categories
+
+The app categorizes crimes into four metrics:
+
+1. **Violent Crime**: Assault, robbery, rape, homicide, weapons offenses, kidnapping
+2. **Car Theft**: Vehicle stolen (cars, motorcycles, scooters, bikes)
+3. **Break-ins**: Burglary (excluding vehicle burglary)
+4. **Petty Theft**: All theft crimes, shoplifting, pickpocketing, vehicle burglary
+
+### LAPD Areas Included
+
+All 21 LAPD Community Police Station areas:
+- Central, Rampart, Southwest, Hollenbeck, Harbor
+- Hollywood, Wilshire, West LA, Van Nuys, West Valley
+- Northeast, 77th Street, Newton, Pacific, N Hollywood
+- Foothill, Devonshire, Southeast, Mission, Olympic, Topanga
+
+## Technical Implementation
+
+### Data Service (`crimeDataService.ts`)
+
+The data service fetches real crime data from the LA Open Data API using Socrata's SODA API:
+
+```typescript
+// Fetches crime data for the last N weeks
+fetchCrimeData(weeksBack: number = 4): Promise<NeighborhoodData[]>
+```
+
+Features:
+- Fetches up to 50,000 recent crime records
+- Categorizes crimes into 4 metrics using keyword matching
+- Aggregates by LAPD area name
+- Calculates per-week rates for consistency
+- Handles API errors gracefully with fallback to sample data
+
+### App Integration
+
+The app loads real data on mount via `useEffect`:
+- Displays loading state while fetching
+- Shows data source in header ("Real LA Crime Data" vs "Using sample data")
+- Merges real crime stats with GeoJSON neighborhood boundaries
+- Updates map colors and stats panel dynamically
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
