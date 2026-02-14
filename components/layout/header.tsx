@@ -47,30 +47,30 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
           </a>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-xs">
+          <div className="hidden md:flex items-center gap-4">
             {/* Navigation Links */}
-            <nav className="flex items-center gap-xxs">
+            <nav className="flex items-center gap-2">
               <a
                 href="/"
-                className="px-md py-sm text-body-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-button transition-all duration-200"
+                className="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
               >
                 Map
               </a>
               <a
                 href="/search"
-                className="px-md py-sm text-body-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-button transition-all duration-200"
+                className="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
               >
                 Search
               </a>
               <a
                 href="/recommendations"
-                className="px-md py-sm text-body-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-button transition-all duration-200"
+                className="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
               >
                 Recommendations
               </a>
               <a
                 href="/ai-demo"
-                className="px-md py-sm text-body-sm font-semibold bg-gradient-to-r from-la-sunset-orange to-la-sunset-pink text-white rounded-button hover:shadow-card-hover transition-all duration-200"
+                className="px-4 py-2 text-sm font-bold bg-gradient-to-r from-la-sunset-orange to-la-sunset-pink text-white rounded-lg hover:shadow-lg transition-all duration-200 shadow-md"
               >
                 AI Features
               </a>

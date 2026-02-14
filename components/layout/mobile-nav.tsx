@@ -62,7 +62,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                         className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
                           isActive
                             ? 'bg-neon-cyan/10 text-neon-cyan dark:bg-neon-cyan/20'
-                            : 'hover:bg-gray-100 dark:hover:bg-dark-bg-secondary text-gray-700 dark:text-gray-300'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
                         }`}
                         aria-current={isActive ? 'page' : undefined}
                       >
