@@ -34,10 +34,7 @@ const AISmartInsights = dynamic(() => import('@/components/features').then(mod =
 // Animation variants - smooth, professional animations
 const pageTransition = {
   initial: { opacity: 0 },
-  animate: {
-    opacity: 1,
-    transition: { duration: 0.5, ease: 'easeOut' }
-  }
+  animate: { opacity: 1 }
 }
 
 const heroVariants = {
