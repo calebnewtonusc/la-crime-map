@@ -28,10 +28,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <main id="main-content" className="relative flex-1">
         {children}
       </main>
-      <Footer
-        onMethodologyClick={() => setMethodologyOpen(true)}
-        onReportIssueClick={handleReportIssue}
-      />
+      <Footer />
       <MethodologyModal
         isOpen={methodologyOpen}
         onClose={() => setMethodologyOpen(false)}

@@ -1,19 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Github, ExternalLink, Clock, Database, AlertCircle, Mail, FileText } from 'lucide-react'
+import { Github, ExternalLink, Clock, Database, FileText } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
-interface FooterProps {
-  onMethodologyClick?: () => void
-  onReportIssueClick?: () => void
-}
-
-export function Footer({ onMethodologyClick, onReportIssueClick }: FooterProps) {
+export function Footer() {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
 
   useEffect(() => {
-    // Simulate last update time (in production, fetch from API)
     const now = new Date()
     const last = new Date(now.getTime() - 2 * 60 * 60 * 1000) // 2 hours ago
     setLastUpdated(last)
@@ -46,219 +40,149 @@ export function Footer({ onMethodologyClick, onReportIssueClick }: FooterProps) 
   }
 
   return (
-    <footer className="bg-white dark:bg-dark-bg-secondary border-t border-gray-200 dark:border-gray-700 mt-4xl">
-      <div className="max-w-7xl mx-auto px-md sm:px-lg lg:px-xl py-3xl">
+    <footer className="bg-white dark:bg-dark-bg-secondary border-t border-gray-200 dark:border-gray-700 mt-20">
+      <div className="max-w-7xl mx-auto px-6 py-12">
 
-        {/* Top Section - Trust Signals */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-lg mb-2xl pb-2xl border-b border-gray-200 dark:border-gray-700">
+        {/* Top Section - Data Trust Signals */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-12 border-b border-gray-200 dark:border-gray-700">
 
-          {/* Data Update Status */}
+          {/* Last Update */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex items-start gap-3"
+            className="flex items-start gap-4"
           >
-            <div className="p-2 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg">
+            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm mb-1">
+              <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-1">
                 Last Data Update
-              </div>
-              <div className="text-xs text-gray-600 dark:text-dark-text-tertiary">
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {formatRelativeTime(lastUpdated)}
-              </div>
-              <div className="text-xs text-gray-500 dark:text-dark-text-tertiary mt-0.5">
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">
                 {formatDate(lastUpdated)}
-              </div>
+              </p>
             </div>
           </motion.div>
 
-          {/* Data Source */}
+          {/* Official Source */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="flex items-start gap-3"
+            className="flex items-start gap-4"
           >
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
+            <div className="p-3 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg">
               <Database className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm mb-1">
+              <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-1">
                 Official Data Source
-              </div>
+              </h3>
               <a
                 href="https://data.lacity.org/Public-Safety/Crime-Data-from-2020-to-Present/2nrs-mtv8"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"
               >
                 LAPD Open Data Portal
                 <ExternalLink className="w-3 h-3" />
               </a>
-              <div className="text-xs text-gray-500 dark:text-dark-text-tertiary mt-0.5">
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">
                 Updated every 24 hours
-              </div>
+              </p>
             </div>
           </motion.div>
 
-          {/* Methodology */}
+          {/* Open Source */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="flex items-start gap-3"
+            className="flex items-start gap-4"
           >
-            <div className="p-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg">
+            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg">
               <FileText className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm mb-1">
-                Transparent Methods
-              </div>
-              <button
-                onClick={onMethodologyClick}
-                className="text-xs text-purple-600 dark:text-purple-400 hover:underline"
+              <h3 className="font-semibold text-gray-900 dark:text-white text-sm mb-1">
+                Open Source
+              </h3>
+              <a
+                href="https://github.com/calebnewtonusc/la-crime-map"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"
               >
-                View methodology
-              </button>
-              <div className="text-xs text-gray-500 dark:text-dark-text-tertiary mt-0.5">
-                Open source & documented
-              </div>
+                View on GitHub
+                <ExternalLink className="w-3 h-3" />
+              </a>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">
+                Free & transparent methodology
+              </p>
             </div>
           </motion.div>
         </div>
 
-        {/* Middle Section - Links */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-
-          {/* About */}
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm mb-3">
-              About
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="#how-it-works" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors">
-                  How It Works
-                </a>
-              </li>
-              <li>
-                <a href="https://data.lacity.org/Public-Safety/Crime-Data-from-2020-to-Present/2nrs-mtv8" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1">
-                  Data Source
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm mb-3">
-              Resources
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="https://github.com/calebnewtonusc/la-crime-map"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1"
-                >
-                  GitHub
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://data.lacity.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1"
-                >
-                  LA Open Data
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm mb-3">
-              Legal
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <span className="text-sm text-gray-500 dark:text-dark-text-tertiary">
-                  Educational Use Only
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-dark-text-primary text-sm mb-3">
-              Contact
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="https://github.com/calebnewtonusc/la-crime-map/issues"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1"
-                >
-                  <Github className="w-3 h-3" />
-                  Report Issue
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Section - Disclaimer & Copyright */}
-        <div className="pt-8 border-t border-gray-200 dark:border-gray-700 space-y-4">
-
-          {/* Important Disclaimer */}
-          <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+        {/* Important Disclaimer */}
+        <div className="py-8">
+          <div className="bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-400 dark:border-amber-600 rounded-r-lg p-6">
+            <div className="flex gap-3">
+              <div className="flex-shrink-0">
+                <svg className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
               <div>
-                <h4 className="font-semibold text-amber-900 dark:text-amber-100 text-sm mb-1">
+                <h4 className="font-semibold text-amber-900 dark:text-amber-100 text-sm mb-2">
                   Important Disclaimer
                 </h4>
-                <p className="text-xs text-amber-800 dark:text-amber-200 leading-relaxed">
-                  This map is for informational and educational purposes only. Crime statistics are simplified and may not
-                  reflect current conditions. Safety is multidimensional and cannot be fully captured by crime data alone.
-                  Always consult official sources, local authorities, and community resources for comprehensive safety information.
-                  The creators of this site are not responsible for decisions made based on this data.
+                <p className="text-sm text-amber-800 dark:text-amber-200 leading-relaxed">
+                  This map is for informational and educational purposes only. Crime statistics are simplified and may not reflect current conditions. Safety is multidimensional and cannot be fully captured by crime data alone. Always consult official sources, local authorities, and community resources for comprehensive safety information.
                 </p>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Copyright & Open Source */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600 dark:text-dark-text-tertiary">
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2">
+        {/* Bottom Section - Copyright & Links */}
+        <div className="pt-8 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-400">
               <span>© {new Date().getFullYear()} LA Crime Map</span>
-              <span>Open Source Project</span>
-              <span>Made with data from LAPD</span>
+              <span>•</span>
+              <span>Educational Use Only</span>
+              <span>•</span>
+              <a
+                href="#how-it-works"
+                className="hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                How It Works
+              </a>
             </div>
             <div className="flex items-center gap-4">
               <a
                 href="https://github.com/calebnewtonusc/la-crime-map"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors"
+                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 aria-label="View source on GitHub"
               >
                 <Github className="w-5 h-5" />
+              </a>
+              <a
+                href="https://github.com/calebnewtonusc/la-crime-map/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                Report Issue
               </a>
             </div>
           </div>

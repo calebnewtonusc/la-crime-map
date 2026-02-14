@@ -1,8 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { MapPin, BarChart3, Shield, AlertCircle } from 'lucide-react'
-import { MetricCard } from './metric-card'
+import { MapPin, BarChart3, Shield, AlertCircle, TrendingUp } from 'lucide-react'
 import { CrimeStats } from '@/lib/data/types'
 
 interface StatsDashboardProps {
@@ -10,101 +9,116 @@ interface StatsDashboardProps {
   className?: string
 }
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0
-  }
-}
-
 export function StatsDashboard({ stats, className = '' }: StatsDashboardProps) {
-  const metrics = [
-    {
-      label: 'Total Neighborhoods',
-      value: stats.totalNeighborhoods,
-      icon: MapPin,
-      delay: 0,
-      tooltip: 'Total number of neighborhoods tracked in Los Angeles County'
-    },
-    {
-      label: 'Total Incidents',
-      value: stats.totalCrimes,
-      icon: BarChart3,
-      delay: 0.05,
-      tooltip: 'Combined total of all crime incidents across all neighborhoods'
-    },
-    {
-      label: 'Avg Violent Crime',
-      value: stats.avgViolentCrime,
-      icon: Shield,
-      delay: 0.1,
-      tooltip: 'Average number of violent crime incidents per neighborhood'
-    },
-    {
-      label: 'Avg Car Theft',
-      value: stats.avgCarTheft,
-      icon: AlertCircle,
-      delay: 0.15,
-      tooltip: 'Average number of vehicle theft incidents per neighborhood'
-    },
-  ]
-
   return (
-    <div className={`space-y-lg ${className}`}>
-      {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md lg:gap-lg">
-        {metrics.map((metric) => (
-          <MetricCard key={metric.label} {...metric} />
-        ))}
-      </div>
-
-      {/* Neighborhood Highlights */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-md lg:gap-lg">
+    <div className={`space-y-8 ${className}`}>
+      {/* Key Stats Grid - Clean 2x2 layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Total Neighborhoods */}
         <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={cardVariants}
-          transition={{ delay: 0.4 }}
-          className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-2 border-green-200 dark:border-green-800 rounded-card p-lg shadow-card hover:shadow-card-hover transition-shadow duration-200"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0 }}
+          className="bg-white dark:bg-dark-bg-secondary rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow"
         >
-          <div className="flex items-center gap-sm mb-md">
-            <div className="bg-green-500 p-sm rounded-button shadow-sm">
-              <Shield className="w-6 h-6 text-white" aria-hidden="true" />
-            </div>
-            <h3 className="text-heading-md font-bold text-gray-900 dark:text-dark-text-primary">
-              Safest Neighborhood
-            </h3>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Neighborhoods</span>
+            <MapPin className="w-5 h-5 text-blue-500" />
           </div>
-          <p className="text-display-sm font-bold text-green-700 dark:text-green-400 mb-xs">
-            {stats.safestNeighborhood}
-          </p>
-          <p className="text-body-sm font-medium text-gray-600 dark:text-dark-text-tertiary">
-            Lowest overall crime rate in Los Angeles
-          </p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalNeighborhoods}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">Areas tracked</p>
         </motion.div>
 
+        {/* Total Incidents */}
         <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={cardVariants}
-          transition={{ delay: 0.5 }}
-          className="bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20 border-2 border-red-200 dark:border-red-800 rounded-card p-lg shadow-card hover:shadow-card-hover transition-shadow duration-200"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-white dark:bg-dark-bg-secondary rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow"
         >
-          <div className="flex items-center gap-sm mb-md">
-            <div className="bg-red-500 p-sm rounded-button shadow-sm">
-              <AlertCircle className="w-6 h-6 text-white" aria-hidden="true" />
-            </div>
-            <h3 className="text-heading-md font-bold text-gray-900 dark:text-dark-text-primary">
-              Highest Crime Area
-            </h3>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Incidents</span>
+            <BarChart3 className="w-5 h-5 text-purple-500" />
           </div>
-          <p className="text-display-sm font-bold text-red-700 dark:text-red-400 mb-xs">
-            {stats.mostDangerous}
-          </p>
-          <p className="text-body-sm font-medium text-gray-600 dark:text-dark-text-tertiary">
-            Highest overall crime rate in Los Angeles
-          </p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalCrimes.toLocaleString()}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">Per month avg</p>
+        </motion.div>
+
+        {/* Avg Violent Crime */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white dark:bg-dark-bg-secondary rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Avg Violent Crime</span>
+            <Shield className="w-5 h-5 text-red-500" />
+          </div>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.avgViolentCrime}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">Per neighborhood</p>
+        </motion.div>
+
+        {/* Avg Car Theft */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-white dark:bg-dark-bg-secondary rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Avg Car Theft</span>
+            <AlertCircle className="w-5 h-5 text-orange-500" />
+          </div>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.avgCarTheft}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">Per neighborhood</p>
+        </motion.div>
+      </div>
+
+      {/* Neighborhood Highlights - Prominent cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Safest Neighborhood */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="relative overflow-hidden bg-gradient-to-br from-emerald-50 to-green-100 dark:from-emerald-950/30 dark:to-green-900/20 rounded-2xl p-8 border-2 border-emerald-200 dark:border-emerald-800/50 shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full -mr-16 -mt-16" />
+          <div className="relative">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-emerald-500 rounded-xl shadow-lg">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">Safest Area</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.safestNeighborhood}</p>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Lowest overall crime rate in Los Angeles</p>
+          </div>
+        </motion.div>
+
+        {/* Highest Crime Area */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="relative overflow-hidden bg-gradient-to-br from-red-50 to-rose-100 dark:from-red-950/30 dark:to-rose-900/20 rounded-2xl p-8 border-2 border-red-200 dark:border-red-800/50 shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full -mr-16 -mt-16" />
+          <div className="relative">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-red-500 rounded-xl shadow-lg">
+                <AlertCircle className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-red-600 dark:text-red-400">Highest Crime Area</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.mostDangerous}</p>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Highest overall crime rate in Los Angeles</p>
+          </div>
         </motion.div>
       </div>
     </div>
