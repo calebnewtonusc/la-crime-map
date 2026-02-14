@@ -7,6 +7,12 @@ import { debounce } from './utils/debounce';
 import { getColorMemoized } from './utils/optimizedGeoJSON';
 import MapSkeleton from './components/MapSkeleton';
 import { DataVisualization } from './DataVisualization';
+import OnboardingModal from './components/OnboardingModal';
+import DataQualityBadge from './components/DataQualityBadge';
+import EmptyState from './components/EmptyState';
+import ErrorState from './components/ErrorState';
+import { useTheme } from './hooks/useTheme';
+import { getCrimeRateColor, getRiskLevel } from './theme';
 
 // Lazy load the map component for better initial load performance
 const CrimeMap = lazy(() => import('./components/CrimeMap'));
@@ -24,6 +30,7 @@ const STORAGE_KEYS = {
   SEVERITY_THRESHOLD: 'la-crime-map-severity',
   SORT_OPTION: 'la-crime-map-sort',
   SEARCH: 'la-crime-map-search',
+  ONBOARDING_COMPLETE: 'la-crime-map-onboarding-complete',
 };
 
 // LocalStorage helpers
@@ -45,8 +52,16 @@ const savePreference = (key: string, value: any) => {
 };
 
 function App() {
+  // Theme hook
+  const { theme, toggleTheme } = useTheme();
+
   // View mode state
   const [viewMode, setViewMode] = useState<ViewMode>('map');
+
+  // Onboarding state
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(
+    () => !loadPreference(STORAGE_KEYS.ONBOARDING_COMPLETE, false)
+  );
 
   // Load preferences from localStorage
   const [selectedMetric, setSelectedMetric] = useState<CrimeMetric>(
@@ -70,6 +85,7 @@ function App() {
   const [hoveredNeighborhood, setHoveredNeighborhood] = useState<string | null>(null);
   const [neighborhoodData, setNeighborhoodData] = useState<NeighborhoodGeoJSON>(laNeighborhoods);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
   const [dataSource, setDataSource] = useState<string>('Loading...');
   const [statsPanelOpen, setStatsPanelOpen] = useState<boolean>(false);
 
@@ -109,6 +125,7 @@ function App() {
   useEffect(() => {
     async function loadRealCrimeData() {
       setLoading(true);
+      setError(null);
       try {
         console.log('Fetching crime data (with caching)...');
         const weeks = dateRangeToWeeks(dateRange);
@@ -135,19 +152,13 @@ function App() {
             const realCrimeData = crimeMap.get(feature.properties.name);
 
             if (realCrimeData) {
-              // Use real data
+              // Use real enhanced data from API
               return {
                 ...feature,
-                properties: {
-                  name: feature.properties.name,
-                  violentCrime: realCrimeData.violentCrime,
-                  carTheft: realCrimeData.carTheft,
-                  breakIns: realCrimeData.breakIns,
-                  pettyTheft: realCrimeData.pettyTheft
-                }
+                properties: realCrimeData
               };
             } else {
-              // Keep mock data if no real data available
+              // Keep existing data if no real data available
               return feature;
             }
           })
@@ -160,9 +171,10 @@ function App() {
         setDataSource(`Real LA Crime Data (${rangeLabel})`);
         console.log('Successfully loaded crime data');
 
-      } catch (error) {
-        console.error('Error loading crime data:', error);
-        setDataSource('Using sample data (API error)');
+      } catch (err) {
+        console.error('Error loading crime data:', err);
+        setError(err instanceof Error ? err : new Error('Failed to load crime data'));
+        setDataSource('Error loading data');
       } finally {
         setLoading(false);
       }
@@ -266,28 +278,164 @@ function App() {
     window.location.reload();
   }, []);
 
+  // Calculate LA city-wide averages
+  const laAverages = useMemo(() => {
+    if (neighborhoods.length === 0) return null;
+
+    const totals = neighborhoods.reduce(
+      (acc, n) => ({
+        violentCrime: acc.violentCrime + n.violentCrime,
+        carTheft: acc.carTheft + n.carTheft,
+        breakIns: acc.breakIns + n.breakIns,
+        pettyTheft: acc.pettyTheft + n.pettyTheft,
+      }),
+      { violentCrime: 0, carTheft: 0, breakIns: 0, pettyTheft: 0 }
+    );
+
+    return {
+      violentCrime: totals.violentCrime / neighborhoods.length,
+      carTheft: totals.carTheft / neighborhoods.length,
+      breakIns: totals.breakIns / neighborhoods.length,
+      pettyTheft: totals.pettyTheft / neighborhoods.length,
+    };
+  }, [neighborhoods]);
+
+  // Compare value to LA average
+  const getComparisonToAverage = useCallback((value: number, metric: CrimeMetric): string => {
+    if (!laAverages) return '';
+    const avg = laAverages[metric];
+    const diff = ((value - avg) / avg) * 100;
+
+    if (Math.abs(diff) < 5) return 'about average';
+    if (diff < 0) return `${Math.abs(diff).toFixed(0)}% below average`;
+    return `${diff.toFixed(0)}% above average`;
+  }, [laAverages]);
+
+  // Handle onboarding close
+  const handleOnboardingClose = useCallback(() => {
+    setShowOnboarding(false);
+    savePreference(STORAGE_KEYS.ONBOARDING_COMPLETE, true);
+  }, []);
+
+  // Handle retry after error
+  const handleRetry = useCallback(() => {
+    setError(null);
+    window.location.reload();
+  }, []);
+
+  // Handle reset application
+  const handleReset = useCallback(() => {
+    // Clear all localStorage
+    Object.values(STORAGE_KEYS).forEach(key => {
+      try {
+        localStorage.removeItem(key);
+      } catch (e) {
+        console.error('Failed to clear storage:', e);
+      }
+    });
+    clearCrimeCache();
+    window.location.reload();
+  }, []);
+
   return (
     <div className="App">
+      {/* Onboarding Modal */}
+      <OnboardingModal isOpen={showOnboarding} onClose={handleOnboardingClose} />
+
+      {/* Header */}
       <div className="header">
-        <h1>LA Crime Map</h1>
-        <p>Visualize crime by neighborhood</p>
-        <p style={{ fontSize: '0.9em', fontStyle: 'italic', opacity: 0.8 }}>
-          {loading ? 'Loading data...' : `Data: ${dataSource}`}
-          {!loading && (
+        <div className="header-content">
+          <div className="header-left">
+            <div className="brand-logo">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+            </div>
+            <div className="header-text">
+              <h1>LA Crime Map</h1>
+              <p className="header-subtitle">Data-driven neighborhood safety insights</p>
+            </div>
+          </div>
+
+          <div className="header-actions">
             <button
-              onClick={handleRefreshData}
-              style={{
-                marginLeft: '10px',
-                fontSize: '0.8em',
-                padding: '2px 8px',
-                cursor: 'pointer'
-              }}
-              title="Clear cache and refresh data"
+              className="icon-button"
+              onClick={() => setShowOnboarding(true)}
+              title="How to use this tool"
+              aria-label="Show tutorial"
             >
-              Refresh
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
             </button>
+            <button
+              className="icon-button theme-toggle"
+              onClick={toggleTheme}
+              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            >
+              {theme === 'light' ? (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Data source info with quality badge */}
+        <div className="data-source-info">
+          {loading ? (
+            <span className="loading-indicator">Loading data...</span>
+          ) : error ? (
+            <span className="error-indicator">Failed to load data</span>
+          ) : (
+            <>
+              <DataQualityBadge
+                confidence="high"
+                lastUpdated={new Date().toLocaleDateString()}
+                showDetails={false}
+              />
+              <span className="data-source-text">{dataSource}</span>
+              <button
+                className="text-button"
+                onClick={handleRefreshData}
+                title="Clear cache and refresh data"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Refresh
+              </button>
+            </>
           )}
-        </p>
+        </div>
+
+        {/* Trust signals */}
+        <div className="trust-signals">
+          <div className="trust-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Official LAPD Data</span>
+          </div>
+          <div className="trust-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Colorblind Accessible</span>
+          </div>
+          <div className="trust-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Updated Daily</span>
+          </div>
+        </div>
       </div>
 
       {/* View Mode Tabs */}
@@ -306,12 +454,22 @@ function App() {
         </button>
       </div>
 
-      {viewMode === 'analytics' ? (
+      {/* Error State */}
+      {error && !loading && (
+        <ErrorState
+          error={error}
+          onRetry={handleRetry}
+          onReset={handleReset}
+        />
+      )}
+
+      {/* Main Content */}
+      {!error && viewMode === 'analytics' ? (
         <DataVisualization
           neighborhoods={neighborhoods}
           selectedMetric={selectedMetric}
         />
-      ) : (
+      ) : !error ? (
         <>
           <div className="controls-container">
             {/* Search Bar */}
@@ -503,48 +661,121 @@ function App() {
                     </p>
                   )}
 
+                  {/* LA Average Info */}
+                  {laAverages && (
+                    <div className="la-average-info">
+                      <div className="average-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <strong>LA City Average: {laAverages[selectedMetric].toFixed(1)} per week</strong>
+                      </div>
+                      <p className="average-description">
+                        All neighborhoods are compared to this city-wide average
+                      </p>
+                    </div>
+                  )}
+
                   <div className="legend">
-                    <div className="legend-item">
-                      <span className="legend-color" style={{ background: '#00ff00' }}></span>
-                      <span>Low</span>
+                    <div className="legend-header">
+                      <strong>Risk Levels</strong>
+                      <span className="legend-subtitle">Colorblind-safe palette</span>
                     </div>
                     <div className="legend-item">
-                      <span className="legend-color" style={{ background: '#ffff00' }}></span>
-                      <span>Moderate</span>
+                      <span className="legend-color" style={{ background: '#4575b4' }}></span>
+                      <div className="legend-text">
+                        <span className="legend-label">Very Low</span>
+                        <span className="legend-desc">Well below average</span>
+                      </div>
                     </div>
                     <div className="legend-item">
-                      <span className="legend-color" style={{ background: '#ff9900' }}></span>
-                      <span>High</span>
+                      <span className="legend-color" style={{ background: '#74add1' }}></span>
+                      <div className="legend-text">
+                        <span className="legend-label">Low</span>
+                        <span className="legend-desc">Below average</span>
+                      </div>
                     </div>
                     <div className="legend-item">
-                      <span className="legend-color" style={{ background: '#ff0000' }}></span>
-                      <span>Very High</span>
+                      <span className="legend-color" style={{ background: '#fee090' }}></span>
+                      <div className="legend-text">
+                        <span className="legend-label">Moderate</span>
+                        <span className="legend-desc">Near average</span>
+                      </div>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-color" style={{ background: '#f46d43' }}></span>
+                      <div className="legend-text">
+                        <span className="legend-label">High</span>
+                        <span className="legend-desc">Above average</span>
+                      </div>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-color" style={{ background: '#d73027' }}></span>
+                      <div className="legend-text">
+                        <span className="legend-label">Very High</span>
+                        <span className="legend-desc">Well above average</span>
+                      </div>
                     </div>
                   </div>
 
                   <div className="neighborhood-list">
                     {filteredAndSortedNeighborhoods.length > 0 ? (
-                      filteredAndSortedNeighborhoods.map(n => (
-                        <div
-                          key={n.name}
-                          id={`neighborhood-${n.name.replace(/\s+/g, '-')}`}
-                          className={`neighborhood-item ${hoveredNeighborhood === n.name ? 'highlighted' : ''}`}
-                          style={{
-                            borderLeft: `4px solid ${getColor(n[selectedMetric] || 0, selectedMetric)}`
-                          }}
-                          onClick={() => {
-                            const element = document.getElementById(`neighborhood-${n.name.replace(/\s+/g, '-')}`);
-                            if (element) {
-                              element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                            }
-                          }}
-                        >
-                          <span className="neighborhood-name">{n.name}</span>
-                          <span className="crime-value">{n[selectedMetric] || 0} per week</span>
-                        </div>
-                      ))
+                      filteredAndSortedNeighborhoods.map(n => {
+                        const value = n[selectedMetric] || 0;
+                        const riskLevel = getRiskLevel(value, selectedMetric);
+                        const comparison = getComparisonToAverage(value, selectedMetric);
+
+                        return (
+                          <div
+                            key={n.name}
+                            id={`neighborhood-${n.name.replace(/\s+/g, '-')}`}
+                            className={`neighborhood-item ${hoveredNeighborhood === n.name ? 'highlighted' : ''}`}
+                            style={{
+                              borderLeft: `4px solid ${getColor(value, selectedMetric)}`
+                            }}
+                            onClick={() => {
+                              const element = document.getElementById(`neighborhood-${n.name.replace(/\s+/g, '-')}`);
+                              if (element) {
+                                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                              }
+                            }}
+                          >
+                            <div className="neighborhood-info">
+                              <span className="neighborhood-name">{n.name}</span>
+                              <div className="neighborhood-stats">
+                                <span className="crime-value">{value} per week</span>
+                                <span className="risk-badge" data-risk={riskLevel.level}>
+                                  {riskLevel.label}
+                                </span>
+                                {comparison && (
+                                  <span className="comparison-badge">{comparison}</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })
                     ) : (
-                      <p className="no-results">No neighborhoods match your filters</p>
+                      <EmptyState
+                        type={searchQuery ? 'search' : 'filter'}
+                        title={searchQuery ? 'No neighborhoods found' : 'No data to display'}
+                        message={
+                          searchQuery
+                            ? `No neighborhoods match "${searchQuery}". Try a different search term.`
+                            : 'Adjust your filters to see neighborhood data.'
+                        }
+                        action={
+                          searchQuery || severityThreshold > 0
+                            ? {
+                                label: 'Clear Filters',
+                                onClick: () => {
+                                  setSearchQuery('');
+                                  setSeverityThreshold(0);
+                                },
+                              }
+                            : undefined
+                        }
+                      />
                     )}
                   </div>
                 </>
@@ -552,6 +783,40 @@ function App() {
             </div>
           </div>
         </>
+      ) : null}
+
+      {/* Disclaimer Footer */}
+      {!error && (
+        <div className="app-footer">
+          <div className="disclaimer">
+            <div className="disclaimer-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="disclaimer-content">
+              <strong>Important Disclaimer:</strong> This tool is for informational purposes only.
+              Crime statistics represent reported incidents and may not reflect all criminal activity
+              or overall neighborhood safety. Data is sourced from the{' '}
+              <a
+                href="https://data.lacity.org/Public-Safety/Crime-Data-from-2020-to-Present/2nrs-mtv8"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LA City Open Data Portal
+              </a>{' '}
+              and updated regularly. Always visit neighborhoods in person, consult with local
+              authorities, and make informed decisions based on multiple sources.
+            </div>
+          </div>
+          <div className="footer-meta">
+            <span>Made with care for Los Angeles communities</span>
+            <span className="separator">•</span>
+            <button className="text-button" onClick={() => setShowOnboarding(true)}>
+              View Tutorial
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

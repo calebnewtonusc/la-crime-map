@@ -2,17 +2,14 @@
 // Coordinates are [longitude, latitude] in GeoJSON format
 // Covers 35+ major neighborhoods and cities in LA County
 
+import { NeighborhoodData } from './crimeDataService';
+import { createNeighborhoodData } from './utils/neighborhoodDataInitializer';
+
 export interface NeighborhoodGeoJSON {
   type: 'FeatureCollection';
   features: Array<{
     type: 'Feature';
-    properties: {
-      name: string;
-      violentCrime: number;
-      carTheft: number;
-      breakIns: number;
-      pettyTheft: number;
-    };
+    properties: NeighborhoodData;
     geometry: {
       type: 'Polygon';
       coordinates: number[][][];
@@ -25,14 +22,14 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
   features: [
     // Central LA
     {
-      type: 'Feature',
-      properties: {
+      type: 'Feature' as const,
+      properties: createNeighborhoodData({
         name: 'Downtown LA',
         violentCrime: 12,
         carTheft: 8,
         breakIns: 15,
         pettyTheft: 25
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -48,13 +45,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Koreatown',
         violentCrime: 7,
         carTheft: 9,
         breakIns: 11,
         pettyTheft: 19
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -71,13 +68,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Echo Park',
         violentCrime: 5,
         carTheft: 8,
         breakIns: 10,
         pettyTheft: 16
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -93,13 +90,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Silver Lake',
         violentCrime: 4,
         carTheft: 7,
         breakIns: 9,
         pettyTheft: 14
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -116,13 +113,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Los Feliz',
         violentCrime: 3,
         carTheft: 6,
         breakIns: 7,
         pettyTheft: 12
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -140,13 +137,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     // Hollywood Area
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Hollywood',
         violentCrime: 8,
         carTheft: 10,
         breakIns: 12,
         pettyTheft: 20
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -163,13 +160,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'West Hollywood',
         violentCrime: 6,
         carTheft: 8,
         breakIns: 9,
         pettyTheft: 15
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -187,13 +184,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     // Westside
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Santa Monica',
         violentCrime: 4,
         carTheft: 9,
         breakIns: 8,
         pettyTheft: 15
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -210,13 +207,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Venice',
         violentCrime: 5,
         carTheft: 12,
         breakIns: 10,
         pettyTheft: 18
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -233,13 +230,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Marina del Rey',
         violentCrime: 2,
         carTheft: 7,
         breakIns: 6,
         pettyTheft: 11
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -255,13 +252,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'West LA',
         violentCrime: 2,
         carTheft: 5,
         breakIns: 4,
         pettyTheft: 8
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -278,13 +275,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Beverly Hills',
         violentCrime: 1,
         carTheft: 4,
         breakIns: 3,
         pettyTheft: 7
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -300,13 +297,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Bel Air',
         violentCrime: 1,
         carTheft: 3,
         breakIns: 4,
         pettyTheft: 5
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -322,13 +319,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Brentwood',
         violentCrime: 2,
         carTheft: 4,
         breakIns: 5,
         pettyTheft: 8
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -344,13 +341,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Culver City',
         violentCrime: 4,
         carTheft: 7,
         breakIns: 8,
         pettyTheft: 13
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -366,13 +363,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Palms',
         violentCrime: 3,
         carTheft: 6,
         breakIns: 7,
         pettyTheft: 10
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -391,13 +388,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     // San Fernando Valley
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Van Nuys',
         violentCrime: 8,
         carTheft: 11,
         breakIns: 13,
         pettyTheft: 18
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -413,13 +410,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'North Hollywood',
         violentCrime: 7,
         carTheft: 10,
         breakIns: 11,
         pettyTheft: 16
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -435,13 +432,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Sherman Oaks',
         violentCrime: 3,
         carTheft: 6,
         breakIns: 7,
         pettyTheft: 11
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -457,13 +454,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Studio City',
         violentCrime: 2,
         carTheft: 5,
         breakIns: 6,
         pettyTheft: 9
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -479,13 +476,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Encino',
         violentCrime: 2,
         carTheft: 4,
         breakIns: 5,
         pettyTheft: 8
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -501,13 +498,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Burbank',
         violentCrime: 4,
         carTheft: 7,
         breakIns: 8,
         pettyTheft: 13
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -523,13 +520,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Glendale',
         violentCrime: 3,
         carTheft: 6,
         breakIns: 7,
         pettyTheft: 11
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -547,13 +544,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     // South LA
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Inglewood',
         violentCrime: 11,
         carTheft: 14,
         breakIns: 15,
         pettyTheft: 22
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -569,13 +566,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Compton',
         violentCrime: 16,
         carTheft: 18,
         breakIns: 19,
         pettyTheft: 28
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -591,13 +588,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'South LA',
         violentCrime: 14,
         carTheft: 16,
         breakIns: 17,
         pettyTheft: 25
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -613,13 +610,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Watts',
         violentCrime: 15,
         carTheft: 17,
         breakIns: 18,
         pettyTheft: 26
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -637,13 +634,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     // East LA & SGV
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Pasadena',
         violentCrime: 5,
         carTheft: 8,
         breakIns: 9,
         pettyTheft: 14
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -659,13 +656,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Alhambra',
         violentCrime: 4,
         carTheft: 7,
         breakIns: 8,
         pettyTheft: 12
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -681,13 +678,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'East LA',
         violentCrime: 10,
         carTheft: 13,
         breakIns: 14,
         pettyTheft: 20
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -703,13 +700,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'El Monte',
         violentCrime: 9,
         carTheft: 12,
         breakIns: 13,
         pettyTheft: 18
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -727,13 +724,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     // Long Beach Area
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Long Beach',
         violentCrime: 10,
         carTheft: 13,
         breakIns: 14,
         pettyTheft: 21
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -749,13 +746,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Torrance',
         violentCrime: 3,
         carTheft: 6,
         breakIns: 7,
         pettyTheft: 11
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -771,13 +768,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Redondo Beach',
         violentCrime: 2,
         carTheft: 5,
         breakIns: 6,
         pettyTheft: 10
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -793,13 +790,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'Manhattan Beach',
         violentCrime: 1,
         carTheft: 4,
         breakIns: 5,
         pettyTheft: 8
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[
@@ -815,13 +812,13 @@ export const laNeighborhoods: NeighborhoodGeoJSON = {
     },
     {
       type: 'Feature',
-      properties: {
+      properties: createNeighborhoodData({
         name: 'El Segundo',
         violentCrime: 2,
         carTheft: 4,
         breakIns: 5,
         pettyTheft: 9
-      },
+      }),
       geometry: {
         type: 'Polygon',
         coordinates: [[

@@ -44,15 +44,28 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
 
     const metricTotal = neighborhoods.reduce((sum, n) => sum + (n[selectedMetric] || 0), 0);
 
-    const safestNeighborhood = neighborhoods.reduce((min, n) =>
-      (n.violentCrime + n.carTheft + n.breakIns + n.pettyTheft) <
-      (min.violentCrime + min.carTheft + min.breakIns + min.pettyTheft) ? n : min
-    );
+    // Use safety score if available, otherwise use total crime
+    const safestNeighborhood = neighborhoods.reduce((best, n) => {
+      if (n.safetyScore !== null && best.safetyScore !== null) {
+        return n.safetyScore > best.safetyScore ? n : best;
+      }
+      const nTotal = n.violentCrime + n.carTheft + n.breakIns + n.pettyTheft;
+      const bestTotal = best.violentCrime + best.carTheft + best.breakIns + best.pettyTheft;
+      return nTotal < bestTotal ? n : best;
+    });
 
-    const mostDangerous = neighborhoods.reduce((max, n) =>
-      (n.violentCrime + n.carTheft + n.breakIns + n.pettyTheft) >
-      (max.violentCrime + max.carTheft + max.breakIns + max.pettyTheft) ? n : max
-    );
+    const mostDangerous = neighborhoods.reduce((worst, n) => {
+      if (n.safetyScore !== null && worst.safetyScore !== null) {
+        return n.safetyScore < worst.safetyScore ? n : worst;
+      }
+      const nTotal = n.violentCrime + n.carTheft + n.breakIns + n.pettyTheft;
+      const worstTotal = worst.violentCrime + worst.carTheft + worst.breakIns + worst.pettyTheft;
+      return nTotal > worstTotal ? n : worst;
+    });
+
+    // Count neighborhoods with sufficient data
+    const withPopulationData = neighborhoods.filter(n => n.populationDataAvailable).length;
+    const withSufficientData = neighborhoods.filter(n => n.hasSufficientData).length;
 
     return {
       totalCrimes,
@@ -60,11 +73,13 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
       metricTotal,
       safestNeighborhood,
       mostDangerous,
-      neighborhoodCount: neighborhoods.length
+      neighborhoodCount: neighborhoods.length,
+      withPopulationData,
+      withSufficientData
     };
   }, [neighborhoods, selectedMetric]);
 
-  // Top 10 neighborhoods for selected metric
+  // Top 10 neighborhoods for selected metric (raw counts)
   const top10Data = useMemo(() => {
     return neighborhoods
       .sort((a, b) => (b[selectedMetric] || 0) - (a[selectedMetric] || 0))
@@ -75,6 +90,40 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
         value: n[selectedMetric] || 0
       }));
   }, [neighborhoods, selectedMetric]);
+
+  // Top 10 neighborhoods by per capita rates
+  const top10PerCapita = useMemo(() => {
+    const metricPerCapitaKey = `${selectedMetric}PerCapita` as keyof NeighborhoodData;
+
+    return neighborhoods
+      .filter(n => n[metricPerCapitaKey] !== null)
+      .sort((a, b) => {
+        const aVal = a[metricPerCapitaKey] as number;
+        const bVal = b[metricPerCapitaKey] as number;
+        return bVal - aVal;
+      })
+      .slice(0, 10)
+      .map(n => ({
+        name: n.name.length > 15 ? n.name.substring(0, 15) + '...' : n.name,
+        fullName: n.name,
+        value: n[metricPerCapitaKey] as number,
+        rawValue: n[selectedMetric] || 0
+      }));
+  }, [neighborhoods, selectedMetric]);
+
+  // Safest neighborhoods by safety score
+  const safestAreas = useMemo(() => {
+    return neighborhoods
+      .filter(n => n.safetyScore !== null)
+      .sort((a, b) => (b.safetyScore || 0) - (a.safetyScore || 0))
+      .slice(0, 10)
+      .map(n => ({
+        name: n.name.length > 15 ? n.name.substring(0, 15) + '...' : n.name,
+        fullName: n.name,
+        safetyScore: n.safetyScore || 0,
+        percentile: n.overallSafetyPercentile || 0
+      }));
+  }, [neighborhoods]);
 
   // Crime type distribution for selected neighborhood or overall
   const crimeDistribution = useMemo(() => {
@@ -167,11 +216,13 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
         <div className="stat-card">
           <div className="stat-label">Neighborhoods</div>
           <div className="stat-value">{stats.neighborhoodCount}</div>
+          <div className="stat-sublabel">{stats.withSufficientData} with complete data</div>
         </div>
 
         <div className="stat-card">
           <div className="stat-label">Average Per Area</div>
           <div className="stat-value">{Math.round(stats.avgPerNeighborhood)}</div>
+          <div className="stat-sublabel">crimes per week</div>
         </div>
 
         <div className="stat-card">
@@ -182,11 +233,39 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
         <div className="stat-card highlight">
           <div className="stat-label">Safest Area</div>
           <div className="stat-value small">{stats.safestNeighborhood.name}</div>
+          {stats.safestNeighborhood.safetyScore !== null && (
+            <div className="stat-sublabel">Safety Score: {stats.safestNeighborhood.safetyScore}</div>
+          )}
+          {stats.safestNeighborhood.overallSafetyPercentile !== null && (
+            <div className="stat-sublabel">Safer than {stats.safestNeighborhood.overallSafetyPercentile}% of LA</div>
+          )}
         </div>
 
         <div className="stat-card highlight">
           <div className="stat-label">Highest Crime</div>
           <div className="stat-value small">{stats.mostDangerous.name}</div>
+          {stats.mostDangerous.safetyScore !== null && (
+            <div className="stat-sublabel">Safety Score: {stats.mostDangerous.safetyScore}</div>
+          )}
+          {stats.mostDangerous.overallSafetyPercentile !== null && (
+            <div className="stat-sublabel">Safer than {stats.mostDangerous.overallSafetyPercentile}% of LA</div>
+          )}
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-label">Data Coverage</div>
+          <div className="stat-value">{Math.round((stats.withPopulationData / stats.neighborhoodCount) * 100)}%</div>
+          <div className="stat-sublabel">{stats.withPopulationData} areas with population data</div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-label">Data Quality</div>
+          <div className="stat-value">
+            {neighborhoods.length > 0
+              ? Math.round(neighborhoods.reduce((sum, n) => sum + n.dataQualityScore, 0) / neighborhoods.length)
+              : 0}
+          </div>
+          <div className="stat-sublabel">out of 100</div>
         </div>
       </div>
 
@@ -312,6 +391,112 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
           </ResponsiveContainer>
         </div>
 
+        {/* Per Capita Rates Chart */}
+        <div className="chart-container">
+          <h3>Top 10 Areas - {metricLabels[selectedMetric]} Per Capita</h3>
+          {top10PerCapita.length > 0 ? (
+            <>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={top10PerCapita} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+                  <XAxis
+                    dataKey="name"
+                    angle={-45}
+                    textAnchor="end"
+                    height={100}
+                    stroke="#888"
+                    tick={{ fill: '#888', fontSize: 12 }}
+                  />
+                  <YAxis
+                    stroke="#888"
+                    tick={{ fill: '#888' }}
+                    label={{ value: 'Per 1000 residents/year', angle: -90, position: 'insideLeft', fill: '#888' }}
+                  />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#2a2a2a', border: '1px solid #444' }}
+                    labelFormatter={(label) => {
+                      const item = top10PerCapita.find(d => d.name === label);
+                      return item ? item.fullName : label;
+                    }}
+                    formatter={(value: any, name: string, props: any) => {
+                      const item = props.payload;
+                      return [
+                        `${Number(value).toFixed(2)} per 1000/year (${item.rawValue}/week)`,
+                        metricLabels[selectedMetric]
+                      ];
+                    }}
+                  />
+                  <Bar dataKey="value" fill="#FF6B6B">
+                    {top10PerCapita.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+              <div className="chart-note">
+                Per capita rates account for neighborhood population, providing fair comparison
+              </div>
+            </>
+          ) : (
+            <div className="no-data-message">
+              Insufficient population data available for per capita analysis
+            </div>
+          )}
+        </div>
+
+        {/* Safety Score Rankings */}
+        <div className="chart-container">
+          <h3>Top 10 Safest Neighborhoods</h3>
+          {safestAreas.length > 0 ? (
+            <>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={safestAreas} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+                  <XAxis
+                    dataKey="name"
+                    angle={-45}
+                    textAnchor="end"
+                    height={100}
+                    stroke="#888"
+                    tick={{ fill: '#888', fontSize: 12 }}
+                  />
+                  <YAxis
+                    stroke="#888"
+                    tick={{ fill: '#888' }}
+                    domain={[0, 100]}
+                  />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#2a2a2a', border: '1px solid #444' }}
+                    labelFormatter={(label) => {
+                      const item = safestAreas.find(d => d.name === label);
+                      return item ? item.fullName : label;
+                    }}
+                    formatter={(value: any, name: string, props: any) => {
+                      const item = props.payload;
+                      return [
+                        `Safety Score: ${value} (Safer than ${item.percentile}% of LA)`,
+                        ''
+                      ];
+                    }}
+                  />
+                  <Bar dataKey="safetyScore" fill="#52B788">
+                    {safestAreas.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.safetyScore > 80 ? '#52B788' : entry.safetyScore > 60 ? '#4ECDC4' : '#FFA07A'} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+              <div className="chart-note">
+                Safety scores are weighted composite metrics (0-100, higher is safer)
+              </div>
+            </>
+          ) : (
+            <div className="no-data-message">
+              Insufficient data available for safety score calculation
+            </div>
+          )}
+        </div>
+
         {/* Additional Stats Table */}
         <div className="chart-container">
           <h3>Detailed Statistics by Crime Type</h3>
@@ -323,6 +508,7 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
                   <th>Total</th>
                   <th>Avg/Area</th>
                   <th>% of Total</th>
+                  <th>Avg Per Capita</th>
                 </tr>
               </thead>
               <tbody>
@@ -331,12 +517,25 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
                   const avg = total / neighborhoods.length;
                   const percentage = (total / stats.totalCrimes) * 100;
 
+                  const perCapitaKey = `${metric}PerCapita` as keyof NeighborhoodData;
+                  const perCapitaValues = neighborhoods
+                    .map(n => n[perCapitaKey])
+                    .filter(v => v !== null) as number[];
+                  const avgPerCapita = perCapitaValues.length > 0
+                    ? perCapitaValues.reduce((sum, v) => sum + v, 0) / perCapitaValues.length
+                    : null;
+
                   return (
                     <tr key={metric} className={selectedMetric === metric ? 'highlighted' : ''}>
                       <td>{metricLabels[metric]}</td>
                       <td>{total.toLocaleString()}</td>
                       <td>{avg.toFixed(1)}</td>
                       <td>{percentage.toFixed(1)}%</td>
+                      <td>
+                        {avgPerCapita !== null
+                          ? `${avgPerCapita.toFixed(2)} per 1k/yr`
+                          : 'N/A'}
+                      </td>
                     </tr>
                   );
                 })}

@@ -1,0 +1,126 @@
+/* Tooltip Component */
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: help;
+}
+
+.tooltip-content {
+  position: absolute;
+  background: #2d3748;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 300px;
+  z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.tooltip-top {
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip-bottom {
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip-left {
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tooltip-right {
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.tooltip-top .tooltip-arrow {
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0 6px;
+  border-color: #2d3748 transparent transparent transparent;
+}
+
+.tooltip-bottom .tooltip-arrow {
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 6px 6px 6px;
+  border-color: transparent transparent #2d3748 transparent;
+}
+
+.tooltip-left .tooltip-arrow {
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 0 6px 6px;
+  border-color: transparent transparent transparent #2d3748;
+}
+
+.tooltip-right .tooltip-arrow {
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 6px 6px 0;
+  border-color: transparent #2d3748 transparent transparent;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tooltip-content {
+    max-width: 250px;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tooltip-content {
+    max-width: 200px;
+    font-size: 0.8rem;
+  }
+
+  /* Force bottom position on small screens for better visibility */
+  .tooltip-top,
+  .tooltip-left,
+  .tooltip-right {
+    bottom: auto;
+    right: auto;
+    left: 50%;
+    top: calc(100% + 10px);
+    transform: translateX(-50%);
+  }
+
+  .tooltip-top .tooltip-arrow,
+  .tooltip-left .tooltip-arrow,
+  .tooltip-right .tooltip-arrow {
+    bottom: auto;
+    right: auto;
+    left: 50%;
+    top: -6px;
+    transform: translateX(-50%);
+    border-width: 0 6px 6px 6px;
+    border-color: transparent transparent #2d3748 transparent;
+  }
+}

@@ -7,6 +7,13 @@ interface CacheItem<T> {
   expiresIn: number; // milliseconds
 }
 
+export interface CacheMetadata {
+  age: number; // seconds
+  isStale: boolean;
+  isExpired: boolean;
+  expiresIn: number; // milliseconds
+}
+
 class CacheService {
   private static instance: CacheService;
 
@@ -65,6 +72,58 @@ class CacheService {
       return cacheItem.data;
     } catch (error) {
       console.warn('Failed to retrieve cached data:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Retrieve data from cache even if expired (for fallback scenarios)
+   * @param key Cache key
+   * @returns Object with data and metadata, or null if not found
+   */
+  getWithMetadata<T>(key: string): { data: T; metadata: CacheMetadata } | null {
+    try {
+      const item = localStorage.getItem(key);
+      if (!item) {
+        return null;
+      }
+
+      const cacheItem: CacheItem<T> = JSON.parse(item);
+      const age = Date.now() - cacheItem.timestamp;
+      const ageInSeconds = age / 1000;
+      const isExpired = age > cacheItem.expiresIn;
+      const isStale = age > cacheItem.expiresIn * 0.8; // Consider stale at 80% of expiry
+
+      const metadata: CacheMetadata = {
+        age: ageInSeconds,
+        isStale,
+        isExpired,
+        expiresIn: cacheItem.expiresIn
+      };
+
+      return { data: cacheItem.data, metadata };
+    } catch (error) {
+      console.warn('Failed to retrieve cached data with metadata:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Get stale data as fallback (useful when API is down)
+   * Returns data even if expired
+   */
+  getStale<T>(key: string): T | null {
+    try {
+      const item = localStorage.getItem(key);
+      if (!item) {
+        return null;
+      }
+
+      const cacheItem: CacheItem<T> = JSON.parse(item);
+      console.log(`Retrieved stale cache for key: ${key}`);
+      return cacheItem.data;
+    } catch (error) {
+      console.warn('Failed to retrieve stale cached data:', error);
       return null;
     }
   }

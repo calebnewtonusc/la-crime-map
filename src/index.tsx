@@ -1,16 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import './accessibility.css';
+import './i18n';
 import AppWrapper from './AppWrapper';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { AccessibilityProvider } from './contexts/AccessibilityContext';
+import ErrorBoundary from './components/ErrorBoundary';
+import { logCriticalError } from './utils/errorLogger';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <AppWrapper />
+    <ErrorBoundary onError={(error, errorInfo) => {
+      logCriticalError('Root Error Boundary caught error', {
+        error: error.message,
+        stack: error.stack,
+        componentStack: errorInfo.componentStack
+      });
+    }}>
+      <AccessibilityProvider>
+        <AppWrapper />
+      </AccessibilityProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 

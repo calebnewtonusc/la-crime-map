@@ -3,8 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
     <meta name="theme-color" content="#1a1a2e" />
+
+    <!-- Accessibility Meta Tags -->
+    <meta name="color-scheme" content="dark light" />
 
     <!-- Primary Meta Tags -->
     <title>LA Crime Map - Interactive Los Angeles Crime Data Visualization</title>
@@ -90,7 +93,13 @@
     </script>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app. This interactive crime map requires JavaScript to display crime statistics and the map visualization.</noscript>
+    <noscript>
+      <div style="padding: 20px; text-align: center; font-family: sans-serif;">
+        <h1>JavaScript Required</h1>
+        <p>You need to enable JavaScript to run this app. This interactive crime map requires JavaScript to display crime statistics and the map visualization.</p>
+        <p>For accessibility support, please enable JavaScript and use the accessibility settings panel available in the top-right corner of the application.</p>
+      </div>
+    </noscript>
     <div id="root"></div>
   </body>
 </html>

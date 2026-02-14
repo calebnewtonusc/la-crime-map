@@ -1,13 +1,15 @@
 // LA Crime Data Service - fetches real crime data from LA City Open Data Portal
 // API: https://data.lacity.org/resource/2nrs-mtv8.json
 import cache from './utils/cacheService';
+import {
+  enhanceCrimeData,
+  calculateCountyAverages,
+  EnhancedCrimeData,
+  CrimeStats
+} from './utils/crimeAnalytics';
 
-export interface NeighborhoodData {
+export interface NeighborhoodData extends EnhancedCrimeData {
   name: string;
-  violentCrime: number; // per week
-  carTheft: number;
-  breakIns: number;
-  pettyTheft: number;
 }
 
 const CACHE_KEY = 'la-crime-data';
@@ -136,26 +138,56 @@ export async function fetchCrimeData(weeksBack: number = 1): Promise<Neighborhoo
     });
 
     // Convert to array and calculate per-week rates
-    const neighborhoods: NeighborhoodData[] = Array.from(neighborhoodMap.entries())
+    const basicNeighborhoods = Array.from(neighborhoodMap.entries())
       .map(([name, stats]) => ({
         name,
-        violentCrime: Math.round(stats.violentCrime / weeksBack),
-        carTheft: Math.round(stats.carTheft / weeksBack),
-        breakIns: Math.round(stats.breakIns / weeksBack),
-        pettyTheft: Math.round(stats.pettyTheft / weeksBack)
+        stats: {
+          violentCrime: Math.round(stats.violentCrime / weeksBack),
+          carTheft: Math.round(stats.carTheft / weeksBack),
+          breakIns: Math.round(stats.breakIns / weeksBack),
+          pettyTheft: Math.round(stats.pettyTheft / weeksBack)
+        }
       }))
       .filter(n =>
         // Filter out areas with very low crime (likely incomplete data)
-        n.violentCrime > 0 || n.carTheft > 0 || n.breakIns > 0 || n.pettyTheft > 0
-      )
+        n.stats.violentCrime > 0 || n.stats.carTheft > 0 || n.stats.breakIns > 0 || n.stats.pettyTheft > 0
+      );
+
+    console.log(`Processed ${basicNeighborhoods.length} neighborhoods`);
+
+    // Calculate county averages for comparison
+    const countyAverages = calculateCountyAverages(basicNeighborhoods);
+    console.log('County averages:', countyAverages);
+
+    // Enhance each neighborhood with statistical analysis
+    const lastUpdated = new Date();
+    const neighborhoods: NeighborhoodData[] = basicNeighborhoods
+      .map(({ name, stats }) => {
+        const enhanced = enhanceCrimeData(
+          name,
+          stats,
+          basicNeighborhoods,
+          countyAverages,
+          lastUpdated
+        );
+
+        return {
+          name,
+          ...enhanced
+        };
+      })
       .sort((a, b) => {
-        // Sort by total crime (descending)
+        // Sort by safety score (descending) if available, otherwise by total crime
+        if (a.safetyScore !== null && b.safetyScore !== null) {
+          return b.safetyScore - a.safetyScore; // Higher safety score first
+        }
         const totalA = a.violentCrime + a.carTheft + a.breakIns + a.pettyTheft;
         const totalB = b.violentCrime + b.carTheft + b.breakIns + b.pettyTheft;
-        return totalB - totalA;
+        return totalA - totalB; // Lower crime first
       });
 
-    console.log(`Processed ${neighborhoods.length} neighborhoods`);
+    console.log(`Enhanced ${neighborhoods.length} neighborhoods with analytics`);
+    console.log('Sample enhanced data:', neighborhoods[0]);
 
     // Cache the processed data
     cache.set(CACHE_KEY, neighborhoods, CACHE_DURATION);
@@ -180,12 +212,30 @@ export function clearCrimeCache(): void {
 
 // Get sample of popular LA neighborhoods for initial display
 export function getMockData(): NeighborhoodData[] {
-  return [
-    { name: 'Central', violentCrime: 15, carTheft: 12, breakIns: 18, pettyTheft: 45 },
-    { name: 'Hollywood', violentCrime: 12, carTheft: 15, breakIns: 14, pettyTheft: 38 },
-    { name: '77th Street', violentCrime: 18, carTheft: 14, breakIns: 16, pettyTheft: 35 },
-    { name: 'Pacific', violentCrime: 8, carTheft: 10, breakIns: 12, pettyTheft: 28 },
-    { name: 'Wilshire', violentCrime: 10, carTheft: 11, breakIns: 13, pettyTheft: 32 },
-    { name: 'West LA', violentCrime: 4, carTheft: 6, breakIns: 8, pettyTheft: 18 },
+  const mockBasicData = [
+    { name: 'Central', stats: { violentCrime: 15, carTheft: 12, breakIns: 18, pettyTheft: 45 } },
+    { name: 'Hollywood', stats: { violentCrime: 12, carTheft: 15, breakIns: 14, pettyTheft: 38 } },
+    { name: '77th Street', stats: { violentCrime: 18, carTheft: 14, breakIns: 16, pettyTheft: 35 } },
+    { name: 'Pacific', stats: { violentCrime: 8, carTheft: 10, breakIns: 12, pettyTheft: 28 } },
+    { name: 'Wilshire', stats: { violentCrime: 10, carTheft: 11, breakIns: 13, pettyTheft: 32 } },
+    { name: 'West LA', stats: { violentCrime: 4, carTheft: 6, breakIns: 8, pettyTheft: 18 } },
   ];
+
+  const countyAverages = calculateCountyAverages(mockBasicData);
+  const lastUpdated = new Date();
+
+  return mockBasicData.map(({ name, stats }) => {
+    const enhanced = enhanceCrimeData(
+      name,
+      stats,
+      mockBasicData,
+      countyAverages,
+      lastUpdated
+    );
+
+    return {
+      name,
+      ...enhanced
+    };
+  });
 }

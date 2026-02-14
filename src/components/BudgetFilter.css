@@ -1,0 +1,237 @@
+.budget-filter-container {
+  background: #1a1a2e;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.budget-filter-container h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+.budget-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.budget-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.budget-input-group label {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.budget-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #333;
+  outline: none;
+  cursor: pointer;
+}
+
+.budget-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4a90e2;
+  cursor: pointer;
+}
+
+.budget-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4a90e2;
+  cursor: pointer;
+  border: none;
+}
+
+.budget-range-labels {
+  display: flex;
+  justify-content: space-between;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.bedroom-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bedroom-selector label {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.bedroom-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.bedroom-option {
+  flex: 1;
+  padding: 10px 15px;
+  background: #0f0f1e;
+  color: #ccc;
+  border: 1px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.bedroom-option:hover {
+  border-color: #4a90e2;
+  color: #fff;
+}
+
+.bedroom-option.active {
+  background: #4a90e2;
+  border-color: #4a90e2;
+  color: white;
+}
+
+.find-button {
+  padding: 12px 20px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.find-button:hover {
+  background: #45a049;
+}
+
+.budget-results {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+}
+
+.budget-results h4 {
+  color: #4caf50;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.budget-result-item {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  background: #0f0f1e;
+  border-radius: 6px;
+  border-left: 3px solid #4caf50;
+  transition: transform 0.2s;
+}
+
+.budget-result-item:hover {
+  transform: translateX(5px);
+}
+
+.result-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  background: #4caf50;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.result-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.result-name {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.result-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  color: #ccc;
+  font-size: 0.85rem;
+}
+
+.stat-item strong {
+  color: #4a90e2;
+}
+
+.result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  padding: 3px 8px;
+  background: #2a2a4e;
+  color: #aaa;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+}
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+}
+
+.no-results p {
+  margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+  .bedroom-buttons {
+    flex-direction: column;
+  }
+
+  .result-stats {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .budget-result-item {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .result-rank {
+    align-self: flex-start;
+  }
+}

@@ -1,0 +1,155 @@
+.apartment-hunting-app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+  color: #fff;
+}
+
+.app-header {
+  background: #1a1a2e;
+  border-bottom: 2px solid #4a90e2;
+  padding: 20px;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.brand svg {
+  color: #4a90e2;
+  flex-shrink: 0;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+.brand .subtitle {
+  margin: 5px 0 0 0;
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.data-info {
+  text-align: right;
+}
+
+.data-source,
+.loading {
+  font-size: 0.85rem;
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.loading {
+  color: #4a90e2;
+}
+
+.controls-bar {
+  background: #1a1a2e;
+  padding: 15px 20px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-group label {
+  color: #ccc;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.control-select {
+  padding: 8px 15px;
+  background: #0f0f1e;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  min-width: 150px;
+}
+
+.control-select:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 20px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #333;
+  border-top-color: #4a90e2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #999;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand h1 {
+    font-size: 1.4rem;
+  }
+
+  .controls-bar {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .control-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .control-select {
+    flex: 1;
+  }
+}

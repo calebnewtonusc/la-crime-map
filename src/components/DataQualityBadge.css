@@ -1,0 +1,97 @@
+/* Data Quality Badge Styles */
+
+.data-quality-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+  cursor: help;
+}
+
+.data-quality-badge.high {
+  background: var(--success-bg, #d1fae5);
+  color: var(--success, #059669);
+}
+
+.data-quality-badge.medium {
+  background: var(--warning-bg, #fef3c7);
+  color: var(--warning, #d97706);
+}
+
+.data-quality-badge.low {
+  background: var(--danger-bg, #fee2e2);
+  color: var(--danger, #dc2626);
+}
+
+.badge-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badge-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.badge-label {
+  white-space: nowrap;
+}
+
+.badge-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.detail-item {
+  white-space: nowrap;
+}
+
+/* Hover effect */
+.data-quality-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme support */
+[data-theme="dark"] .data-quality-badge.high {
+  background: var(--success-bg, #064e3b);
+  color: var(--success, #10b981);
+}
+
+[data-theme="dark"] .data-quality-badge.medium {
+  background: var(--warning-bg, #78350f);
+  color: var(--warning, #f59e0b);
+}
+
+[data-theme="dark"] .data-quality-badge.low {
+  background: var(--danger-bg, #7f1d1d);
+  color: var(--danger, #ef4444);
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+  .data-quality-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+
+  .badge-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .badge-details {
+    font-size: 10px;
+  }
+}

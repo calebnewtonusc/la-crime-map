@@ -42,7 +42,7 @@ export function calculateBounds(geoJSON: NeighborhoodGeoJSON): Bounds {
 }
 
 /**
- * Memoized color calculation
+ * Memoized color calculation using colorblind-safe palette
  * Cache color values to avoid recalculation
  */
 const colorCache = new Map<string, string>();
@@ -58,19 +58,21 @@ export function getColorMemoized(value: number, metric: CrimeMetric): string {
 
   // Different thresholds for different metrics
   const thresholds: Record<CrimeMetric, number[]> = {
-    violentCrime: [2, 5, 10],
-    carTheft: [5, 10, 15],
-    breakIns: [5, 10, 15],
-    pettyTheft: [10, 20, 30]
+    violentCrime: [2, 5, 10, 15],
+    carTheft: [5, 10, 15, 20],
+    breakIns: [5, 10, 15, 20],
+    pettyTheft: [10, 20, 30, 40]
   };
 
   const t = thresholds[metric];
   let color: string;
 
-  if (value < t[0]) color = '#00ff00'; // Green - low
-  else if (value < t[1]) color = '#ffff00'; // Yellow - moderate
-  else if (value < t[2]) color = '#ff9900'; // Orange - high
-  else color = '#ff0000'; // Red - very high
+  // Colorblind-safe palette: blue to amber to red-purple
+  if (value < t[0]) color = '#4575b4';      // Deep blue - very low
+  else if (value < t[1]) color = '#74add1'; // Light blue - low
+  else if (value < t[2]) color = '#fee090'; // Light amber - moderate
+  else if (value < t[3]) color = '#f46d43'; // Coral - high
+  else color = '#d73027';                    // Red-purple - very high
 
   colorCache.set(key, color);
   return color;
