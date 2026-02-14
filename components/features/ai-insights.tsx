@@ -124,8 +124,8 @@ export function AISmartInsights() {
         </div>
       )}
 
-      {/* Insights Grid - PROPER SPACING */}
-      <div className="grid gap-6 md:grid-cols-2">
+      {/* Insights Grid - GENEROUS SPACING */}
+      <div className="grid gap-8 md:grid-cols-2">
         {insights.map((insight, idx) => (
           <motion.div
             key={idx}
@@ -133,22 +133,22 @@ export function AISmartInsights() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ y: -4 }}
-            className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-200"
+            className="bg-white dark:bg-gray-800 rounded-xl p-8 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-200"
           >
             {/* Icon & Title */}
-            <div className="flex items-start gap-4 mb-4">
+            <div className="flex items-start gap-5 mb-6">
               <div
                 className={`bg-gradient-to-br ${getColor(
                   insight.type
-                )} text-white rounded-lg p-3 flex-shrink-0 shadow-lg`}
+                )} text-white rounded-lg p-4 flex-shrink-0 shadow-lg`}
               >
                 {getIcon(insight.type)}
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
                   {insight.title}
                 </h3>
-                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
                   {insight.description}
                 </p>
               </div>
@@ -156,11 +156,11 @@ export function AISmartInsights() {
 
             {/* Neighborhoods */}
             {insight.neighborhoods && insight.neighborhoods.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-6 flex flex-wrap gap-2.5">
                 {insight.neighborhoods.map((neighborhood, nIdx) => (
                   <span
                     key={nIdx}
-                    className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-1.5 rounded-full border border-gray-300 dark:border-gray-600 font-medium"
+                    className="text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 font-medium"
                   >
                     {neighborhood}
                   </span>

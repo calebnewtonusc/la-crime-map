@@ -70,7 +70,8 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
               </a>
               <a
                 href="/ai-demo"
-                className="px-4 py-2 text-sm font-bold bg-gradient-to-r from-la-sunset-orange to-la-sunset-pink text-white rounded-lg hover:shadow-lg transition-all duration-200 shadow-md"
+                className="px-4 py-2 text-sm font-bold bg-gradient-to-r from-la-sunset-orange to-la-sunset-pink text-white! dark:text-white! rounded-lg hover:shadow-lg transition-all duration-200 shadow-md"
+                style={{ color: 'white' }}
               >
                 AI Features
               </a>

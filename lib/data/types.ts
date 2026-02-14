@@ -72,4 +72,13 @@ export interface CrimeStats {
   avgPettyTheft: number
   safestNeighborhood: string
   mostDangerous: string
+  // Percentiles for comparative context
+  medianViolentCrime: number
+  medianCarTheft: number
+  medianBreakIns: number
+  medianPettyTheft: number
+  percentile25ViolentCrime: number
+  percentile75ViolentCrime: number
+  percentile25CarTheft: number
+  percentile75CarTheft: number
 }

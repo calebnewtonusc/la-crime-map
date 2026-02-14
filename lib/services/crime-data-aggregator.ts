@@ -5,6 +5,7 @@ import { fetchLAPDCrimeData } from './lapd-api'
 import { aggregateLegacyCrimeByNeighborhood, updateDateRange } from './neighborhood-mapper'
 import { NeighborhoodCrimeData } from './lapd-api-types'
 import { NeighborhoodFeature, NeighborhoodGeoJSON } from '../data/types'
+import { logger } from '../utils/logger'
 
 export interface AggregatedCrimeResponse {
   neighborhoods: NeighborhoodCrimeData[]
@@ -36,7 +37,7 @@ export async function aggregateCrimeDataForNeighborhoods(
   days: number = 365
 ): Promise<AggregatedCrimeResponse> {
   try {
-    console.log(`Fetching crime data for recent period...`)
+    logger.info(`Fetching crime data for recent period...`)
 
     // CRITICAL FIX: Use ACTUAL available data dates (Q4 2024)
     // NOT calculated from current date (which could be in the future)
@@ -46,7 +47,7 @@ export async function aggregateCrimeDataForNeighborhoods(
     // Fetch crime data from LAPD API (uses hardcoded Q4 2024 dates internally)
     const crimeData = await fetchLAPDCrimeData()
 
-    console.log(`Received ${crimeData.length} crime incidents`)
+    logger.info(`Received ${crimeData.length} crime incidents`)
 
     // Aggregate by neighborhood
     const aggregation = aggregateLegacyCrimeByNeighborhood(
@@ -85,7 +86,7 @@ export async function aggregateCrimeDataForNeighborhoods(
       },
     }
   } catch (error) {
-    console.error('Error in aggregateCrimeDataForNeighborhoods:', error)
+    logger.error('Error in aggregateCrimeDataForNeighborhoods:', error)
     return {
       neighborhoods: [],
       metadata: {
@@ -117,7 +118,7 @@ export async function aggregateCrimeDataByDateRange(
   endDate: Date
 ): Promise<AggregatedCrimeResponse> {
   try {
-    console.log(`Fetching crime data from ${startDate.toISOString()} to ${endDate.toISOString()}...`)
+    logger.info(`Fetching crime data from ${startDate.toISOString()} to ${endDate.toISOString()}...`)
 
     // Fetch crime data from LAPD API
     const crimeData = await fetchLAPDCrimeData(
@@ -125,7 +126,7 @@ export async function aggregateCrimeDataByDateRange(
       endDate.toISOString().split('T')[0]
     )
 
-    console.log(`Received ${crimeData.length} crime incidents`)
+    logger.info(`Received ${crimeData.length} crime incidents`)
 
     // Aggregate by neighborhood
     const aggregation = aggregateLegacyCrimeByNeighborhood(
@@ -164,7 +165,7 @@ export async function aggregateCrimeDataByDateRange(
       },
     }
   } catch (error) {
-    console.error('Error in aggregateCrimeDataByDateRange:', error)
+    logger.error('Error in aggregateCrimeDataByDateRange:', error)
     return {
       neighborhoods: [],
       metadata: {

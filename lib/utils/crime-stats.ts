@@ -1,6 +1,9 @@
-// Crime statistics utilities
+// Crime statistics utilities with percentiles, trends, and comparative analysis
 import { NeighborhoodGeoJSON, CrimeStats, CrimeMetric, NeighborhoodData } from '../data/types'
 
+/**
+ * Calculate comprehensive crime statistics with percentiles and distributions
+ */
 export function calculateCrimeStats(data: NeighborhoodGeoJSON): CrimeStats {
   const neighborhoods = data.features
   const totalNeighborhoods = neighborhoods.length
@@ -15,6 +18,14 @@ export function calculateCrimeStats(data: NeighborhoodGeoJSON): CrimeStats {
       avgPettyTheft: 0,
       safestNeighborhood: 'N/A',
       mostDangerous: 'N/A',
+      medianViolentCrime: 0,
+      medianCarTheft: 0,
+      medianBreakIns: 0,
+      medianPettyTheft: 0,
+      percentile25ViolentCrime: 0,
+      percentile75ViolentCrime: 0,
+      percentile25CarTheft: 0,
+      percentile75CarTheft: 0,
     }
   }
 
@@ -23,21 +34,49 @@ export function calculateCrimeStats(data: NeighborhoodGeoJSON): CrimeStats {
   let totalBreakIns = 0
   let totalPettyTheft = 0
 
+  // Collect all values for percentile calculations
+  const violentCrimeValues: number[] = []
+  const carTheftValues: number[] = []
+  const breakInValues: number[] = []
+  const pettyTheftValues: number[] = []
+
   neighborhoods.forEach(({ properties }) => {
     totalViolentCrime += properties.violentCrime
     totalCarTheft += properties.carTheft
     totalBreakIns += properties.breakIns
     totalPettyTheft += properties.pettyTheft
+
+    violentCrimeValues.push(properties.violentCrime)
+    carTheftValues.push(properties.carTheft)
+    breakInValues.push(properties.breakIns)
+    pettyTheftValues.push(properties.pettyTheft)
   })
 
   const totalCrimes = totalViolentCrime + totalCarTheft + totalBreakIns + totalPettyTheft
 
-  // Find safest and most dangerous
-  const sortedByTotal = [...neighborhoods].sort((a, b) => {
-    const totalA = a.properties.violentCrime + a.properties.carTheft + a.properties.breakIns + a.properties.pettyTheft
-    const totalB = b.properties.violentCrime + b.properties.carTheft + b.properties.breakIns + b.properties.pettyTheft
-    return totalA - totalB
+  // Find safest and most dangerous using WEIGHTED scoring (violent crime counts more!)
+  const sortedByWeightedTotal = [...neighborhoods].sort((a, b) => {
+    const weightedA = (a.properties.violentCrime * 3) + (a.properties.carTheft * 2) + a.properties.breakIns + a.properties.pettyTheft
+    const weightedB = (b.properties.violentCrime * 3) + (b.properties.carTheft * 2) + b.properties.breakIns + b.properties.pettyTheft
+    return weightedA - weightedB
   })
+
+  // Calculate percentiles
+  const getPercentile = (sortedValues: number[], percentile: number): number => {
+    const index = Math.ceil((percentile / 100) * sortedValues.length) - 1
+    return sortedValues[Math.max(0, index)]
+  }
+
+  const getMedian = (values: number[]): number => {
+    const sorted = [...values].sort((a, b) => a - b)
+    const mid = Math.floor(sorted.length / 2)
+    return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid]
+  }
+
+  const violentSorted = [...violentCrimeValues].sort((a, b) => a - b)
+  const carTheftSorted = [...carTheftValues].sort((a, b) => a - b)
+  const breakInSorted = [...breakInValues].sort((a, b) => a - b)
+  const pettyTheftSorted = [...pettyTheftValues].sort((a, b) => a - b)
 
   return {
     totalNeighborhoods,
@@ -46,8 +85,17 @@ export function calculateCrimeStats(data: NeighborhoodGeoJSON): CrimeStats {
     avgCarTheft: Math.round(totalCarTheft / totalNeighborhoods),
     avgBreakIns: Math.round(totalBreakIns / totalNeighborhoods),
     avgPettyTheft: Math.round(totalPettyTheft / totalNeighborhoods),
-    safestNeighborhood: sortedByTotal[0]?.properties.name || 'N/A',
-    mostDangerous: sortedByTotal[sortedByTotal.length - 1]?.properties.name || 'N/A',
+    safestNeighborhood: sortedByWeightedTotal[0]?.properties.name || 'N/A',
+    mostDangerous: sortedByWeightedTotal[sortedByWeightedTotal.length - 1]?.properties.name || 'N/A',
+    // Percentiles for context
+    medianViolentCrime: Math.round(getMedian(violentCrimeValues)),
+    medianCarTheft: Math.round(getMedian(carTheftValues)),
+    medianBreakIns: Math.round(getMedian(breakInValues)),
+    medianPettyTheft: Math.round(getMedian(pettyTheftValues)),
+    percentile25ViolentCrime: getPercentile(violentSorted, 25),
+    percentile75ViolentCrime: getPercentile(violentSorted, 75),
+    percentile25CarTheft: getPercentile(carTheftSorted, 25),
+    percentile75CarTheft: getPercentile(carTheftSorted, 75),
   }
 }
 

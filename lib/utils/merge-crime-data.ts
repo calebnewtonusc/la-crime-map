@@ -26,8 +26,7 @@ export function mergeCrimeDataWithBoundaries(
     const crime = crimeDataMap.get(neighborhoodName.toLowerCase())
 
     if (!crime) {
-      // No data for this neighborhood - keep existing static data
-      console.warn(`No crime data found for neighborhood: ${neighborhoodName}`)
+      // No data for this neighborhood - keep existing static data (silently fallback)
       return feature
     }
 

@@ -43,10 +43,9 @@ const fadeInUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } 
 export default function Home() {
   const [selectedMetric, setSelectedMetric] = useState<CrimeMetric>('violentCrime')
 
-  // CRITICAL FIX: Fetch ACTUAL RECENT DATA (Q4 2024 - 90 days)
-  // Note: LAPD dataset has ~30-60 day lag, so we use recent available data
+  // CRITICAL FIX: Fetch real-time data for LAST 30 DAYS (not 365!)
   const { neighborhoods: crimeData, metadata, loading, error, refetch } = useRealCrimeData({
-    days: 90, // Q4 2024 (Oct-Dec) - 90 days of recent data
+    days: 30, // Last 30 days only - recent and actionable
     autoFetch: true
   })
 

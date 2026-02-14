@@ -4,6 +4,7 @@
 
 import { fetchLAPDCrimeData, calculateNeighborhoodStats, getAvailableAreas } from './lapd-api';
 import { laNeighborhoods } from '../data/neighborhoods';
+import { logger } from '../utils/logger';
 
 export interface DataUpdateResult {
   success: boolean;
@@ -15,12 +16,12 @@ export interface DataUpdateResult {
 
 export async function updateNeighborhoodData(): Promise<DataUpdateResult> {
   try {
-    console.log('📡 Fetching real LAPD crime data from data.lacity.org...');
+    logger.info('📡 Fetching real LAPD crime data from data.lacity.org...');
     const incidents = await fetchLAPDCrimeData();
-    console.log(`✓ Fetched ${incidents.length} real crime incidents`);
+    logger.info(`✓ Fetched ${incidents.length} real crime incidents`);
 
     const lapdAreas = getAvailableAreas();
-    console.log(`✓ LAPD areas: ${lapdAreas.join(', ')}`);
+    logger.info(`✓ LAPD areas: ${lapdAreas.join(', ')}`);
 
     let updatedCount = 0;
 
@@ -37,7 +38,7 @@ export async function updateNeighborhoodData(): Promise<DataUpdateResult> {
         feature.properties.dataQualityScore = stats.incidentCount >= 100 ? 1.0 : stats.incidentCount / 100;
         feature.properties.hasSufficientData = stats.incidentCount >= 50;
         updatedCount++;
-        console.log(`✓ ${feature.properties.name}: ${stats.incidentCount} incidents`);
+        logger.info(`✓ ${feature.properties.name}: ${stats.incidentCount} incidents`);
       }
     });
 
@@ -48,7 +49,7 @@ export async function updateNeighborhoodData(): Promise<DataUpdateResult> {
       lastUpdated: new Date().toISOString(),
     };
   } catch (error) {
-    console.error('❌ Error:', error);
+    logger.error('❌ Error:', error);
     return {
       success: false,
       neighborhoodsUpdated: 0,

@@ -44,7 +44,7 @@ export function StatsDashboard({ stats, className = '' }: StatsDashboardProps) {
           <p className="text-xs text-gray-600 dark:text-gray-400">Per month avg</p>
         </motion.div>
 
-        {/* Avg Violent Crime */}
+        {/* Avg Violent Crime with Context */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,10 +56,17 @@ export function StatsDashboard({ stats, className = '' }: StatsDashboardProps) {
             <Shield className="w-5 h-5 text-red-500" />
           </div>
           <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{stats.avgViolentCrime}</p>
-          <p className="text-xs text-gray-600 dark:text-gray-400">Per neighborhood</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400">
+            Per neighborhood • Median: {stats.medianViolentCrime}
+          </p>
+          <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Range: {stats.percentile25ViolentCrime}-{stats.percentile75ViolentCrime} (middle 50%)
+            </p>
+          </div>
         </motion.div>
 
-        {/* Avg Car Theft */}
+        {/* Avg Car Theft with Context */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -71,7 +78,14 @@ export function StatsDashboard({ stats, className = '' }: StatsDashboardProps) {
             <AlertCircle className="w-5 h-5 text-orange-500" />
           </div>
           <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{stats.avgCarTheft}</p>
-          <p className="text-xs text-gray-600 dark:text-gray-400">Per neighborhood</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400">
+            Per neighborhood • Median: {stats.medianCarTheft}
+          </p>
+          <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Range: {stats.percentile25CarTheft}-{stats.percentile75CarTheft} (middle 50%)
+            </p>
+          </div>
         </motion.div>
       </div>
 
