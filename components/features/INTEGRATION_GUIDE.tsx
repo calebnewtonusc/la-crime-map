@@ -1,54 +1,34 @@
+/**
+ * INTEGRATION GUIDE - LA Crime Map Trust Signals
+ *
+ * This file shows exactly how to integrate trust signal components
+ * into your main app/page.tsx file.
+ *
+ * Copy and adapt this code to add credibility features to your LA Crime Map.
+ */
+
 'use client'
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Calculator } from 'lucide-react'
+
+// Trust signal components
+import { DataSources, MethodologyModal, AboutSection } from '@/components/features'
+
+// Your existing components
 import { MainLayout } from '@/components/layout/main-layout'
 import { MapWrapper } from '@/components/map/map-wrapper'
 import { MetricSelector } from '@/components/ui/metric-selector'
 import { StatsDashboard } from '@/components/ui/stats-dashboard'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
-import { AIChatAssistant, AISmartInsights } from '@/components/features'
 import { laNeighborhoods } from '@/lib/data/neighborhoods'
 import { calculateCrimeStats } from '@/lib/utils/crime-stats'
 import { CrimeMetric } from '@/lib/data/types'
 
-// Animation variants following healthcare project patterns
-const pageTransition = {
-  initial: { opacity: 0, y: 20 },
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4 }
-  },
-  exit: {
-    opacity: 0,
-    y: -20,
-    transition: { duration: 0.3 }
-  }
-}
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-}
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 }
-  }
-}
-
-export default function Home() {
+export default function HomeWithTrustSignals() {
   const [selectedMetric, setSelectedMetric] = useState<CrimeMetric>('violentCrime')
+  const [methodologyOpen, setMethodologyOpen] = useState(false)
 
   // Calculate statistics from neighborhood data
   const stats = calculateCrimeStats(laNeighborhoods)
@@ -57,17 +37,12 @@ export default function Home() {
     <ErrorBoundary>
       <MainLayout>
         <motion.div
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={pageTransition}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="min-h-screen"
         >
           {/* Hero Section */}
-          <motion.section
-            className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-dark-bg-primary dark:via-dark-bg-secondary dark:to-dark-bg-primary py-16 px-4 sm:px-6 lg:px-8"
-            variants={fadeInUp}
-          >
+          <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-dark-bg-primary dark:via-dark-bg-secondary dark:to-dark-bg-primary py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
               <motion.div
                 className="text-center space-y-4 mb-8"
@@ -81,9 +56,14 @@ export default function Home() {
                 <p className="text-lg sm:text-xl text-gray-300 dark:text-dark-text-secondary max-w-3xl mx-auto">
                   Visualize crime data across Los Angeles neighborhoods with interactive maps and real-time statistics
                 </p>
+
+                {/* TRUST SIGNAL 1: Compact Data Badge */}
+                <div className="flex justify-center pt-4">
+                  <DataSources compact />
+                </div>
               </motion.div>
             </div>
-          </motion.section>
+          </section>
 
           {/* Main Content */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -96,17 +76,6 @@ export default function Home() {
             >
               <StatsDashboard stats={stats} />
             </motion.div>
-
-            {/* AI Smart Insights */}
-            {process.env.NEXT_PUBLIC_ENABLE_AI_FEATURES === 'true' && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, duration: 0.5 }}
-              >
-                <AISmartInsights />
-              </motion.div>
-            )}
 
             {/* Metric Selector */}
             <motion.div
@@ -145,12 +114,42 @@ export default function Home() {
               </div>
             </motion.div>
 
+            {/* TRUST SIGNAL 2: Methodology Link */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800 rounded-xl p-6"
+            >
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg">
+                    <Calculator className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-purple-900 dark:text-purple-100">
+                      How are safety scores calculated?
+                    </h3>
+                    <p className="text-sm text-purple-700 dark:text-purple-300">
+                      View our transparent methodology with formulas and weighting factors
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setMethodologyOpen(true)}
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors text-sm"
+                >
+                  View Methodology
+                </button>
+              </div>
+            </motion.div>
+
             {/* Information Cards */}
             <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               <InfoCard
                 title="Real-time Data"
@@ -182,12 +181,30 @@ export default function Home() {
               />
             </motion.div>
 
+            {/* TRUST SIGNAL 3: Full Data Sources Card (Optional) */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+            >
+              <DataSources />
+            </motion.div>
+
+            {/* TRUST SIGNAL 4: About Section */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              <AboutSection />
+            </motion.div>
+
             {/* Safety Notice */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6 mt-8"
+              transition={{ delay: 0.9 }}
+              className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6"
             >
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0">
@@ -209,8 +226,13 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* AI Chat Assistant - Floating button */}
-        {process.env.NEXT_PUBLIC_ENABLE_CHAT === 'true' && <AIChatAssistant />}
+        {/* TRUST SIGNAL 5: Methodology Modal */}
+        <MethodologyModal
+          isOpen={methodologyOpen}
+          onClose={() => setMethodologyOpen(false)}
+        />
+
+        {/* Note: Footer is automatically included in MainLayout */}
       </MainLayout>
     </ErrorBoundary>
   )
@@ -226,7 +248,6 @@ interface InfoCardProps {
 function InfoCard({ title, description, icon }: InfoCardProps) {
   return (
     <motion.div
-      variants={fadeInUp}
       whileHover={{
         y: -4,
         transition: { type: 'spring', stiffness: 400, damping: 17 }
@@ -247,3 +268,23 @@ function InfoCard({ title, description, icon }: InfoCardProps) {
     </motion.div>
   )
 }
+
+/**
+ * INTEGRATION CHECKLIST:
+ *
+ * ✓ Import trust signal components at the top
+ * ✓ Add state for methodology modal
+ * ✓ Add compact DataSources badge in hero section
+ * ✓ Add methodology link/button with call-to-action
+ * ✓ Add full DataSources card (optional, can be on separate page)
+ * ✓ Add AboutSection near bottom of page
+ * ✓ Add MethodologyModal component with state controls
+ * ✓ Footer is already integrated in MainLayout (no action needed)
+ *
+ * CUSTOMIZATION NEEDED:
+ * - Update GitHub URLs in AboutSection and Footer
+ * - Update contact email addresses
+ * - Adjust positioning/ordering based on your design
+ * - Add/remove sections as needed for your layout
+ * - Connect live data API for real-time updates
+ */
