@@ -88,13 +88,14 @@ export default function Home() {
             initial="hidden"
             animate="visible"
             variants={heroVariants}
-            className="relative overflow-hidden bg-gradient-to-br from-la-night-dark via-la-sunset-purple to-la-night-base py-16 sm:py-24 lg:py-32"
+            style={{ background: 'linear-gradient(to bottom right, #0a0e1a 0%, #9D4EDD 50%, #131827 100%)' }}
+            className="relative overflow-hidden py-16 sm:py-24 lg:py-32"
           >
             {/* Animated gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-la-sunset-orange/20 via-transparent to-la-sunset-pink/20 animate-pulse" style={{ animationDuration: '4s' }} />
+            <div className="absolute inset-0 animate-pulse" style={{ background: 'linear-gradient(to top right, rgba(255,107,53,0.2) 0%, transparent 50%, rgba(255,46,151,0.2) 100%)', animationDuration: '4s' }} />
 
             {/* Grid pattern overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+            <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '4rem 4rem' }} />
 
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center space-y-8 max-w-4xl mx-auto">
@@ -104,7 +105,7 @@ export default function Home() {
                   className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight tracking-tight"
                 >
                   Make Smarter Moving Decisions
-                  <span className="block mt-2 bg-gradient-to-r from-la-sunset-orange via-la-sunset-pink to-la-sunset-purple bg-clip-text text-transparent">
+                  <span className="block mt-2 text-white" style={{ background: 'linear-gradient(to right, #FF6B35, #FF2E97, #9D4EDD)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                     With Real LA Crime Data
                   </span>
                 </motion.h1>
@@ -112,7 +113,8 @@ export default function Home() {
                 {/* Value proposition */}
                 <motion.p
                   variants={fadeInUp}
-                  className="text-xl sm:text-2xl text-gray-200 leading-relaxed max-w-3xl mx-auto font-light"
+                  className="text-xl sm:text-2xl leading-relaxed max-w-3xl mx-auto font-light"
+                  style={{ color: 'rgba(255, 255, 255, 0.9)' }}
                 >
                   Visualize neighborhood safety across Los Angeles. Compare crime statistics, explore interactive maps, and find the perfect area for your lifestyle.
                 </motion.p>
@@ -124,14 +126,16 @@ export default function Home() {
                 >
                   <a
                     href="#explore-map"
-                    className="group relative px-8 py-4 bg-gradient-to-r from-la-sunset-orange to-la-sunset-pink text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[200px] text-center"
+                    style={{ background: 'linear-gradient(to right, #FF6B35, #FF2E97)' }}
+                    className="group relative px-8 py-4 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[200px] text-center"
                   >
                     <span className="relative z-10">Explore Map</span>
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-la-sunset-pink to-la-sunset-orange opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(to right, #FF2E97, #FF6B35)' }} />
                   </a>
                   <a
                     href="#how-it-works"
-                    className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl border-2 border-white/20 hover:bg-white/20 transition-all duration-300 min-w-[200px] text-center"
+                    className="px-8 py-4 text-white font-semibold rounded-xl border-2 transition-all duration-300 min-w-[200px] text-center"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', borderColor: 'rgba(255,255,255,0.2)' }}
                   >
                     How It Works
                   </a>
@@ -140,22 +144,23 @@ export default function Home() {
                 {/* Trust signals */}
                 <motion.div
                   variants={fadeInUp}
-                  className="flex flex-wrap justify-center items-center gap-8 pt-8 text-gray-300"
+                  className="flex flex-wrap justify-center items-center gap-8 pt-8"
+                  style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                 >
                   <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-la-sunset-gold" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5" style={{ color: '#FFB020' }} fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                     <span className="text-sm font-medium">Official LAPD Data</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-la-sunset-gold" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5" style={{ color: '#FFB020' }} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                     <span className="text-sm font-medium">Updated Regularly</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-la-sunset-gold" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5" style={{ color: '#FFB020' }} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                     <span className="text-sm font-medium">100% Free</span>
@@ -342,8 +347,8 @@ export default function Home() {
           </div>
 
           {/* Final CTA Section */}
-          <div className="py-16 sm:py-24 bg-gradient-to-br from-la-night-dark via-la-sunset-purple to-la-night-base relative overflow-hidden">
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+          <div className="py-16 sm:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(to bottom right, #0a0e1a, #9D4EDD, #131827)' }}>
+            <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '4rem 4rem' }} />
 
             <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <motion.div
@@ -356,12 +361,13 @@ export default function Home() {
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
                   Ready to Find Your Perfect Neighborhood?
                 </h2>
-                <p className="text-xl text-gray-200 max-w-2xl mx-auto">
+                <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                   Start exploring LA crime data now and make your next move with confidence
                 </p>
                 <a
                   href="#explore-map"
-                  className="inline-block px-10 py-5 bg-gradient-to-r from-la-sunset-orange to-la-sunset-pink text-white text-lg font-semibold rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105"
+                  style={{ background: 'linear-gradient(to right, #FF6B35, #FF2E97)' }}
+                  className="inline-block px-10 py-5 text-white text-lg font-semibold rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105"
                 >
                   Get Started Free
                 </a>
