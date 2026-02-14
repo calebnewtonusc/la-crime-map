@@ -348,116 +348,43 @@ function App() {
       {/* Onboarding Modal */}
       <OnboardingModal isOpen={showOnboarding} onClose={handleOnboardingClose} />
 
-      {/* Header */}
+      {/* SIMPLE HEADER - All in one row */}
       <div className="header">
         <div className="header-content">
           <div className="header-left">
             <div className="brand-logo">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
               </svg>
             </div>
             <div className="header-text">
               <h1>LA Crime Map</h1>
-              <p className="header-subtitle">Data-driven neighborhood safety insights</p>
             </div>
           </div>
 
           <div className="header-actions">
-            <button
-              className="icon-button"
-              onClick={() => setShowOnboarding(true)}
-              title="How to use this tool"
-              aria-label="Show tutorial"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </button>
+            {/* Metric Selector - Compact */}
+            {(Object.keys(metricLabels) as CrimeMetric[]).map(metric => (
+              <button
+                key={metric}
+                className={`metric-button ${selectedMetric === metric ? 'active' : ''}`}
+                onClick={() => setSelectedMetric(metric)}
+                title={metricLabels[metric]}
+              >
+                {metricLabels[metric]}
+              </button>
+            ))}
+
             <button
               className="icon-button theme-toggle"
               onClick={toggleTheme}
               title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
               aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
             >
-              {theme === 'light' ? (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-              ) : (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              )}
+              {theme === 'light' ? '🌙' : '☀️'}
             </button>
           </div>
         </div>
-
-        {/* Data source info with quality badge */}
-        <div className="data-source-info">
-          {loading ? (
-            <span className="loading-indicator">Loading data...</span>
-          ) : error ? (
-            <span className="error-indicator">Failed to load data</span>
-          ) : (
-            <>
-              <DataQualityBadge
-                confidence="high"
-                lastUpdated={new Date().toLocaleDateString()}
-                showDetails={false}
-              />
-              <span className="data-source-text">{dataSource}</span>
-              <button
-                className="text-button"
-                onClick={handleRefreshData}
-                title="Clear cache and refresh data"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Refresh
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Trust signals */}
-        <div className="trust-signals">
-          <div className="trust-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Official LAPD Data</span>
-          </div>
-          <div className="trust-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Colorblind Accessible</span>
-          </div>
-          <div className="trust-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Updated Daily</span>
-          </div>
-        </div>
-      </div>
-
-      {/* View Mode Tabs */}
-      <div className="view-mode-tabs">
-        <button
-          className={`tab-button ${viewMode === 'map' ? 'active' : ''}`}
-          onClick={() => setViewMode('map')}
-        >
-          Map View
-        </button>
-        <button
-          className={`tab-button ${viewMode === 'analytics' ? 'active' : ''}`}
-          onClick={() => setViewMode('analytics')}
-        >
-          Analytics Dashboard
-        </button>
       </div>
 
       {/* Error State */}
@@ -477,111 +404,6 @@ function App() {
         />
       ) : !error ? (
         <>
-          <div className="controls-container">
-            {/* Search Bar */}
-            <div className="search-bar">
-              <input
-                type="text"
-                placeholder="Search neighborhoods..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
-              />
-              {searchQuery && (
-                <button
-                  className="clear-search"
-                  onClick={() => setSearchQuery('')}
-                  title="Clear search"
-                >
-                  ×
-                </button>
-              )}
-            </div>
-
-            {/* Date Range Selector */}
-            <div className="date-range-selector">
-              <label htmlFor="date-range">Time Period:</label>
-              <select
-                id="date-range"
-                value={dateRange}
-                onChange={(e) => setDateRange(e.target.value as DateRange)}
-                className="date-select"
-                aria-label="Select time period for crime data"
-              >
-                <option value="1week">Last Week</option>
-                <option value="1month">Last Month</option>
-                <option value="3months">Last 3 Months</option>
-                <option value="1year">Last Year</option>
-              </select>
-            </div>
-
-            {/* Advanced Filters Toggle */}
-            <button
-              className="advanced-filters-toggle"
-              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-              aria-expanded={showAdvancedFilters}
-              aria-controls="advanced-filters"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-              </svg>
-              {showAdvancedFilters ? 'Hide' : 'More'} Filters
-            </button>
-
-            {/* Advanced Filters - Hidden by default */}
-            {showAdvancedFilters && (
-              <div id="advanced-filters" className="advanced-filters">
-                {/* Severity Threshold Filter */}
-                <div className="severity-filter">
-                  <label htmlFor="severity-slider">
-                    Min Crimes/Week: {severityThreshold}
-                    <span className="help-tooltip" title="Filter out neighborhoods with fewer crimes per week than this value">?</span>
-                  </label>
-                  <input
-                    id="severity-slider"
-                    type="range"
-                    min="0"
-                    max="50"
-                    step="1"
-                    value={severityThreshold}
-                    onChange={(e) => setSeverityThreshold(Number(e.target.value))}
-                    className="severity-slider"
-                    aria-label={`Minimum severity threshold: ${severityThreshold} crimes per week`}
-                    aria-valuemin={0}
-                    aria-valuemax={50}
-                    aria-valuenow={severityThreshold}
-                  />
-                </div>
-
-                {/* Sort Options */}
-                <div className="sort-selector">
-                  <label htmlFor="sort-by">Sort By:</label>
-                  <select
-                    id="sort-by"
-                    value={sortOption}
-                    onChange={(e) => setSortOption(e.target.value as SortOption)}
-                    className="sort-select"
-                    aria-label="Sort neighborhoods by"
-                  >
-                    <option value="crimeRate">Highest Crime First</option>
-                    <option value="alphabetical">Alphabetical (A-Z)</option>
-                  </select>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="metric-selector">
-            {(Object.keys(metricLabels) as CrimeMetric[]).map(metric => (
-              <button
-                key={metric}
-                className={selectedMetric === metric ? 'active' : ''}
-                onClick={() => setSelectedMetric(metric)}
-              >
-                {metricLabels[metric]}
-              </button>
-            ))}
-          </div>
 
           <div className="map-container">
             <Suspense fallback={<MapSkeleton />}>
