@@ -21,7 +21,7 @@ interface SearchBarProps {
 
 export function SearchBar({
   onSelect,
-  placeholder = 'Search neighborhoods...',
+  placeholder = "Try 'Silver Lake' or 'Culver City'...",
   className = '',
   showPopularSearches = true
 }: SearchBarProps) {

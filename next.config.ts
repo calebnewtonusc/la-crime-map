@@ -38,6 +38,36 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Cache GeoJSON files for 1 week
+      {
+        source: '/data/:path*.geojson',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=604800, stale-while-revalidate=86400',
+          },
+        ],
+      },
+      // Cache static assets for 1 year
+      {
+        source: '/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache images for 1 month
+      {
+        source: '/:path*.(jpg|jpeg|png|gif|webp|svg|ico)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000, stale-while-revalidate=86400',
+          },
+        ],
+      },
     ];
   },
 };

@@ -50,7 +50,7 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-dark-bg-secondary hover:bg-gray-200 dark:hover:bg-dark-bg-tertiary transition-colors"
+                className="min-w-touch min-h-touch p-3 rounded-lg bg-gray-100 dark:bg-dark-bg-secondary hover:bg-gray-200 dark:hover:bg-dark-bg-tertiary transition-colors flex items-center justify-center"
                 aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               >
                 {theme === 'dark' ? (
@@ -69,7 +69,7 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-dark-bg-secondary"
+                className="min-w-touch min-h-touch p-3 rounded-lg bg-gray-100 dark:bg-dark-bg-secondary flex items-center justify-center"
                 aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               >
                 {theme === 'dark' ? (
@@ -84,7 +84,7 @@ export function Header({ onMobileMenuToggle, mobileMenuOpen }: HeaderProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onMobileMenuToggle}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-dark-bg-secondary"
+                className="min-w-touch min-h-touch p-3 rounded-lg bg-gray-100 dark:bg-dark-bg-secondary flex items-center justify-center"
                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={mobileMenuOpen}
               >

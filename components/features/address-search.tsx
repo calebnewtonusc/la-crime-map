@@ -93,7 +93,7 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
   // Handle search
   const handleSearch = useCallback(async (address: string) => {
     if (!address.trim()) {
-      setError('Please enter an address')
+      setError('Please enter an address to get started')
       return
     }
 
@@ -105,7 +105,7 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
       const result = await geocodeAddress(address)
 
       if (!result) {
-        setError('Address not found. Please try a different address or be more specific.')
+        setError('We couldn\'t find that address. Try being more specific or use a nearby street name.')
         setIsSearching(false)
         return
       }
@@ -115,7 +115,7 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
       const isInLA = lat >= 33.7 && lat <= 34.8 && lon >= -118.7 && lon <= -117.6
 
       if (!isInLA) {
-        setError('This address appears to be outside Los Angeles County. Please enter an LA address.')
+        setError('That location is outside LA County. We only have data for Los Angeles area addresses right now.')
         setIsSearching(false)
         return
       }
@@ -135,7 +135,7 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
       onLocationFound?.(searchResultData)
     } catch (err) {
       console.error('Search error:', err)
-      setError('Failed to search address. Please try again.')
+      setError('Something went wrong on our end. Please try again in a moment.')
     } finally {
       setIsSearching(false)
     }
@@ -217,7 +217,7 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setShowHistory(searchHistory.length > 0)}
-              placeholder="Enter your address (e.g., 123 Main St, Los Angeles, CA)"
+              placeholder="Try '1234 Sunset Blvd' or 'Silver Lake'..."
               disabled={isSearching}
               className="w-full pl-14 pr-32 py-4 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl
                        bg-white dark:bg-dark-bg-secondary text-gray-900 dark:text-dark-text-primary
@@ -254,9 +254,9 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
                        disabled:opacity-50 disabled:cursor-not-allowed
                        shadow-lg hover:shadow-xl
                        touch-manipulation min-h-[48px]"
-              aria-label="Search"
+              aria-label="Get Safety Report"
             >
-              Search
+              Get Safety Report
             </button>
           </div>
         </form>
@@ -318,7 +318,7 @@ export function AddressSearch({ onLocationFound, className = '' }: AddressSearch
                           flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-red-900 dark:text-red-300 mb-1">Search Error</h3>
+                <h3 className="font-semibold text-red-900 dark:text-red-300 mb-1">Hmm, we couldn't find that</h3>
                 <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
               </div>
             </div>

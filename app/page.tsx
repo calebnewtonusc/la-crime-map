@@ -1,16 +1,35 @@
 'use client'
 
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import { MainLayout } from '@/components/layout/main-layout'
 import { MapWrapper } from '@/components/map/map-wrapper'
 import { MetricSelector } from '@/components/ui/metric-selector'
 import { StatsDashboard } from '@/components/ui/stats-dashboard'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
-import { AIChatAssistant, AISmartInsights } from '@/components/features'
 import { laNeighborhoods } from '@/lib/data/neighborhoods'
 import { calculateCrimeStats } from '@/lib/utils/crime-stats'
 import { CrimeMetric } from '@/lib/data/types'
+
+// Dynamic imports for AI features (loaded only when needed - reduces initial bundle by ~125KB)
+const AIChatAssistant = dynamic(() => import('@/components/features').then(mod => ({ default: mod.AIChatAssistant })), {
+  ssr: false,
+  loading: () => null
+})
+
+const AISmartInsights = dynamic(() => import('@/components/features').then(mod => ({ default: mod.AISmartInsights })), {
+  ssr: false,
+  loading: () => (
+    <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 animate-pulse">
+      <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
+      <div className="space-y-3">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+      </div>
+    </div>
+  )
+})
 
 // Animation variants following healthcare project patterns
 const pageTransition = {
@@ -65,28 +84,23 @@ export default function Home() {
         >
           {/* Hero Section */}
           <motion.section
-            className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-dark-bg-primary dark:via-dark-bg-secondary dark:to-dark-bg-primary py-16 px-4 sm:px-6 lg:px-8"
+            className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-la-night-dark dark:via-la-night-base dark:to-la-night-dark py-12 px-4 sm:px-6 lg:px-8"
             variants={fadeInUp}
           >
             <div className="max-w-7xl mx-auto">
-              <motion.div
-                className="text-center space-y-4 mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-neon-cyan via-blue-400 to-neon-purple bg-clip-text text-transparent">
-                  LA Crime Map
+              <div className="text-center space-y-6">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white dark:text-dark-text-primary">
+                  Find Your Safe Haven in LA
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-300 dark:text-dark-text-secondary max-w-3xl mx-auto">
-                  Visualize crime data across Los Angeles neighborhoods with interactive maps and real-time statistics
+                  Explore neighborhood safety data to make confident decisions
                 </p>
-              </motion.div>
+              </div>
             </div>
           </motion.section>
 
           {/* Main Content */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-6">
 
             {/* Stats Dashboard */}
             <motion.div
@@ -137,7 +151,7 @@ export default function Home() {
                   Click on neighborhoods to view detailed information
                 </p>
               </div>
-              <div className="h-[600px] sm:h-[700px] lg:h-[800px]">
+              <div className="h-[400px] sm:h-[600px] md:h-[700px] lg:h-[800px]">
                 <MapWrapper
                   data={laNeighborhoods}
                   selectedMetric={selectedMetric}
@@ -145,41 +159,50 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Information Cards */}
+            {/* How It Works Section */}
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
+              className="mt-12"
             >
-              <InfoCard
-                title="Real-time Data"
-                description="Access up-to-date crime statistics from official LA sources"
-                icon={
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                }
-              />
-              <InfoCard
-                title="Interactive Visualization"
-                description="Explore crime patterns with our intuitive map interface"
-                icon={
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                  </svg>
-                }
-              />
-              <InfoCard
-                title="Comprehensive Coverage"
-                description="Data from 35+ neighborhoods across LA County"
-                icon={
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                }
-              />
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
+                  How It Works
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-dark-text-secondary max-w-2xl mx-auto">
+                  Three simple steps to understand your neighborhood safety
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <InfoCard
+                  title="1. Search Your Area"
+                  description="Enter any LA address or browse the interactive map to explore neighborhoods"
+                  icon={
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  }
+                />
+                <InfoCard
+                  title="2. Review Safety Data"
+                  description="See clear safety scores and crime breakdowns based on official LA data"
+                  icon={
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  }
+                />
+                <InfoCard
+                  title="3. Make Your Decision"
+                  description="Compare neighborhoods side-by-side and find the perfect place for you"
+                  icon={
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  }
+                />
+              </div>
             </motion.div>
 
             {/* Safety Notice */}
@@ -197,11 +220,11 @@ export default function Home() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-300 mb-2">
-                    Data Disclaimer
+                    A Note About Our Data
                   </h3>
                   <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed">
-                    This map is for informational purposes only. Crime statistics are simplified and may not reflect current conditions.
-                    Always consult official sources and local authorities for the most accurate and up-to-date information about neighborhood safety.
+                    We compile data from official LA sources to help you understand neighborhood trends. Remember that safety is personal and
+                    depends on many factors. Use this as one helpful tool in your decision-making process.
                   </p>
                 </div>
               </div>

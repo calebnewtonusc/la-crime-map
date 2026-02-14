@@ -40,20 +40,15 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
   return (
     <div className="space-y-6">
       {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {metrics.map((metric) => (
           <MetricCard key={metric.label} {...metric} />
         ))}
       </div>
 
       {/* Neighborhood Highlights */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-xl p-6"
-        >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-green-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-2">
             <div className="bg-green-500 p-2 rounded-lg">
               <TrendingDown className="w-5 h-5 text-white" />
@@ -68,14 +63,9 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
           <p className="text-sm text-gray-600 dark:text-dark-text-tertiary mt-1">
             Lowest overall crime rate
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6"
-        >
+        <div className="bg-red-50 dark:from-red-900/20 dark:to-rose-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-2">
             <div className="bg-red-500 p-2 rounded-lg">
               <TrendingUp className="w-5 h-5 text-white" />
@@ -90,7 +80,7 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
           <p className="text-sm text-gray-600 dark:text-dark-text-tertiary mt-1">
             Highest overall crime rate
           </p>
-        </motion.div>
+        </div>
       </div>
     </div>
   )

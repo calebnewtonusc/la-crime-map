@@ -16,7 +16,7 @@
 }
 
 .dark {
-  --background: #0f172a;
+  --background: #0a0e1a;
   --foreground: #f8fafc;
 }
 
@@ -31,8 +31,8 @@ body {
   position: absolute;
   top: -100px;
   left: 0;
-  background: #00f5ff;
-  color: #0f172a;
+  background: #FF6B35;
+  color: #0a0e1a;
   padding: 0.5rem 1rem;
   text-decoration: none;
   font-weight: 600;
@@ -46,17 +46,55 @@ body {
 
 /* Leaflet overrides for dark mode */
 .dark .leaflet-container {
-  background: #1e293b;
+  background: #131827;
 }
 
 .dark .leaflet-popup-content-wrapper {
-  background: #1e293b;
+  background: #131827;
   color: #f8fafc;
-  border: 1px solid #334155;
+  border: 1px solid #1e293b;
 }
 
 .dark .leaflet-popup-tip {
-  background: #1e293b;
+  background: #131827;
+}
+
+/* Mobile-optimized Leaflet popup close button */
+@media (max-width: 768px) {
+  .leaflet-popup-close-button {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 24px !important;
+    line-height: 44px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 12px !important;
+  }
+
+  .leaflet-popup-content {
+    margin: 8px !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Larger zoom control buttons on mobile */
+  .leaflet-control-zoom a {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+    font-size: 22px !important;
+  }
+
+  .leaflet-touch .leaflet-bar a {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+  }
 }
 
 /* Custom scrollbar */
@@ -84,4 +122,44 @@ body {
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #64748b;
+}
+
+/* Mobile-optimized typography */
+body {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  /* Ensure minimum 16px font size on mobile to prevent zoom on input focus */
+  body {
+    font-size: 16px;
+  }
+
+  /* Ensure all text elements are readable */
+  p, li, td, th, label, input, textarea, select, button {
+    font-size: 16px;
+  }
+
+  /* Allow larger headings to scale down appropriately */
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  /* Small text should still be readable */
+  .text-xs {
+    font-size: 0.875rem;
+  }
+
+  .text-sm {
+    font-size: 1rem;
+  }
 }

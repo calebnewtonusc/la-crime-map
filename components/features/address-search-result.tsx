@@ -39,7 +39,7 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
     if (score >= 75) {
       return {
         score,
-        rating: 'Very Safe',
+        rating: 'Great Choice',
         color: 'green',
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-700 dark:text-green-300',
@@ -49,7 +49,7 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
     } else if (score >= 50) {
       return {
         score,
-        rating: 'Moderately Safe',
+        rating: 'Solid Option',
         color: 'blue',
         bgColor: 'bg-blue-100 dark:bg-blue-900/30',
         textColor: 'text-blue-700 dark:text-blue-300',
@@ -59,7 +59,7 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
     } else if (score >= 30) {
       return {
         score,
-        rating: 'Exercise Caution',
+        rating: 'Know Your Area',
         color: 'yellow',
         bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
         textColor: 'text-yellow-700 dark:text-yellow-300',
@@ -69,7 +69,7 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
     } else {
       return {
         score,
-        rating: 'High Crime Area',
+        rating: 'Stay Alert',
         color: 'red',
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-700 dark:text-red-300',
@@ -95,23 +95,23 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
 
     if (score >= 75) {
       return {
-        title: 'Generally Safe Area',
-        description: 'This neighborhood has lower crime rates compared to LA County averages. Residents typically report feeling safe, though standard urban precautions are always recommended.'
+        title: 'You picked a winner',
+        description: 'This neighborhood has lower crime rates than most of LA County. Many residents feel comfortable here and enjoy their community. Like anywhere in a big city, stay aware of your surroundings.'
       }
     } else if (score >= 50) {
       return {
-        title: 'Average Safety Level',
-        description: 'This neighborhood has crime rates close to LA County averages. While generally safe, be mindful of your surroundings and take standard safety precautions, especially at night.'
+        title: 'Right in the middle',
+        description: 'This area has crime rates similar to the LA County average. It\'s a typical urban neighborhood where being aware and taking standard precautions goes a long way.'
       }
     } else if (score >= 30) {
       return {
-        title: 'Higher Crime Than Average',
-        description: 'This neighborhood has elevated crime rates compared to LA County averages. Exercise extra caution, especially after dark. Be aware of your surroundings and secure your property.'
+        title: 'Get to know your block',
+        description: 'Crime rates here are above average, but many residents love their community. Take time to learn your specific streets, connect with neighbors, and stay aware - especially at night.'
       }
     } else {
       return {
-        title: 'Significant Safety Concerns',
-        description: 'This neighborhood has notably higher crime rates. Residents should take extra security measures, avoid walking alone at night, and be vigilant about personal and property safety.'
+        title: 'Extra awareness helps here',
+        description: 'This area has higher crime rates. If you choose to live here, get to know your immediate surroundings well, build relationships with neighbors, and take security seriously. Many people still call it home.'
       }
     }
   }
@@ -229,7 +229,7 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
           className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg"
         >
           <h3 className="text-xl font-bold text-gray-900 dark:text-dark-text-primary mb-4">
-            Crime Breakdown
+            See Full Crime Breakdown
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {crimeTypes.map(({ metric, label, icon: Icon }) => {
@@ -285,7 +285,7 @@ export function AddressSearchResult({ result }: AddressSearchResultProps) {
                    border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg"
       >
         <h3 className="text-xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
-          Is it safe?
+          What should I know?
         </h3>
         <h4 className="text-lg font-semibold text-neon-cyan mb-2">
           {verdict.title}

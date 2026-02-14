@@ -40,16 +40,16 @@ export class ErrorBoundary extends Component<Props, State> {
               <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-400" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
-              Something went wrong
+              Oops, something hiccuped
             </h2>
             <p className="text-gray-600 dark:text-dark-text-secondary mb-4">
-              {this.state.error?.message || 'An unexpected error occurred'}
+              We hit a snag loading this page. A quick refresh should get things back on track.
             </p>
             <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 bg-neon-cyan text-white rounded-lg hover:bg-neon-cyan/90 transition-colors"
             >
-              Reload page
+              Refresh Page
             </button>
           </div>
         </div>
@@ -68,17 +68,17 @@ export function ErrorState({ message, onRetry }: { message?: string; onRetry?: (
           <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-400" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
-          Error loading data
+          We couldn't load that
         </h2>
         <p className="text-gray-600 dark:text-dark-text-secondary mb-4">
-          {message || 'Failed to load crime data. Please try again.'}
+          {message || 'Having trouble loading the data right now. Give it another shot?'}
         </p>
         {onRetry && (
           <button
             onClick={onRetry}
             className="px-4 py-2 bg-neon-cyan text-white rounded-lg hover:bg-neon-cyan/90 transition-colors"
           >
-            Try again
+            Try Again
           </button>
         )}
       </div>

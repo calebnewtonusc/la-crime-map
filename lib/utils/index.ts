@@ -32,5 +32,18 @@ export {
 // Crime statistics utilities
 export { calculateCrimeStats } from './crime-stats';
 
+// Safety scoring utilities
+export {
+  type LetterGrade,
+  type SafetyScore,
+  type ComparisonMetrics,
+  calculateSafetyScore,
+  getLetterGrade,
+  getSafetyScore,
+  getComparisonMetrics,
+  getMetricComparison,
+  getCrimeTooltip,
+} from './safety-scoring';
+
 // Neighborhood data initialization
 export { createNeighborhoodData } from './neighborhood-initializer';

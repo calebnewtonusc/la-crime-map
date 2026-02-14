@@ -119,10 +119,10 @@ export function FilterPanel({
                   e.stopPropagation()
                   handleReset()
                 }}
-                className="p-1 text-gray-600 hover:text-gray-900 dark:text-dark-text-secondary dark:hover:text-dark-text-primary transition-colors"
+                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:text-gray-900 dark:text-dark-text-secondary dark:hover:text-dark-text-primary transition-colors"
                 aria-label="Reset filters"
               >
-                <RotateCcw className="w-4 h-4" aria-hidden="true" />
+                <RotateCcw className="w-5 h-5" aria-hidden="true" />
               </motion.button>
             )}
 
@@ -168,7 +168,7 @@ export function FilterPanel({
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleCrimeTypeToggle(option.value)}
-                        className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all text-left ${
+                        className={`flex items-center gap-3 p-3 min-h-touch rounded-lg border-2 transition-all text-left ${
                           isSelected
                             ? 'border-neon-cyan bg-neon-cyan/10 dark:border-neon-purple dark:bg-neon-purple/10'
                             : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
@@ -184,11 +184,11 @@ export function FilterPanel({
                               : 'bg-gray-100 dark:bg-dark-bg-tertiary text-gray-600 dark:text-dark-text-secondary'
                           }`}
                         >
-                          <Icon className="w-4 h-4" aria-hidden="true" />
+                          <Icon className="w-5 h-5" aria-hidden="true" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div
-                            className={`text-sm font-medium ${
+                            className={`text-base sm:text-sm font-medium ${
                               isSelected
                                 ? 'text-gray-900 dark:text-dark-text-primary'
                                 : 'text-gray-700 dark:text-dark-text-secondary'
@@ -196,7 +196,7 @@ export function FilterPanel({
                           >
                             {option.label}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-dark-text-tertiary truncate">
+                          <div className="text-sm sm:text-xs text-gray-500 dark:text-dark-text-tertiary truncate">
                             {option.description}
                           </div>
                         </div>
@@ -224,7 +224,7 @@ export function FilterPanel({
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleDateRangeChange(option.value)}
-                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        className={`px-4 py-3 min-h-touch rounded-lg text-base sm:text-sm font-medium transition-all flex items-center justify-center ${
                           isSelected
                             ? 'bg-neon-cyan text-white dark:bg-neon-purple'
                             : 'bg-gray-100 text-gray-700 dark:bg-dark-bg-tertiary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700'
@@ -312,7 +312,7 @@ export function FilterPanel({
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     onClick={() => onChange({ ...filters, showOnlySufficientData: !filters.showOnlySufficientData })}
-                    className={`relative w-12 h-6 rounded-full transition-colors ${
+                    className={`relative w-14 h-8 rounded-full transition-colors min-w-[56px] min-h-[32px] ${
                       filters.showOnlySufficientData
                         ? 'bg-neon-cyan dark:bg-neon-purple'
                         : 'bg-gray-300 dark:bg-gray-700'
@@ -322,9 +322,9 @@ export function FilterPanel({
                     aria-label="Toggle sufficient data filter"
                   >
                     <motion.div
-                      animate={{ x: filters.showOnlySufficientData ? 24 : 2 }}
+                      animate={{ x: filters.showOnlySufficientData ? 28 : 2 }}
                       transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-md"
+                      className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-md"
                     />
                   </motion.button>
                 </label>

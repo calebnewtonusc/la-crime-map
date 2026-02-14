@@ -383,13 +383,13 @@ export function NeighborhoodCompare({
             Compare Neighborhoods
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-            Select 2-4 neighborhoods to compare safety scores, crime rates, and get personalized recommendations
+            Pick 2-4 neighborhoods to see them side-by-side and find your best fit
           </p>
           <button
             onClick={() => setIsOpen(true)}
             className="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-neon-purple/50 transition-all"
           >
-            Start Comparing
+            Compare Side-by-Side
           </button>
         </div>
       </motion.div>
@@ -409,7 +409,7 @@ export function NeighborhoodCompare({
             Neighborhood Comparison
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
-            Compare up to 4 neighborhoods side-by-side
+            See how up to 4 neighborhoods stack up against each other
           </p>
         </div>
         <div className="flex gap-2">

@@ -56,7 +56,7 @@ export function MapSkeleton() {
           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
           className="w-12 h-12 border-4 border-neon-cyan border-t-transparent rounded-full mx-auto mb-4"
         />
-        <p className="text-gray-600 dark:text-dark-text-secondary">Loading map...</p>
+        <p className="text-gray-600 dark:text-dark-text-secondary">Getting your map ready...</p>
       </div>
     </div>
   )

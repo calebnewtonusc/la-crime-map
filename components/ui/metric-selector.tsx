@@ -21,44 +21,39 @@ const metrics: CrimeMetric[] = ['violentCrime', 'carTheft', 'breakIns', 'pettyTh
 
 export function MetricSelector({ selectedMetric, onChange }: MetricSelectorProps) {
   return (
-    <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary mb-4">
+    <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary mb-6">
         Select Crime Type
       </h2>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {metrics.map((metric, index) => {
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {metrics.map((metric) => {
           const Icon = metricIcons[metric]
           const isSelected = selectedMetric === metric
 
           return (
-            <motion.button
+            <button
               key={metric}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
               onClick={() => onChange(metric)}
-              className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+              className={`flex flex-col items-center gap-3 p-4 min-h-touch rounded-lg border-2 transition-all ${
                 isSelected
-                  ? 'border-neon-cyan bg-neon-cyan/10 dark:bg-neon-cyan/20'
+                  ? 'border-la-sunset-orange bg-la-sunset-orange/10 dark:bg-la-sunset-orange/20'
                   : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
               }`}
               aria-pressed={isSelected}
               aria-label={`${metricLabels[metric]} - ${metricDescriptions[metric]}`}
             >
               <div
-                className={`p-2 rounded-lg ${
+                className={`p-3 rounded-lg ${
                   isSelected
-                    ? 'bg-neon-cyan text-white'
+                    ? 'bg-la-sunset-orange text-white'
                     : 'bg-gray-100 dark:bg-dark-bg-tertiary text-gray-600 dark:text-dark-text-secondary'
                 }`}
               >
-                <Icon className="w-5 h-5" aria-hidden="true" />
+                <Icon className="w-6 h-6" aria-hidden="true" />
               </div>
               <div className="text-center">
                 <p
-                  className={`text-sm font-semibold ${
+                  className={`text-base sm:text-sm font-semibold ${
                     isSelected
                       ? 'text-gray-900 dark:text-dark-text-primary'
                       : 'text-gray-700 dark:text-dark-text-secondary'
@@ -66,11 +61,11 @@ export function MetricSelector({ selectedMetric, onChange }: MetricSelectorProps
                 >
                   {metricLabels[metric]}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-dark-text-tertiary mt-1 line-clamp-2">
+                <p className="text-sm sm:text-xs text-gray-500 dark:text-dark-text-tertiary mt-1 line-clamp-2">
                   {metricDescriptions[metric]}
                 </p>
               </div>
-            </motion.button>
+            </button>
           )
         })}
       </div>

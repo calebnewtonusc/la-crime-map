@@ -1,0 +1,17 @@
+{
+  "name": "LA Crime Map",
+  "short_name": "LA Crime",
+  "description": "Visualize crime data across Los Angeles neighborhoods with interactive maps and real-time statistics",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#06b6d4",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}
