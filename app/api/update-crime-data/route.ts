@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
     const result = await updateNeighborhoodData();
 
     return NextResponse.json({
-      success: result.success,
       message: result.success ? 'Real LAPD data updated' : 'Update failed',
       ...result,
     });
