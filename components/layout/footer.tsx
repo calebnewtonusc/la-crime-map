@@ -143,21 +143,14 @@ export function Footer({ onMethodologyClick, onReportIssueClick }: FooterProps) 
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="#mission" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors">
-                  Our Mission
+                <a href="#how-it-works" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors">
+                  How It Works
                 </a>
               </li>
               <li>
-                <button
-                  onClick={onMethodologyClick}
-                  className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors"
-                >
-                  Methodology
-                </button>
-              </li>
-              <li>
-                <a href="#limitations" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors">
-                  Limitations
+                <a href="https://data.lacity.org/Public-Safety/Crime-Data-from-2020-to-Present/2nrs-mtv8" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1">
+                  Data Source
+                  <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
             </ul>
@@ -171,18 +164,13 @@ export function Footer({ onMethodologyClick, onReportIssueClick }: FooterProps) 
             <ul className="space-y-2">
               <li>
                 <a
-                  href="https://github.com/yourusername/la-crime-map"
+                  href="https://github.com/calebnewtonusc/la-crime-map"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1"
                 >
                   GitHub
                   <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
-              <li>
-                <a href="/api/docs" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors">
-                  API Documentation
                 </a>
               </li>
               <li>
@@ -206,19 +194,9 @@ export function Footer({ onMethodologyClick, onReportIssueClick }: FooterProps) 
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="/privacy" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="/terms" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors">
-                  Terms of Use
-                </a>
-              </li>
-              <li>
-                <a href="/disclaimer" className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors">
-                  Disclaimer
-                </a>
+                <span className="text-sm text-gray-500 dark:text-dark-text-tertiary">
+                  Educational Use Only
+                </span>
               </li>
             </ul>
           </div>
@@ -231,25 +209,7 @@ export function Footer({ onMethodologyClick, onReportIssueClick }: FooterProps) 
             <ul className="space-y-2">
               <li>
                 <a
-                  href="mailto:contact@lacrimemap.com"
-                  className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1"
-                >
-                  <Mail className="w-3 h-3" />
-                  Email Us
-                </a>
-              </li>
-              <li>
-                <button
-                  onClick={onReportIssueClick}
-                  className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1"
-                >
-                  <AlertCircle className="w-3 h-3" />
-                  Report Inaccuracy
-                </button>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/yourusername/la-crime-map/issues"
+                  href="https://github.com/calebnewtonusc/la-crime-map/issues"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1"
@@ -287,20 +247,12 @@ export function Footer({ onMethodologyClick, onReportIssueClick }: FooterProps) 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600 dark:text-dark-text-tertiary">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2">
               <span>© {new Date().getFullYear()} LA Crime Map</span>
-              <a
-                href="https://github.com/yourusername/la-crime-map/blob/main/LICENSE"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors inline-flex items-center gap-1"
-              >
-                MIT License
-                <ExternalLink className="w-3 h-3" />
-              </a>
+              <span>Open Source Project</span>
               <span>Made with data from LAPD</span>
             </div>
             <div className="flex items-center gap-4">
               <a
-                href="https://github.com/yourusername/la-crime-map"
+                href="https://github.com/calebnewtonusc/la-crime-map"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-gray-900 dark:hover:text-dark-text-primary transition-colors"
