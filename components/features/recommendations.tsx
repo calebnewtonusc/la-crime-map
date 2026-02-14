@@ -125,6 +125,22 @@ export function SmartRecommendationsEngine() {
     return Math.max(0, Math.min(100, 100 - (totalCrime * 1.5)))
   }
 
+  // Calculate similarity between neighborhoods
+  const calculateSimilarity = (n1: NeighborhoodData, n2: NeighborhoodData): number => {
+    const a1 = NEIGHBORHOOD_AMENITIES[n1.name] || { rent: 2000, walkScore: 70, transitScore: 70, schoolRating: 6, nightlifeRating: 5 }
+    const a2 = NEIGHBORHOOD_AMENITIES[n2.name] || { rent: 2000, walkScore: 70, transitScore: 70, schoolRating: 6, nightlifeRating: 5 }
+
+    const rentDiff = Math.abs(a1.rent - a2.rent) / 5000
+    const walkDiff = Math.abs(a1.walkScore - a2.walkScore) / 100
+    const transitDiff = Math.abs(a1.transitScore - a2.transitScore) / 100
+    const crimeDiff = Math.abs(
+      (n1.violentCrime + n1.carTheft + n1.breakIns + n1.pettyTheft) -
+      (n2.violentCrime + n2.carTheft + n2.breakIns + n2.pettyTheft)
+    ) / 80
+
+    return 100 - ((rentDiff + walkDiff + transitDiff + crimeDiff) * 25)
+  }
+
   // Smart recommendation algorithm
   const getRecommendations = useMemo((): NeighborhoodWithScore[] => {
     const scoredNeighborhoods = laNeighborhoods.features.map(feature => {
@@ -282,22 +298,6 @@ export function SmartRecommendationsEngine() {
       .sort((a, b) => b.score - a.score)
       .slice(0, 10)
   }, [preferences])
-
-  // Calculate similarity between neighborhoods
-  const calculateSimilarity = (n1: NeighborhoodData, n2: NeighborhoodData): number => {
-    const a1 = NEIGHBORHOOD_AMENITIES[n1.name] || { rent: 2000, walkScore: 70, transitScore: 70, schoolRating: 6, nightlifeRating: 5 }
-    const a2 = NEIGHBORHOOD_AMENITIES[n2.name] || { rent: 2000, walkScore: 70, transitScore: 70, schoolRating: 6, nightlifeRating: 5 }
-
-    const rentDiff = Math.abs(a1.rent - a2.rent) / 5000
-    const walkDiff = Math.abs(a1.walkScore - a2.walkScore) / 100
-    const transitDiff = Math.abs(a1.transitScore - a2.transitScore) / 100
-    const crimeDiff = Math.abs(
-      (n1.violentCrime + n1.carTheft + n1.breakIns + n1.pettyTheft) -
-      (n2.violentCrime + n2.carTheft + n2.breakIns + n2.pettyTheft)
-    ) / 80
-
-    return 100 - ((rentDiff + walkDiff + transitDiff + crimeDiff) * 25)
-  }
 
   // Quick filter functions
   const getSafestNeighborhoods = (): NeighborhoodWithScore[] => {
