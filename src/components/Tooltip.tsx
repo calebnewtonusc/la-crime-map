@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Tooltip.css';
 
 interface TooltipProps {
-  content: string | JSX.Element;
+  content: string | React.ReactElement;
   children: React.ReactNode;
   position?: 'top' | 'bottom' | 'left' | 'right';
 }

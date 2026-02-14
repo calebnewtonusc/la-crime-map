@@ -192,19 +192,15 @@ export const FavoritesManager: React.FC<FavoritesManagerProps> = ({ neighborhood
       yPos += 10;
     });
 
-    // Footer
-    const pageCount = doc.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      doc.setFontSize(8);
-      doc.setTextColor(150);
-      doc.text(
-        `Page ${i} of ${pageCount} - LA Crime Map - https://la-crime-map.vercel.app`,
-        pageWidth / 2,
-        doc.internal.pageSize.getHeight() - 10,
-        { align: 'center' }
-      );
-    }
+    // Footer (simplified for jsPDF v1 compatibility)
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text(
+      'LA Crime Map - https://la-crime-map.vercel.app',
+      pageWidth / 2,
+      doc.internal.pageSize.getHeight() - 10,
+      { align: 'center' }
+    );
 
     doc.save(`LA-Apartment-Comparison-${new Date().toISOString().split('T')[0]}.pdf`);
   };
@@ -315,5 +311,5 @@ export const FavoritesManager: React.FC<FavoritesManagerProps> = ({ neighborhood
   );
 };
 
-// Export the addFavorite function for use in parent components
-export { SavedAddress };
+// Export the SavedAddress type for use in parent components
+export type { SavedAddress };

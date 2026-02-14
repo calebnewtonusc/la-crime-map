@@ -3,7 +3,7 @@ import './TrustPages.css';
 
 interface FAQItem {
   question: string;
-  answer: string | JSX.Element;
+  answer: string | React.ReactElement;
   category: 'data' | 'usage' | 'technical' | 'safety';
 }
 

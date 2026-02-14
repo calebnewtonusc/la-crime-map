@@ -22,7 +22,9 @@ interface CrimeRecord {
 }
 
 // Categorize crime descriptions into our 4 metrics
-function categorizeCrime(description: string): keyof Omit<NeighborhoodData, 'name'> | null {
+type BasicCrimeMetric = 'violentCrime' | 'carTheft' | 'breakIns' | 'pettyTheft';
+
+function categorizeCrime(description: string): BasicCrimeMetric | null {
   const desc = description.toUpperCase();
 
   // Violent crimes: assault, robbery, rape, homicide, battery with weapon

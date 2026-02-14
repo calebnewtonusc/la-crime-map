@@ -49,17 +49,13 @@ export const ApartmentHuntingApp: React.FC = () => {
             const realCrimeData = crimeMap.get(feature.properties.name);
 
             if (realCrimeData) {
+              // Use full enhanced data from API
               return {
                 ...feature,
-                properties: {
-                  name: feature.properties.name,
-                  violentCrime: realCrimeData.violentCrime,
-                  carTheft: realCrimeData.carTheft,
-                  breakIns: realCrimeData.breakIns,
-                  pettyTheft: realCrimeData.pettyTheft
-                }
+                properties: realCrimeData
               };
             } else {
+              // Keep existing data if no real data available
               return feature;
             }
           })

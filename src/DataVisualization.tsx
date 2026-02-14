@@ -418,7 +418,7 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
                       const item = top10PerCapita.find(d => d.name === label);
                       return item ? item.fullName : label;
                     }}
-                    formatter={(value: any, name: string, props: any) => {
+                    formatter={(value: any, name: string | undefined, props: any) => {
                       const item = props.payload;
                       return [
                         `${Number(value).toFixed(2)} per 1000/year (${item.rawValue}/week)`,
@@ -471,7 +471,7 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ neighborho
                       const item = safestAreas.find(d => d.name === label);
                       return item ? item.fullName : label;
                     }}
-                    formatter={(value: any, name: string, props: any) => {
+                    formatter={(value: any, name: string | undefined, props: any) => {
                       const item = props.payload;
                       return [
                         `Safety Score: ${value} (Safer than ${item.percentile}% of LA)`,
