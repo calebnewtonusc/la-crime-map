@@ -98,8 +98,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Import and clear cache
-    const { clearAPICache } = await import('@/lib/services/lapd-api')
-    clearAPICache()
 
     const neighborhoodGeoJSON = {
       type: 'FeatureCollection' as const,
