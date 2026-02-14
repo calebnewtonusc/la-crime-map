@@ -3,9 +3,61 @@
 /* Leaflet CSS */
 @import "leaflet/dist/leaflet.css";
 
+/* ============================================
+   DESIGN SYSTEM: COLOR TOKENS
+   ============================================ */
 :root {
+  /* Base Colors */
   --background: #ffffff;
   --foreground: #171717;
+
+  /* LA-Themed Palette */
+  --la-night-dark: #0a0e1a;
+  --la-night-base: #131827;
+  --la-night-tertiary: #1e293b;
+
+  --la-sunset-orange: #FF6B35;
+  --la-sunset-pink: #FF2E97;
+  --la-sunset-purple: #9D4EDD;
+  --la-sunset-gold: #FFB020;
+
+  --neon-cyan: #00D9FF;
+
+  /* Semantic Colors - Light Mode */
+  --surface-primary: #ffffff;
+  --surface-secondary: #f8fafc;
+  --surface-tertiary: #f1f5f9;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e1;
+
+  /* Status Colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+}
+
+.dark {
+  /* Base Colors */
+  --background: #0a0e1a;
+  --foreground: #f8fafc;
+
+  /* Semantic Colors - Dark Mode */
+  --surface-primary: #0a0e1a;
+  --surface-secondary: #131827;
+  --surface-tertiary: #1e293b;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+
+  --border-primary: #1e293b;
+  --border-secondary: #334155;
 }
 
 @theme inline {
@@ -15,15 +67,75 @@
   --font-mono: var(--font-geist-mono);
 }
 
-.dark {
-  --background: #0a0e1a;
-  --foreground: #f8fafc;
-}
-
+/* ============================================
+   DESIGN SYSTEM: TYPOGRAPHY
+   ============================================ */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Scale */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+h1 {
+  font-size: 2.5rem; /* 40px */
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 2rem; /* 32px */
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.5rem; /* 24px */
+}
+
+h4 {
+  font-size: 1.25rem; /* 20px */
+}
+
+h5 {
+  font-size: 1.125rem; /* 18px */
+}
+
+h6 {
+  font-size: 1rem; /* 16px */
+}
+
+p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem; /* 32px */
+  }
+
+  h2 {
+    font-size: 1.75rem; /* 28px */
+  }
+
+  h3 {
+    font-size: 1.5rem; /* 24px */
+  }
+
+  h4 {
+    font-size: 1.25rem; /* 20px */
+  }
 }
 
 /* Skip to content link */
@@ -124,34 +236,43 @@ body {
   background: #64748b;
 }
 
-/* Mobile-optimized typography */
-body {
-  font-size: 16px;
-  line-height: 1.5;
+/* ============================================
+   DESIGN SYSTEM: SPACING & LAYOUT
+   ============================================ */
+
+/* Consistent spacing scale */
+.section-spacing {
+  padding: 4rem 0; /* 64px */
+}
+
+.container-spacing {
+  padding: 2rem; /* 32px */
+}
+
+.card-spacing {
+  padding: 1.5rem; /* 24px */
+}
+
+.element-spacing {
+  gap: 1rem; /* 16px */
 }
 
 @media (max-width: 768px) {
-  /* Ensure minimum 16px font size on mobile to prevent zoom on input focus */
-  body {
-    font-size: 16px;
+  .section-spacing {
+    padding: 2rem 0; /* 32px */
+  }
+
+  .container-spacing {
+    padding: 1rem; /* 16px */
+  }
+
+  .card-spacing {
+    padding: 1rem; /* 16px */
   }
 
   /* Ensure all text elements are readable */
   p, li, td, th, label, input, textarea, select, button {
     font-size: 16px;
-  }
-
-  /* Allow larger headings to scale down appropriately */
-  h1 {
-    font-size: 1.75rem;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  h3 {
-    font-size: 1.25rem;
   }
 
   /* Small text should still be readable */
@@ -162,4 +283,66 @@ body {
   .text-sm {
     font-size: 1rem;
   }
+}
+
+/* ============================================
+   DESIGN SYSTEM: EFFECTS & SHADOWS
+   ============================================ */
+
+/* Consistent shadow scale */
+.shadow-card {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.shadow-card-hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.shadow-elevated {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.dark .shadow-card {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+}
+
+.dark .shadow-card-hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+}
+
+.dark .shadow-elevated {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+}
+
+/* Consistent border radius */
+.rounded-card {
+  border-radius: 0.75rem; /* 12px */
+}
+
+.rounded-button {
+  border-radius: 0.5rem; /* 8px */
+}
+
+.rounded-badge {
+  border-radius: 9999px; /* full */
+}
+
+/* ============================================
+   DESIGN SYSTEM: TRANSITIONS
+   ============================================ */
+
+/* Consistent transition timing */
+.transition-base {
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-slow {
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-fast {
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

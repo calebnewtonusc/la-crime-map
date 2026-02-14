@@ -79,9 +79,9 @@ export function FilterPanel({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
       className={`bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden ${className}`}
       role="region"
       aria-label="Filter options"
@@ -101,9 +101,10 @@ export function FilterPanel({
             </h3>
             {isFiltersModified && (
               <motion.span
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="px-2 py-0.5 text-xs font-medium bg-neon-cyan/20 text-neon-cyan dark:bg-neon-purple/20 dark:text-neon-purple rounded-full"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="px-2 py-0.5 text-xs font-medium bg-neon-cyan/20 text-neon-cyan dark:bg-la-sunset-purple/20 dark:text-la-sunset-purple rounded-full"
               >
                 Active
               </motion.span>
@@ -113,14 +114,14 @@ export function FilterPanel({
           <div className="flex items-center gap-2">
             {isFiltersModified && (
               <motion.button
-                whileHover={{ scale: 1.05, rotate: -90 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95, rotate: -90 }}
                 onClick={(e) => {
                   e.stopPropagation()
                   handleReset()
                 }}
-                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:text-gray-900 dark:text-dark-text-secondary dark:hover:text-dark-text-primary transition-colors"
-                aria-label="Reset filters"
+                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:text-gray-900 dark:text-dark-text-secondary dark:hover:text-dark-text-primary transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple"
+                aria-label="Reset all filters to default"
               >
                 <RotateCcw className="w-5 h-5" aria-hidden="true" />
               </motion.button>
@@ -164,23 +165,23 @@ export function FilterPanel({
                         key={option.value}
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        transition={{ delay: index * 0.04, ease: 'easeOut' }}
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
                         onClick={() => handleCrimeTypeToggle(option.value)}
-                        className={`flex items-center gap-3 p-3 min-h-touch rounded-lg border-2 transition-all text-left ${
+                        className={`flex items-center gap-3 p-3 min-h-touch rounded-lg border-2 transition-all text-left focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-dark-bg-secondary ${
                           isSelected
-                            ? 'border-neon-cyan bg-neon-cyan/10 dark:border-neon-purple dark:bg-neon-purple/10'
-                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                            ? 'border-neon-cyan bg-neon-cyan/10 dark:border-la-sunset-purple dark:bg-la-sunset-purple/10 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple'
+                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-dark-bg-tertiary/50 focus:ring-gray-300 dark:focus:ring-gray-600'
                         }`}
                         role="checkbox"
                         aria-checked={isSelected}
                         aria-label={`${option.label} - ${option.description}`}
                       >
                         <div
-                          className={`p-2 rounded-lg ${
+                          className={`p-2 rounded-lg transition-colors ${
                             isSelected
-                              ? 'bg-neon-cyan text-white dark:bg-neon-purple'
+                              ? 'bg-neon-cyan text-white dark:bg-la-sunset-purple'
                               : 'bg-gray-100 dark:bg-dark-bg-tertiary text-gray-600 dark:text-dark-text-secondary'
                           }`}
                         >
@@ -218,19 +219,20 @@ export function FilterPanel({
                     return (
                       <motion.button
                         key={option.value}
-                        initial={{ opacity: 0, scale: 0.9 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.05 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        transition={{ delay: index * 0.04, ease: 'easeOut' }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => handleDateRangeChange(option.value)}
-                        className={`px-4 py-3 min-h-touch rounded-lg text-base sm:text-sm font-medium transition-all flex items-center justify-center ${
+                        className={`px-4 py-3 min-h-touch rounded-lg text-base sm:text-sm font-medium transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-dark-bg-secondary ${
                           isSelected
-                            ? 'bg-neon-cyan text-white dark:bg-neon-purple'
-                            : 'bg-gray-100 text-gray-700 dark:bg-dark-bg-tertiary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700'
+                            ? 'bg-neon-cyan text-white dark:bg-la-sunset-purple focus:ring-neon-cyan dark:focus:ring-la-sunset-purple shadow-sm'
+                            : 'bg-gray-100 text-gray-700 dark:bg-dark-bg-tertiary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 focus:ring-gray-300 dark:focus:ring-gray-600'
                         }`}
                         role="radio"
                         aria-checked={isSelected}
+                        aria-label={option.label}
                       >
                         {option.label}
                       </motion.button>
@@ -310,12 +312,12 @@ export function FilterPanel({
                   </div>
 
                   <motion.button
-                    whileTap={{ scale: 0.95 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => onChange({ ...filters, showOnlySufficientData: !filters.showOnlySufficientData })}
-                    className={`relative w-14 h-8 rounded-full transition-colors min-w-[56px] min-h-[32px] ${
+                    className={`relative w-14 h-8 rounded-full transition-colors min-w-[56px] min-h-[32px] focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-dark-bg-secondary ${
                       filters.showOnlySufficientData
-                        ? 'bg-neon-cyan dark:bg-neon-purple'
-                        : 'bg-gray-300 dark:bg-gray-700'
+                        ? 'bg-neon-cyan dark:bg-la-sunset-purple focus:ring-neon-cyan dark:focus:ring-la-sunset-purple'
+                        : 'bg-gray-300 dark:bg-gray-700 focus:ring-gray-300 dark:focus:ring-gray-600'
                     }`}
                     role="switch"
                     aria-checked={filters.showOnlySufficientData}
@@ -323,8 +325,8 @@ export function FilterPanel({
                   >
                     <motion.div
                       animate={{ x: filters.showOnlySufficientData ? 28 : 2 }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-md"
+                      transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+                      className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-sm"
                     />
                   </motion.button>
                 </label>

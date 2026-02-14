@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { LucideIcon, Info } from 'lucide-react'
+import { LucideIcon, Info, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { AnimatedNumber } from './animated-number'
 import { TrafficLight } from './safety-badge'
 import { useState } from 'react'
@@ -13,11 +13,11 @@ interface MetricCardProps {
   delay?: number
   trend?: 'up' | 'down' | 'neutral'
   trendValue?: string
-  // New props for UX context
-  vsAverage?: string // e.g., "20% safer than average"
-  percentile?: number // e.g., 75 (safer than 75% of LA)
+  vsAverage?: string
+  percentile?: number
   trafficLight?: 'green' | 'yellow' | 'red'
-  tooltip?: string // Contextual explanation of what the number means
+  tooltip?: string
+  className?: string
 }
 
 export function MetricCard({
@@ -30,55 +30,71 @@ export function MetricCard({
   vsAverage,
   percentile,
   trafficLight,
-  tooltip
+  tooltip,
+  className = ''
 }: MetricCardProps) {
   const [showTooltip, setShowTooltip] = useState(false)
 
+  const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus
+
   return (
-    <div className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <p className="text-sm text-gray-600 dark:text-dark-text-secondary font-medium">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -4 }}
+      className={`bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-card p-lg shadow-card hover:shadow-card-hover transition-all duration-200 relative ${className}`}
+    >
+      <div className="flex items-start justify-between mb-md gap-sm">
+        <div className="flex items-center gap-xs flex-1">
+          <h3 className="text-body-sm text-gray-600 dark:text-dark-text-secondary font-semibold">
             {label}
-          </p>
+          </h3>
           {tooltip && (
             <button
               type="button"
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
-              className="relative"
+              onFocus={() => setShowTooltip(true)}
+              onBlur={() => setShowTooltip(false)}
+              className="relative p-xxs rounded-button focus:outline-none focus:ring-2 focus:ring-la-sunset-orange dark:focus:ring-la-sunset-pink flex-shrink-0"
               aria-label={`Information about ${label}`}
             >
-              <Info className="w-3.5 h-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" />
+              <Info className="w-3.5 h-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200" aria-hidden="true" />
               {showTooltip && (
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2.5 bg-gray-900 dark:bg-gray-800 text-white text-xs rounded-lg shadow-lg z-20">
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute bottom-full left-1/2 -translate-x-1/2 mb-sm w-64 p-sm bg-gray-900 dark:bg-gray-800 text-white text-body-xs rounded-button shadow-elevated z-50 pointer-events-none"
+                >
                   {tooltip}
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900 dark:border-t-gray-800" />
-                </div>
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 -translate-y-px w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-transparent border-t-gray-900 dark:border-t-gray-800" />
+                </motion.div>
               )}
             </button>
           )}
         </div>
-        <div className="bg-la-sunset-orange/10 dark:bg-la-sunset-orange/20 p-3 rounded-lg">
-          <Icon className="w-7 h-7 text-la-sunset-orange" />
+        <div className="bg-gradient-to-br from-la-sunset-orange/10 to-la-sunset-pink/10 dark:from-la-sunset-orange/20 dark:to-la-sunset-pink/20 p-sm rounded-button transition-colors duration-200 flex-shrink-0">
+          <Icon className="w-6 h-6 text-la-sunset-orange" aria-hidden="true" />
         </div>
       </div>
 
       <div className="flex-1">
-        <div className="flex items-baseline gap-2 mb-2">
-          <p className="text-3xl font-bold text-gray-900 dark:text-dark-text-primary">
-            <AnimatedNumber value={value} />
+        <div className="flex items-baseline gap-xs mb-sm">
+          <p className="text-display-sm font-bold text-gray-900 dark:text-dark-text-primary tabular-nums">
+            <AnimatedNumber value={value} ariaLabel={`${label}: ${value}`} />
           </p>
-          <span className="text-sm text-gray-500 dark:text-gray-400">per month</span>
+          <span className="text-body-xs text-gray-500 dark:text-gray-400 font-medium">per month</span>
         </div>
 
         {/* Contextual information */}
-        <div className="space-y-1.5 mt-3">
+        <div className="space-y-xs mt-sm">
           {/* VS LA Average comparison */}
           {vsAverage && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-xs">
               {trafficLight && <TrafficLight color={trafficLight} size="sm" animated={false} />}
-              <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+              <span className="text-body-xs font-medium text-gray-600 dark:text-gray-400">
                 {vsAverage}
               </span>
             </div>
@@ -86,20 +102,20 @@ export function MetricCard({
 
           {/* Percentile ranking */}
           {percentile !== undefined && (
-            <div className="flex items-center gap-2">
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+            <div className="flex items-center gap-xs">
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-badge h-1.5">
                 <div
                   style={{ width: `${percentile}%` }}
-                  className={`h-1.5 rounded-full transition-all ${
+                  className={`h-1.5 rounded-badge transition-all duration-300 ${
                     percentile >= 70
-                      ? 'bg-green-500'
+                      ? 'bg-status-success'
                       : percentile >= 40
-                      ? 'bg-yellow-500'
-                      : 'bg-red-500'
+                      ? 'bg-status-warning'
+                      : 'bg-status-error'
                   }`}
                 />
               </div>
-              <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+              <span className="text-body-xs text-gray-500 dark:text-gray-400 whitespace-nowrap font-medium">
                 {percentile}%
               </span>
             </div>
@@ -107,20 +123,21 @@ export function MetricCard({
 
           {/* Trend indicator */}
           {trend && trendValue && (
-            <p
-              className={`text-xs font-medium ${
+            <div
+              className={`flex items-center gap-xs text-body-xs font-semibold ${
                 trend === 'down'
-                  ? 'text-green-600 dark:text-green-400'
+                  ? 'text-status-success'
                   : trend === 'up'
-                  ? 'text-red-600 dark:text-red-400'
+                  ? 'text-status-error'
                   : 'text-gray-600 dark:text-gray-400'
               }`}
             >
-              {trend === 'down' ? '↓' : trend === 'up' ? '↑' : '→'} {trendValue}
-            </p>
+              <TrendIcon className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>{trendValue}</span>
+            </div>
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

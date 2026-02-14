@@ -31,18 +31,21 @@ const AISmartInsights = dynamic(() => import('@/components/features').then(mod =
   )
 })
 
-// Animation variants following healthcare project patterns
+// Animation variants - smooth, professional animations
 const pageTransition = {
-  initial: { opacity: 0, y: 20 },
+  initial: { opacity: 0 },
   animate: {
     opacity: 1,
+    transition: { duration: 0.5, ease: 'easeOut' }
+  }
+}
+
+const heroVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
     y: 0,
-    transition: { duration: 0.4 }
-  },
-  exit: {
-    opacity: 0,
-    y: -20,
-    transition: { duration: 0.3 }
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
   }
 }
 
@@ -51,18 +54,27 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
+      staggerChildren: 0.15,
+      delayChildren: 0.1
     }
   }
 }
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6 }
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  }
+}
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
   }
 }
 
@@ -78,35 +90,97 @@ export default function Home() {
         <motion.div
           initial="initial"
           animate="animate"
-          exit="exit"
           variants={pageTransition}
           className="min-h-screen"
         >
-          {/* Hero Section */}
+          {/* Hero Section - LA Sunset Themed */}
           <motion.section
-            className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-la-night-dark dark:via-la-night-base dark:to-la-night-dark py-12 px-4 sm:px-6 lg:px-8"
-            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
+            variants={heroVariants}
+            className="relative overflow-hidden bg-gradient-to-br from-la-night-dark via-la-sunset-purple to-la-night-base py-16 sm:py-24 lg:py-32"
           >
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center space-y-6">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white dark:text-dark-text-primary">
-                  Find Your Safe Haven in LA
-                </h1>
-                <p className="text-lg sm:text-xl text-gray-300 dark:text-dark-text-secondary max-w-3xl mx-auto">
-                  Explore neighborhood safety data to make confident decisions
-                </p>
+            {/* Animated gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-la-sunset-orange/20 via-transparent to-la-sunset-pink/20 animate-pulse" style={{ animationDuration: '4s' }} />
+
+            {/* Grid pattern overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center space-y-8 max-w-4xl mx-auto">
+                {/* Main headline - benefit-focused */}
+                <motion.h1
+                  variants={fadeInUp}
+                  className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight tracking-tight"
+                >
+                  Make Smarter Moving Decisions
+                  <span className="block mt-2 bg-gradient-to-r from-la-sunset-orange via-la-sunset-pink to-la-sunset-purple bg-clip-text text-transparent">
+                    With Real LA Crime Data
+                  </span>
+                </motion.h1>
+
+                {/* Value proposition */}
+                <motion.p
+                  variants={fadeInUp}
+                  className="text-xl sm:text-2xl text-gray-200 leading-relaxed max-w-3xl mx-auto font-light"
+                >
+                  Visualize neighborhood safety across Los Angeles. Compare crime statistics, explore interactive maps, and find the perfect area for your lifestyle.
+                </motion.p>
+
+                {/* CTA buttons */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4"
+                >
+                  <a
+                    href="#explore-map"
+                    className="group relative px-8 py-4 bg-gradient-to-r from-la-sunset-orange to-la-sunset-pink text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[200px] text-center"
+                  >
+                    <span className="relative z-10">Explore Map</span>
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-la-sunset-pink to-la-sunset-orange opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </a>
+                  <a
+                    href="#how-it-works"
+                    className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl border-2 border-white/20 hover:bg-white/20 transition-all duration-300 min-w-[200px] text-center"
+                  >
+                    How It Works
+                  </a>
+                </motion.div>
+
+                {/* Trust signals */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="flex flex-wrap justify-center items-center gap-8 pt-8 text-gray-300"
+                >
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-la-sunset-gold" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    <span className="text-sm font-medium">Official LAPD Data</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-la-sunset-gold" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm font-medium">Updated Regularly</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-la-sunset-gold" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm font-medium">100% Free</span>
+                  </div>
+                </motion.div>
               </div>
             </div>
           </motion.section>
 
-          {/* Main Content */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-6">
-
-            {/* Stats Dashboard */}
+          {/* Stats Overview - Quick Insights */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
             >
               <StatsDashboard stats={stats} />
             </motion.div>
@@ -114,121 +188,195 @@ export default function Home() {
             {/* AI Smart Insights */}
             {process.env.NEXT_PUBLIC_ENABLE_AI_FEATURES === 'true' && (
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, duration: 0.5 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="mt-6"
               >
                 <AISmartInsights />
               </motion.div>
             )}
+          </div>
 
-            {/* Metric Selector */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <MetricSelector
-                selectedMetric={selectedMetric}
-                onChange={setSelectedMetric}
-              />
-            </motion.div>
-
-            {/* Interactive Map */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden"
-            >
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-dark-text-primary">
-                  Crime Map by {selectedMetric === 'violentCrime' ? 'Violent Crime' :
-                             selectedMetric === 'carTheft' ? 'Car Theft' :
-                             selectedMetric === 'breakIns' ? 'Break-ins' : 'Petty Theft'}
+          {/* Interactive Map Section */}
+          <div id="explore-map" className="bg-gray-50 dark:bg-dark-bg-primary py-12 sm:py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+              {/* Section header */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="text-center max-w-3xl mx-auto"
+              >
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                  Explore Every Neighborhood
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-dark-text-tertiary mt-1">
-                  Click on neighborhoods to view detailed information
+                <p className="text-lg text-gray-600 dark:text-gray-300">
+                  Click on any area to see detailed crime statistics, trends, and safety scores
                 </p>
-              </div>
-              <div className="h-[400px] sm:h-[600px] md:h-[700px] lg:h-[800px]">
-                <MapWrapper
-                  data={laNeighborhoods}
+              </motion.div>
+
+              {/* Metric Selector */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1, duration: 0.6 }}
+              >
+                <MetricSelector
                   selectedMetric={selectedMetric}
+                  onChange={setSelectedMetric}
                 />
-              </div>
-            </motion.div>
+              </motion.div>
 
-            {/* How It Works Section */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              className="mt-12"
-            >
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-dark-text-primary mb-3">
-                  How It Works
+              {/* Map Container */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden"
+              >
+                <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-dark-bg-secondary dark:to-dark-bg-tertiary">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                    {selectedMetric === 'violentCrime' ? 'Violent Crime' :
+                     selectedMetric === 'carTheft' ? 'Car Theft' :
+                     selectedMetric === 'breakIns' ? 'Break-ins' : 'Petty Theft'} Map
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-2">
+                    Darker shades indicate higher crime rates. Tap any neighborhood for details.
+                  </p>
+                </div>
+                <div className="h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px]">
+                  <MapWrapper
+                    data={laNeighborhoods}
+                    selectedMetric={selectedMetric}
+                  />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* How It Works Section */}
+          <div id="how-it-works" className="py-16 sm:py-24 bg-white dark:bg-dark-bg-secondary">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="text-center mb-12 sm:mb-16"
+              >
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                  Three Steps to Better Decisions
                 </h2>
-                <p className="text-lg text-gray-600 dark:text-dark-text-secondary max-w-2xl mx-auto">
-                  Three simple steps to understand your neighborhood safety
+                <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                  Understanding neighborhood safety has never been easier
                 </p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <InfoCard
-                  title="1. Search Your Area"
-                  description="Enter any LA address or browse the interactive map to explore neighborhoods"
+              </motion.div>
+
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12"
+              >
+                <FeatureCard
+                  number="01"
+                  title="Explore Visually"
+                  description="Browse an interactive heat map showing crime density across all LA neighborhoods. See patterns at a glance."
                   icon={
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                     </svg>
                   }
                 />
-                <InfoCard
-                  title="2. Review Safety Data"
-                  description="See clear safety scores and crime breakdowns based on official LA data"
+                <FeatureCard
+                  number="02"
+                  title="Dive Into Details"
+                  description="Click any neighborhood to see comprehensive crime breakdowns, safety scores, and historical trends."
                   icon={
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                   }
                 />
-                <InfoCard
-                  title="3. Make Your Decision"
-                  description="Compare neighborhoods side-by-side and find the perfect place for you"
+                <FeatureCard
+                  number="03"
+                  title="Compare & Decide"
+                  description="Stack neighborhoods side by side, filter by crime type, and find the area that matches your safety priorities."
                   icon={
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   }
                 />
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
+          </div>
 
-            {/* Safety Notice */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6 mt-8"
-            >
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0">
-                  <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+          {/* Data Trust Section */}
+          <div className="py-12 sm:py-16 bg-gray-50 dark:bg-dark-bg-primary">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="bg-gradient-to-br from-la-sunset-orange/10 via-la-sunset-pink/10 to-la-sunset-purple/10 dark:from-la-sunset-orange/5 dark:via-la-sunset-pink/5 dark:to-la-sunset-purple/5 border-2 border-la-sunset-orange/20 dark:border-la-sunset-orange/30 rounded-2xl p-8 sm:p-12"
+              >
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="flex-shrink-0 p-3 bg-la-sunset-orange/20 dark:bg-la-sunset-orange/30 rounded-xl">
+                    <svg className="w-8 h-8 text-la-sunset-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                      Reliable Data You Can Trust
+                    </h3>
+                    <div className="space-y-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+                      <p className="text-base sm:text-lg">
+                        Our crime data comes directly from official Los Angeles Police Department sources, ensuring accuracy and reliability. We update our statistics regularly to reflect the latest trends.
+                      </p>
+                      <p className="text-base sm:text-lg">
+                        Remember: Safety is personal and multifaceted. Crime data is just one factor to consider when choosing where to live. Use this tool alongside other research, neighborhood visits, and local insights.
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-300 mb-2">
-                    A Note About Our Data
-                  </h3>
-                  <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed">
-                    We compile data from official LA sources to help you understand neighborhood trends. Remember that safety is personal and
-                    depends on many factors. Use this as one helpful tool in your decision-making process.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Final CTA Section */}
+          <div className="py-16 sm:py-24 bg-gradient-to-br from-la-night-dark via-la-sunset-purple to-la-night-base relative overflow-hidden">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+
+            <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="space-y-8"
+              >
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+                  Ready to Find Your Perfect Neighborhood?
+                </h2>
+                <p className="text-xl text-gray-200 max-w-2xl mx-auto">
+                  Start exploring LA crime data now and make your next move with confidence
+                </p>
+                <a
+                  href="#explore-map"
+                  className="inline-block px-10 py-5 bg-gradient-to-r from-la-sunset-orange to-la-sunset-pink text-white text-lg font-semibold rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105"
+                >
+                  Get Started Free
+                </a>
+              </motion.div>
+            </div>
           </div>
         </motion.div>
 
@@ -239,34 +387,39 @@ export default function Home() {
   )
 }
 
-// Info Card Component with animations
-interface InfoCardProps {
+// Feature Card Component - Professional design
+interface FeatureCardProps {
+  number: string
   title: string
   description: string
   icon: React.ReactNode
 }
 
-function InfoCard({ title, description, icon }: InfoCardProps) {
+function FeatureCard({ number, title, description, icon }: FeatureCardProps) {
   return (
     <motion.div
       variants={fadeInUp}
-      whileHover={{
-        y: -4,
-        transition: { type: 'spring', stiffness: 400, damping: 17 }
-      }}
-      className="bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+      className="relative group"
     >
-      <div className="flex items-center gap-3 mb-3">
-        <div className="p-2 bg-neon-cyan/10 dark:bg-neon-cyan/20 rounded-lg text-neon-cyan">
+      <div className="h-full bg-white dark:bg-dark-bg-tertiary border border-gray-200 dark:border-gray-700 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+        {/* Number badge */}
+        <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-la-sunset-orange to-la-sunset-pink rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
+          {number}
+        </div>
+
+        {/* Icon */}
+        <div className="mb-6 p-4 bg-gradient-to-br from-la-sunset-orange/10 to-la-sunset-pink/10 dark:from-la-sunset-orange/20 dark:to-la-sunset-pink/20 rounded-xl text-la-sunset-orange inline-block">
           {icon}
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text-primary">
+
+        {/* Content */}
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">
           {title}
         </h3>
+        <p className="text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+          {description}
+        </p>
       </div>
-      <p className="text-sm text-gray-600 dark:text-dark-text-secondary leading-relaxed">
-        {description}
-      </p>
     </motion.div>
   )
 }

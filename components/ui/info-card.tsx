@@ -82,11 +82,11 @@ export function InfoCard({
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        initial={{ opacity: 0, y: -10, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -10, scale: 0.95 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-        className={`${styles.bg} ${styles.border} border rounded-xl shadow-lg overflow-hidden ${className}`}
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+        className={`${styles.bg} ${styles.border} border rounded-xl shadow-sm overflow-hidden ${className}`}
         role="alert"
         aria-live="polite"
         aria-atomic="true"
@@ -94,15 +94,12 @@ export function InfoCard({
         <div className="p-4">
           <div className="flex items-start gap-3">
             {/* Icon */}
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
+            <div
               className={`${styles.iconBg} p-2 rounded-lg flex-shrink-0`}
               aria-hidden="true"
             >
               <IconComponent className={`w-5 h-5 ${styles.iconColor}`} />
-            </motion.div>
+            </div>
 
             {/* Content */}
             <div className="flex-1 min-w-0">
@@ -114,38 +111,33 @@ export function InfoCard({
                 {/* Close Button */}
                 {isClosable && onClose && (
                   <motion.button
-                    whileHover={{ scale: 1.1, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={onClose}
-                    className={`${styles.iconColor} hover:opacity-70 transition-opacity flex-shrink-0`}
-                    aria-label="Close"
+                    className={`${styles.iconColor} hover:opacity-70 transition-opacity flex-shrink-0 p-1 rounded focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                      variant === 'info' ? 'focus:ring-blue-400' :
+                      variant === 'success' ? 'focus:ring-green-400' :
+                      variant === 'warning' ? 'focus:ring-amber-400' :
+                      'focus:ring-red-400'
+                    }`}
+                    aria-label="Close notification"
                   >
                     <X className="w-4 h-4" aria-hidden="true" />
                   </motion.button>
                 )}
               </div>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className={`text-sm ${styles.textColor} leading-relaxed`}
-              >
+              <div className={`text-sm ${styles.textColor} leading-relaxed`}>
                 {children}
-              </motion.div>
+              </div>
             </div>
           </div>
 
           {/* Footer */}
           {footer && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className={`mt-4 pt-4 border-t ${styles.border}`}
-            >
+            <div className={`mt-4 pt-4 border-t ${styles.border}`}>
               {footer}
-            </motion.div>
+            </div>
           )}
         </div>
       </motion.div>

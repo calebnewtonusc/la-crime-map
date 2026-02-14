@@ -166,9 +166,9 @@ export function SearchBar({
     <div ref={containerRef} className={`relative ${className}`}>
       {/* Search Input */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
         className="relative"
       >
         <div className="relative">
@@ -188,8 +188,8 @@ export function SearchBar({
             onFocus={() => setIsOpen(true)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="w-full pl-12 pr-12 py-3 bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-dark-text-tertiary focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-neon-purple focus:border-transparent transition-all"
-            aria-label="Search neighborhoods"
+            className="w-full pl-12 pr-12 py-3.5 bg-white dark:bg-dark-bg-secondary border-2 border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-dark-text-tertiary focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple focus:border-neon-cyan dark:focus:border-la-sunset-purple transition-all duration-200 shadow-sm hover:border-gray-300 dark:hover:border-gray-600"
+            aria-label="Search Los Angeles neighborhoods"
             aria-autocomplete="list"
             aria-controls="search-results"
             aria-expanded={isOpen}
@@ -201,14 +201,14 @@ export function SearchBar({
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setQuery('')
                 inputRef.current?.focus()
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:text-dark-text-tertiary dark:hover:text-dark-text-secondary transition-colors"
-              aria-label="Clear search"
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 dark:text-dark-text-tertiary dark:hover:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary transition-all focus:outline-none focus:ring-2 focus:ring-neon-cyan dark:focus:ring-la-sunset-purple"
+              aria-label="Clear search query"
             >
               <X className="w-4 h-4" aria-hidden="true" />
             </motion.button>
@@ -220,11 +220,11 @@ export function SearchBar({
       <AnimatePresence>
         {isOpen && displayResults.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full mt-2 w-full bg-white dark:bg-dark-bg-secondary border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden z-50"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="absolute top-full mt-2 w-full bg-white dark:bg-dark-bg-secondary border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl overflow-hidden z-50"
             id="search-results"
             role="listbox"
           >
@@ -247,14 +247,13 @@ export function SearchBar({
                 return (
                   <motion.button
                     key={neighborhood.name}
-                    initial={{ opacity: 0, x: -10 }}
+                    initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.03 }}
-                    whileHover={{ backgroundColor: 'rgba(0, 245, 255, 0.05)' }}
+                    transition={{ delay: index * 0.025, ease: 'easeOut' }}
                     onClick={() => handleSelect(neighborhood)}
-                    className={`w-full px-4 py-3 flex items-center gap-3 text-left transition-colors ${
+                    className={`w-full px-4 py-3 flex items-center gap-3 text-left transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neon-cyan dark:focus:ring-la-sunset-purple ${
                       isSelected
-                        ? 'bg-neon-cyan/10 dark:bg-neon-purple/10'
+                        ? 'bg-neon-cyan/10 dark:bg-la-sunset-purple/10'
                         : 'hover:bg-gray-50 dark:hover:bg-dark-bg-tertiary'
                     }`}
                     role="option"
