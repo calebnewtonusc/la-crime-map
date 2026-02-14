@@ -71,6 +71,9 @@ interface NeighborhoodWithScore extends NeighborhoodData {
   affordabilityScore: number
   personalizedScore: number
   matchPercentage: number
+  character: string
+  bestFor: string[]
+  notIdealFor: string[]
   costOfLiving: {
     rent: number
     groceries: number

@@ -32,7 +32,7 @@ export async function updateNeighborhoodData(): Promise<DataUpdateResult> {
         feature.properties.carTheft = stats.carTheft;
         feature.properties.breakIns = stats.breakIns;
         feature.properties.pettyTheft = stats.pettyTheft;
-        feature.properties.lastUpdated = stats.lastUpdated;
+        feature.properties.lastUpdated = new Date(stats.lastUpdated);
         feature.properties.dataQualityScore = stats.dataQualityScore;
         feature.properties.hasSufficientData = true;
         updatedCount++;

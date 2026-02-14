@@ -120,30 +120,10 @@ export async function aggregateCrimeDataByDateRange(
     console.log(`Fetching crime data from ${startDate.toISOString()} to ${endDate.toISOString()}...`)
 
     // Fetch crime data from LAPD API
-    const crimeResponse = await fetchLAPDCrimeData(startDate, endDate)
-
-    if (crimeResponse.error) {
-      console.error('Error fetching crime data:', crimeResponse.error)
-      return {
-        neighborhoods: [],
-        metadata: {
-          totalIncidents: 0,
-          dateRange: {
-            start: startDate.toISOString(),
-            end: endDate.toISOString(),
-          },
-          lastUpdated: new Date().toISOString(),
-          dataSource: 'LAPD Open Data Portal',
-          neighborhoods: 0,
-          dataQuality: {
-            mappedIncidents: 0,
-            unmappedIncidents: 0,
-            percentageMapped: 0,
-          },
-        },
-        error: crimeResponse.error,
-      }
-    }
+    const crimeData = await fetchLAPDCrimeData(
+      startDate.toISOString().split('T')[0],
+      endDate.toISOString().split('T')[0]
+    )
 
     console.log(`Received ${crimeData.length} crime incidents`)
 

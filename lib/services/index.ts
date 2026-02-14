@@ -3,13 +3,10 @@
 
 // API Services
 export {
-  fetchLegacyCrimeData,
-  fetchNIBRSCrimeData,
-  fetchRecentCrimeData,
-  fetchCrimeDataByArea,
-  fetchCrimeDataByDateRange,
-  clearAPICache,
-  getCacheStats,
+  fetchLAPDCrimeData,
+  calculateNeighborhoodStats,
+  getAvailableAreas,
+  CACHE_DURATION,
 } from './lapd-api'
 
 // Types
