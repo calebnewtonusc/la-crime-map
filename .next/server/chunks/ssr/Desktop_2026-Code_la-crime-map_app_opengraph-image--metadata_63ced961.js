@@ -1,3 +1,0 @@
-module.exports=[63842,a=>{"use strict";a.i(68051),a.i(66122);var b=a.i(92330);let c={alt:"LA Crime Map - Real-Time Crime Statistics & Neighborhood Safety",contentType:"image/png",runtime:"edge",size:{width:1200,height:630}};async function d(a){let{__metadata_id__:d,...e}=await a.params,f=(0,b.fillMetadataSegment)("/",e,"opengraph-image");return[function(a,b){let c={alt:a.alt,type:a.contentType||"image/png",url:f+"?84f67f3c804b9adf"},{size:d}=a;return d&&(c.width=d.width,c.height=d.height),c}(c,0)]}a.s(["default",0,d],63842)}];
-
-//# sourceMappingURL=Desktop_2026-Code_la-crime-map_app_opengraph-image--metadata_63ced961.js.map
