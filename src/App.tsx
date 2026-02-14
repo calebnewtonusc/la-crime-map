@@ -73,6 +73,7 @@ function App() {
   const [severityThreshold, setSeverityThreshold] = useState<number>(
     () => loadPreference(STORAGE_KEYS.SEVERITY_THRESHOLD, 0)
   );
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<SortOption>(
     () => loadPreference(STORAGE_KEYS.SORT_OPTION, 'crimeRate')
   );
@@ -87,7 +88,10 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [dataSource, setDataSource] = useState<string>('Loading...');
-  const [statsPanelOpen, setStatsPanelOpen] = useState<boolean>(false);
+  // Stats panel open by default on desktop, closed on mobile
+  const [statsPanelOpen, setStatsPanelOpen] = useState<boolean>(
+    () => window.innerWidth >= 768
+  );
 
   // Save preferences to localStorage when they change
   useEffect(() => {
@@ -247,6 +251,7 @@ function App() {
   }, [compareMode]);
 
   // Toggle compare mode
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleCompareModeToggle = useCallback(() => {
     setCompareMode(!compareMode);
     if (compareMode) {
@@ -495,11 +500,13 @@ function App() {
 
             {/* Date Range Selector */}
             <div className="date-range-selector">
-              <label>Time Period:</label>
+              <label htmlFor="date-range">Time Period:</label>
               <select
+                id="date-range"
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value as DateRange)}
                 className="date-select"
+                aria-label="Select time period for crime data"
               >
                 <option value="1week">Last Week</option>
                 <option value="1month">Last Month</option>
@@ -508,40 +515,60 @@ function App() {
               </select>
             </div>
 
-            {/* Severity Threshold Filter */}
-            <div className="severity-filter">
-              <label>Min Severity: {severityThreshold}</label>
-              <input
-                type="range"
-                min="0"
-                max="50"
-                step="1"
-                value={severityThreshold}
-                onChange={(e) => setSeverityThreshold(Number(e.target.value))}
-                className="severity-slider"
-              />
-            </div>
-
-            {/* Sort Options */}
-            <div className="sort-selector">
-              <label>Sort By:</label>
-              <select
-                value={sortOption}
-                onChange={(e) => setSortOption(e.target.value as SortOption)}
-                className="sort-select"
-              >
-                <option value="crimeRate">Crime Rate</option>
-                <option value="alphabetical">Alphabetical</option>
-              </select>
-            </div>
-
-            {/* Compare Mode Toggle */}
+            {/* Advanced Filters Toggle */}
             <button
-              className={`compare-toggle ${compareMode ? 'active' : ''}`}
-              onClick={handleCompareModeToggle}
+              className="advanced-filters-toggle"
+              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              aria-expanded={showAdvancedFilters}
+              aria-controls="advanced-filters"
             >
-              {compareMode ? 'Exit Compare' : 'Compare Mode'}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+              {showAdvancedFilters ? 'Hide' : 'More'} Filters
             </button>
+
+            {/* Advanced Filters - Hidden by default */}
+            {showAdvancedFilters && (
+              <div id="advanced-filters" className="advanced-filters">
+                {/* Severity Threshold Filter */}
+                <div className="severity-filter">
+                  <label htmlFor="severity-slider">
+                    Min Crimes/Week: {severityThreshold}
+                    <span className="help-tooltip" title="Filter out neighborhoods with fewer crimes per week than this value">?</span>
+                  </label>
+                  <input
+                    id="severity-slider"
+                    type="range"
+                    min="0"
+                    max="50"
+                    step="1"
+                    value={severityThreshold}
+                    onChange={(e) => setSeverityThreshold(Number(e.target.value))}
+                    className="severity-slider"
+                    aria-label={`Minimum severity threshold: ${severityThreshold} crimes per week`}
+                    aria-valuemin={0}
+                    aria-valuemax={50}
+                    aria-valuenow={severityThreshold}
+                  />
+                </div>
+
+                {/* Sort Options */}
+                <div className="sort-selector">
+                  <label htmlFor="sort-by">Sort By:</label>
+                  <select
+                    id="sort-by"
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value as SortOption)}
+                    className="sort-select"
+                    aria-label="Sort neighborhoods by"
+                  >
+                    <option value="crimeRate">Highest Crime First</option>
+                    <option value="alphabetical">Alphabetical (A-Z)</option>
+                  </select>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="metric-selector">
