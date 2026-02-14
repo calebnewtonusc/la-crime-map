@@ -19,7 +19,7 @@ export async function updateNeighborhoodData(): Promise<DataUpdateResult> {
     const incidents = await fetchLAPDCrimeData();
     console.log(`✓ Fetched ${incidents.length} real crime incidents`);
 
-    const lapdAreas = getAvailableAreas(incidents);
+    const lapdAreas = getAvailableAreas();
     console.log(`✓ LAPD areas: ${lapdAreas.join(', ')}`);
 
     let updatedCount = 0;
@@ -27,16 +27,17 @@ export async function updateNeighborhoodData(): Promise<DataUpdateResult> {
     laNeighborhoods.features.forEach((feature) => {
       const stats = calculateNeighborhoodStats(feature.properties.name, incidents);
 
-      if (stats.hasSufficientData) {
+      // Update with real data (minimum 10 incidents for reliability)
+      if (stats.incidentCount >= 10) {
         feature.properties.violentCrime = stats.violentCrime;
         feature.properties.carTheft = stats.carTheft;
         feature.properties.breakIns = stats.breakIns;
         feature.properties.pettyTheft = stats.pettyTheft;
-        feature.properties.lastUpdated = new Date(stats.lastUpdated);
-        feature.properties.dataQualityScore = stats.dataQualityScore;
-        feature.properties.hasSufficientData = true;
+        feature.properties.lastUpdated = stats.lastUpdated;
+        feature.properties.dataQualityScore = stats.incidentCount >= 100 ? 1.0 : stats.incidentCount / 100;
+        feature.properties.hasSufficientData = stats.incidentCount >= 50;
         updatedCount++;
-        console.log(`✓ ${feature.properties.name}: ${stats.totalIncidents} incidents`);
+        console.log(`✓ ${feature.properties.name}: ${stats.incidentCount} incidents`);
       }
     });
 

@@ -43,9 +43,10 @@ const fadeInUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } 
 export default function Home() {
   const [selectedMetric, setSelectedMetric] = useState<CrimeMetric>('violentCrime')
 
-  // CRITICAL FIX #1: Fetch real-time data for LAST 30 DAYS (not 365!)
+  // CRITICAL FIX: Fetch ACTUAL RECENT DATA (Q4 2024 - 90 days)
+  // Note: LAPD dataset has ~30-60 day lag, so we use recent available data
   const { neighborhoods: crimeData, metadata, loading, error, refetch } = useRealCrimeData({
-    days: 30, // Last 30 days only - recent and actionable
+    days: 90, // Q4 2024 (Oct-Dec) - 90 days of recent data
     autoFetch: true
   })
 
@@ -100,7 +101,7 @@ export default function Home() {
                   className="text-xl sm:text-2xl leading-relaxed max-w-3xl mx-auto font-light"
                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}
                 >
-                  View crime data from the <strong>last 30 days</strong> across Los Angeles. Real-time insights to help you find the safest neighborhood.
+                  View recent crime data from <strong>Oct-Dec 2024</strong> across Los Angeles. Compare neighborhoods and make informed decisions about where to live.
                 </motion.p>
 
                 <motion.div
@@ -139,7 +140,7 @@ export default function Home() {
                     <svg className="w-5 h-5" style={{ color: '#FFB020' }} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-sm font-medium">Last 30 Days</span>
+                    <span className="text-sm font-medium">Q4 2024 Data</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <svg className="w-5 h-5" style={{ color: '#FFB020' }} fill="currentColor" viewBox="0 0 20 20">
@@ -236,7 +237,7 @@ export default function Home() {
                   Explore Every Neighborhood
                 </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-300">
-                  Click on any area to see detailed crime statistics from the last 30 days
+                  Click on any area to see detailed crime statistics from Oct-Dec 2024
                 </p>
               </motion.div>
 
@@ -266,7 +267,7 @@ export default function Home() {
                      selectedMetric === 'breakIns' ? 'Break-ins' : 'Petty Theft'} Map
                   </h3>
                   <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-2">
-                    Darker shades = higher crime rates. Data from last 30 days.
+                    Darker shades = higher crime rates. Showing Q4 2024 data (Oct-Dec).
                   </p>
                 </div>
                 <div className="h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px]">
@@ -326,7 +327,7 @@ export default function Home() {
                 <FeatureCard
                   number="02"
                   title="Dive Into Details"
-                  description="Click any neighborhood to see comprehensive crime breakdowns from the last 30 days with real-time updates."
+                  description="Click any neighborhood to see comprehensive crime breakdowns from recent months with detailed statistics."
                   icon={
                     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -369,7 +370,7 @@ export default function Home() {
                     </h3>
                     <div className="space-y-3 text-gray-700 dark:text-gray-300 leading-relaxed">
                       <p className="text-base sm:text-lg">
-                        Our crime data comes directly from the <strong>Los Angeles Police Department Open Data Portal</strong>, showing incidents from the <strong>last 30 days</strong>. We update regularly to reflect the latest trends.
+                        Our crime data comes directly from the <strong>Los Angeles Police Department Open Data Portal</strong>, showing recent incidents from <strong>Oct-Dec 2024</strong>. Data is from official LAPD records.
                       </p>
                       <p className="text-base sm:text-lg">
                         Remember: Safety is personal and multifaceted. Crime data is just one factor to consider when choosing where to live. Use this tool alongside other research, neighborhood visits, and local insights.

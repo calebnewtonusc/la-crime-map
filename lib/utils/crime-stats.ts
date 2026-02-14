@@ -54,28 +54,31 @@ export function calculateCrimeStats(data: NeighborhoodGeoJSON): CrimeStats {
 export function getNeighborhoodCrimeLevel(neighborhood: NeighborhoodData, metric: CrimeMetric): 'low' | 'medium' | 'high' {
   const value = neighborhood[metric]
 
+  // Thresholds for 90-day period (Q4 2024: Oct-Dec)
+  // These are calibrated for actual LAPD data volume
+
   if (metric === 'violentCrime') {
-    if (value <= 4) return 'low'
-    if (value <= 8) return 'medium'
-    return 'high'
+    if (value <= 50) return 'low'     // <50 violent crimes in 90 days
+    if (value <= 150) return 'medium' // 50-150
+    return 'high'                     // >150
   }
 
   if (metric === 'carTheft') {
-    if (value <= 6) return 'low'
-    if (value <= 10) return 'medium'
-    return 'high'
+    if (value <= 80) return 'low'     // <80 car thefts in 90 days
+    if (value <= 200) return 'medium' // 80-200
+    return 'high'                     // >200
   }
 
   if (metric === 'breakIns') {
-    if (value <= 8) return 'low'
-    if (value <= 12) return 'medium'
-    return 'high'
+    if (value <= 100) return 'low'     // <100 break-ins in 90 days
+    if (value <= 250) return 'medium'  // 100-250
+    return 'high'                      // >250
   }
 
-  // pettyTheft
-  if (value <= 14) return 'low'
-  if (value <= 20) return 'medium'
-  return 'high'
+  // pettyTheft - most common crime type
+  if (value <= 200) return 'low'     // <200 petty thefts in 90 days
+  if (value <= 500) return 'medium'  // 200-500
+  return 'high'                      // >500
 }
 
 export function getCrimeColor(level: 'low' | 'medium' | 'high', isDark: boolean = false): string {
