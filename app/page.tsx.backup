@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import { MainLayout } from '@/components/layout/main-layout'
@@ -8,14 +8,11 @@ import { MapWrapper } from '@/components/map/map-wrapper'
 import { MetricSelector } from '@/components/ui/metric-selector'
 import { StatsDashboard } from '@/components/ui/stats-dashboard'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
-import { laNeighborhoods } from '@/lib/data/neighborhoods' // GeoJSON boundaries only
-import { useRealCrimeData } from '@/lib/hooks/use-real-crime-data'
-import { mergeCrimeDataWithBoundaries, formatLastUpdated, isDataStale } from '@/lib/utils/merge-crime-data'
+import { laNeighborhoods } from '@/lib/data/neighborhoods'
 import { calculateCrimeStats } from '@/lib/utils/crime-stats'
 import { CrimeMetric } from '@/lib/data/types'
-import { RefreshCw, AlertTriangle } from 'lucide-react'
 
-// Dynamic imports for AI features - NOW ENABLED BY DEFAULT
+// Dynamic imports for AI features (loaded only when needed - reduces initial bundle by ~125KB)
 const AIChatAssistant = dynamic(() => import('@/components/features').then(mod => ({ default: mod.AIChatAssistant })), {
   ssr: false,
   loading: () => null
@@ -34,34 +31,48 @@ const AISmartInsights = dynamic(() => import('@/components/features').then(mod =
   )
 })
 
-// Animation variants
-const pageTransition = { initial: { opacity: 0 }, animate: { opacity: 1 } }
-const heroVariants = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }
-const staggerContainer = { hidden: { opacity: 0 }, visible: { opacity: 1 } }
-const fadeInUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }
+// Animation variants - smooth, professional animations
+const pageTransition = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 }
+}
+
+const heroVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0
+  }
+}
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1
+  }
+}
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0
+  }
+}
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1
+  }
+}
 
 export default function Home() {
   const [selectedMetric, setSelectedMetric] = useState<CrimeMetric>('violentCrime')
 
-  // CRITICAL FIX #1: Fetch real-time data for LAST 30 DAYS (not 365!)
-  const { neighborhoods: crimeData, metadata, loading, error, refetch } = useRealCrimeData({
-    days: 30, // Last 30 days only - recent and actionable
-    autoFetch: true
-  })
-
-  // CRITICAL FIX #2: Merge real crime data with GeoJSON boundaries
-  const mergedNeighborhoods = useMemo(() => {
-    if (crimeData.length === 0) {
-      return laNeighborhoods // Fallback to static during loading
-    }
-    return mergeCrimeDataWithBoundaries(crimeData, laNeighborhoods)
-  }, [crimeData])
-
-  // Calculate stats from REAL data
-  const stats = calculateCrimeStats(mergedNeighborhoods)
-
-  // Check if data is stale
-  const dataIsStale = metadata ? isDataStale(metadata.lastUpdated) : false
+  // Calculate statistics from neighborhood data
+  const stats = calculateCrimeStats(laNeighborhoods)
 
   return (
     <ErrorBoundary>
@@ -72,7 +83,7 @@ export default function Home() {
           variants={pageTransition}
           className="min-h-screen"
         >
-          {/* Hero Section */}
+          {/* Hero Section - LA Sunset Themed */}
           <motion.section
             initial="hidden"
             animate="visible"
@@ -80,11 +91,15 @@ export default function Home() {
             style={{ background: 'linear-gradient(to bottom right, #0a0e1a 0%, #9D4EDD 50%, #131827 100%)' }}
             className="relative overflow-hidden py-16 sm:py-24 lg:py-32"
           >
+            {/* Animated gradient overlay */}
             <div className="absolute inset-0 animate-pulse" style={{ background: 'linear-gradient(to top right, rgba(255,107,53,0.2) 0%, transparent 50%, rgba(255,46,151,0.2) 100%)', animationDuration: '4s' }} />
+
+            {/* Grid pattern overlay */}
             <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '4rem 4rem' }} />
 
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center space-y-8 max-w-4xl mx-auto">
+                {/* Main headline - benefit-focused */}
                 <motion.h1
                   variants={fadeInUp}
                   className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight tracking-tight"
@@ -95,14 +110,16 @@ export default function Home() {
                   </span>
                 </motion.h1>
 
+                {/* Value proposition */}
                 <motion.p
                   variants={fadeInUp}
                   className="text-xl sm:text-2xl leading-relaxed max-w-3xl mx-auto font-light"
                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}
                 >
-                  View crime data from the <strong>last 30 days</strong> across Los Angeles. Real-time insights to help you find the safest neighborhood.
+                  Visualize neighborhood safety across Los Angeles. Compare crime statistics, explore interactive maps, and find the perfect area for your lifestyle.
                 </motion.p>
 
+                {/* CTA buttons */}
                 <motion.div
                   variants={fadeInUp}
                   className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4"
@@ -124,6 +141,7 @@ export default function Home() {
                   </a>
                 </motion.div>
 
+                {/* Trust signals */}
                 <motion.div
                   variants={fadeInUp}
                   className="flex flex-wrap justify-center items-center gap-8 pt-8"
@@ -139,7 +157,7 @@ export default function Home() {
                     <svg className="w-5 h-5" style={{ color: '#FFB020' }} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-sm font-medium">Last 30 Days</span>
+                    <span className="text-sm font-medium">Updated Regularly</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <svg className="w-5 h-5" style={{ color: '#FFB020' }} fill="currentColor" viewBox="0 0 20 20">
@@ -152,79 +170,33 @@ export default function Home() {
             </div>
           </motion.section>
 
-          {/* Data Freshness Warning */}
-          {(dataIsStale || error) && (
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-              <div className="bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-400 p-4 rounded-r-lg">
-                <div className="flex items-center gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-600" />
-                  <div className="flex-1">
-                    {error ? (
-                      <p className="text-sm text-amber-800 dark:text-amber-200">
-                        <strong>Error loading data:</strong> {error}
-                      </p>
-                    ) : (
-                      <p className="text-sm text-amber-800 dark:text-amber-200">
-                        <strong>Data may be stale.</strong> Last updated: {metadata ? formatLastUpdated(metadata.lastUpdated) : 'Unknown'}
-                      </p>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => refetch()}
-                    className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors"
-                  >
-                    <RefreshCw className="w-4 h-4" />
-                    Refresh
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Stats Overview */}
+          {/* Stats Overview - Quick Insights */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-            {loading ? (
-              <div className="text-center py-12">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-la-sunset-orange"></div>
-                <p className="mt-4 text-gray-600 dark:text-gray-400">Loading real-time crime data...</p>
-              </div>
-            ) : (
-              <>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.6 }}
-                >
-                  <StatsDashboard stats={stats} />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <StatsDashboard stats={stats} />
+            </motion.div>
 
-                  {/* Data Source Info */}
-                  {metadata && (
-                    <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-                      Showing data from <strong>{new Date(metadata.dateRange.start).toLocaleDateString()}</strong> to <strong>{new Date(metadata.dateRange.end).toLocaleDateString()}</strong>
-                      {' • '}
-                      {formatLastUpdated(metadata.lastUpdated)}
-                      {' • '}
-                      {metadata.totalIncidents.toLocaleString()} total incidents
-                    </div>
-                  )}
-                </motion.div>
-
-                {/* AI Smart Insights - ENABLED BY DEFAULT */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                  className="mt-6"
-                >
-                  <AISmartInsights />
-                </motion.div>
-              </>
+            {/* AI Smart Insights */}
+            {process.env.NEXT_PUBLIC_ENABLE_AI_FEATURES === 'true' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="mt-6"
+              >
+                <AISmartInsights />
+              </motion.div>
             )}
           </div>
 
           {/* Interactive Map Section */}
           <div id="explore-map" className="bg-gray-50 dark:bg-dark-bg-primary py-12 sm:py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+              {/* Section header */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -236,10 +208,11 @@ export default function Home() {
                   Explore Every Neighborhood
                 </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-300">
-                  Click on any area to see detailed crime statistics from the last 30 days
+                  Click on any area to see detailed crime statistics, trends, and safety scores
                 </p>
               </motion.div>
 
+              {/* Metric Selector */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -252,6 +225,7 @@ export default function Home() {
                 />
               </motion.div>
 
+              {/* Map Container */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.98 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -266,23 +240,14 @@ export default function Home() {
                      selectedMetric === 'breakIns' ? 'Break-ins' : 'Petty Theft'} Map
                   </h3>
                   <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-2">
-                    Darker shades = higher crime rates. Data from last 30 days.
+                    Darker shades indicate higher crime rates. Tap any neighborhood for details.
                   </p>
                 </div>
                 <div className="h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px]">
-                  {loading ? (
-                    <div className="h-full flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-                      <div className="text-center">
-                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-la-sunset-orange mb-4"></div>
-                        <p className="text-gray-600 dark:text-gray-400">Loading map...</p>
-                      </div>
-                    </div>
-                  ) : (
-                    <MapWrapper
-                      data={mergedNeighborhoods}
-                      selectedMetric={selectedMetric}
-                    />
-                  )}
+                  <MapWrapper
+                    data={laNeighborhoods}
+                    selectedMetric={selectedMetric}
+                  />
                 </div>
               </motion.div>
             </div>
@@ -326,7 +291,7 @@ export default function Home() {
                 <FeatureCard
                   number="02"
                   title="Dive Into Details"
-                  description="Click any neighborhood to see comprehensive crime breakdowns from the last 30 days with real-time updates."
+                  description="Click any neighborhood to see comprehensive crime breakdowns, safety scores, and historical trends."
                   icon={
                     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -369,7 +334,7 @@ export default function Home() {
                     </h3>
                     <div className="space-y-3 text-gray-700 dark:text-gray-300 leading-relaxed">
                       <p className="text-base sm:text-lg">
-                        Our crime data comes directly from the <strong>Los Angeles Police Department Open Data Portal</strong>, showing incidents from the <strong>last 30 days</strong>. We update regularly to reflect the latest trends.
+                        Our crime data comes directly from official Los Angeles Police Department sources, ensuring accuracy and reliability. We update our statistics regularly to reflect the latest trends.
                       </p>
                       <p className="text-base sm:text-lg">
                         Remember: Safety is personal and multifaceted. Crime data is just one factor to consider when choosing where to live. Use this tool alongside other research, neighborhood visits, and local insights.
@@ -381,9 +346,10 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Final CTA */}
+          {/* Final CTA Section */}
           <div className="py-16 sm:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(to bottom right, #0a0e1a, #9D4EDD, #131827)' }}>
             <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '4rem 4rem' }} />
+
             <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -396,7 +362,7 @@ export default function Home() {
                   Ready to Find Your Perfect Neighborhood?
                 </h2>
                 <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                  Start exploring real-time LA crime data and make your next move with confidence
+                  Start exploring LA crime data now and make your next move with confidence
                 </p>
                 <a
                   href="#explore-map"
@@ -410,13 +376,14 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* AI Chat Assistant - ENABLED BY DEFAULT */}
-        <AIChatAssistant />
+        {/* AI Chat Assistant - Floating button */}
+        {process.env.NEXT_PUBLIC_ENABLE_CHAT === 'true' && <AIChatAssistant />}
       </MainLayout>
     </ErrorBoundary>
   )
 }
 
+// Feature Card Component - Professional design
 interface FeatureCardProps {
   number: string
   title: string
@@ -431,12 +398,17 @@ function FeatureCard({ number, title, description, icon }: FeatureCardProps) {
       className="relative group"
     >
       <div className="h-full bg-white dark:bg-dark-bg-tertiary border border-gray-200 dark:border-gray-700 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+        {/* Number badge */}
         <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-la-sunset-orange to-la-sunset-pink rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
           {number}
         </div>
+
+        {/* Icon */}
         <div className="mb-6 p-4 bg-gradient-to-br from-la-sunset-orange/10 to-la-sunset-pink/10 dark:from-la-sunset-orange/20 dark:to-la-sunset-pink/20 rounded-xl text-la-sunset-orange inline-block">
           {icon}
         </div>
+
+        {/* Content */}
         <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">
           {title}
         </h3>
