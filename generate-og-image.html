@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate OG Image for LA Crime Map</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            max-width: 100%;
+        }
+        button {
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LA Crime Map - Social Media Preview Image Generator</h1>
+        <p>Click the button below to download the Open Graph image (1200x630px)</p>
+
+        <canvas id="ogImage" width="1200" height="630"></canvas>
+        <br>
+        <button onclick="downloadImage()">Download og-image.png</button>
+
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click the download button</li>
+            <li>Save the file as <code>og-image.png</code> in the <code>public/</code> folder</li>
+        </ol>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('ogImage');
+        const ctx = canvas.getContext('2d');
+
+        // Background gradient
+        const gradient = ctx.createLinearGradient(0, 0, 0, 630);
+        gradient.addColorStop(0, '#1a1a2e');
+        gradient.addColorStop(1, '#0f0f1e');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Title
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 72px Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('LA Crime Map', 600, 180);
+
+        // Subtitle
+        ctx.fillStyle = '#aaaaaa';
+        ctx.font = '36px Arial, sans-serif';
+        ctx.fillText('Interactive Crime Data Visualization', 600, 240);
+
+        // Map pin icon (large)
+        function drawMapPin(x, y, size) {
+            ctx.save();
+            ctx.translate(x, y);
+            const scale = size / 100;
+            ctx.scale(scale, scale);
+
+            // Pin body
+            ctx.fillStyle = '#ff4444';
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(50, 20);
+            ctx.bezierCurveTo(40, 20, 32, 28, 32, 38);
+            ctx.bezierCurveTo(32, 48, 50, 65, 50, 65);
+            ctx.bezierCurveTo(50, 65, 68, 48, 68, 38);
+            ctx.bezierCurveTo(68, 28, 60, 20, 50, 20);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Police badge star
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            const centerX = 50, centerY = 38;
+            const spikes = 5;
+            const outerRadius = 7;
+            const innerRadius = 3;
+
+            for (let i = 0; i < spikes * 2; i++) {
+                const radius = i % 2 === 0 ? outerRadius : innerRadius;
+                const angle = (i * Math.PI) / spikes - Math.PI / 2;
+                const px = centerX + radius * Math.cos(angle);
+                const py = centerY + radius * Math.sin(angle);
+
+                if (i === 0) {
+                    ctx.moveTo(px, py);
+                } else {
+                    ctx.lineTo(px, py);
+                }
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // Draw large icon
+        drawMapPin(450, 280, 200);
+
+        // Feature boxes
+        const features = [
+            'Real-time Data',
+            'Interactive Map',
+            '21 LAPD Areas',
+            '4 Crime Metrics'
+        ];
+
+        ctx.font = '24px Arial, sans-serif';
+        ctx.textAlign = 'center';
+        features.forEach((feature, i) => {
+            const x = 150 + (i * 250);
+            const y = 540;
+
+            // Box background
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(x - 100, y - 30, 200, 60);
+
+            // Border
+            ctx.strokeStyle = '#ff4444';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x - 100, y - 30, 200, 60);
+
+            // Text
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(feature, x, y + 8);
+        });
+
+        // Data source
+        ctx.fillStyle = '#666666';
+        ctx.font = '20px Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Data from LA City Open Data Portal', 600, 600);
+
+        function downloadImage() {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'og-image.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+    </script>
+</body>
+</html>

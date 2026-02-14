@@ -1,28 +1,118 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
-import { Layer } from 'leaflet';
+import React, { useState, useEffect, Suspense, lazy, useCallback, useMemo } from 'react';
 import 'leaflet/dist/leaflet.css';
 import './App.css';
 import { laNeighborhoods, NeighborhoodGeoJSON } from './neighborhoods';
-import { fetchCrimeData, NeighborhoodData } from './crimeDataService';
+import { fetchCrimeData, NeighborhoodData, clearCrimeCache } from './crimeDataService';
+import { debounce } from './utils/debounce';
+import { getColorMemoized } from './utils/optimizedGeoJSON';
+import MapSkeleton from './components/MapSkeleton';
+import { DataVisualization } from './DataVisualization';
+
+// Lazy load the map component for better initial load performance
+const CrimeMap = lazy(() => import('./components/CrimeMap'));
 
 // Crime metrics type
 type CrimeMetric = 'violentCrime' | 'carTheft' | 'breakIns' | 'pettyTheft';
+type DateRange = '1week' | '1month' | '3months' | '1year';
+type SortOption = 'alphabetical' | 'crimeRate';
+type ViewMode = 'map' | 'analytics';
+
+// LocalStorage keys
+const STORAGE_KEYS = {
+  METRIC: 'la-crime-map-metric',
+  DATE_RANGE: 'la-crime-map-date-range',
+  SEVERITY_THRESHOLD: 'la-crime-map-severity',
+  SORT_OPTION: 'la-crime-map-sort',
+  SEARCH: 'la-crime-map-search',
+};
+
+// LocalStorage helpers
+const loadPreference = <T,>(key: string, defaultValue: T): T => {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : defaultValue;
+  } catch {
+    return defaultValue;
+  }
+};
+
+const savePreference = (key: string, value: any) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error('Failed to save preference:', error);
+  }
+};
 
 function App() {
-  const [selectedMetric, setSelectedMetric] = useState<CrimeMetric>('violentCrime');
+  // View mode state
+  const [viewMode, setViewMode] = useState<ViewMode>('map');
+
+  // Load preferences from localStorage
+  const [selectedMetric, setSelectedMetric] = useState<CrimeMetric>(
+    () => loadPreference(STORAGE_KEYS.METRIC, 'violentCrime')
+  );
+  const [dateRange, setDateRange] = useState<DateRange>(
+    () => loadPreference(STORAGE_KEYS.DATE_RANGE, '1month')
+  );
+  const [severityThreshold, setSeverityThreshold] = useState<number>(
+    () => loadPreference(STORAGE_KEYS.SEVERITY_THRESHOLD, 0)
+  );
+  const [sortOption, setSortOption] = useState<SortOption>(
+    () => loadPreference(STORAGE_KEYS.SORT_OPTION, 'crimeRate')
+  );
+  const [searchQuery, setSearchQuery] = useState<string>(
+    () => loadPreference(STORAGE_KEYS.SEARCH, '')
+  );
+  const [compareMode, setCompareMode] = useState<boolean>(false);
+  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>([]);
+
   const [hoveredNeighborhood, setHoveredNeighborhood] = useState<string | null>(null);
   const [neighborhoodData, setNeighborhoodData] = useState<NeighborhoodGeoJSON>(laNeighborhoods);
   const [loading, setLoading] = useState<boolean>(true);
   const [dataSource, setDataSource] = useState<string>('Loading...');
+  const [statsPanelOpen, setStatsPanelOpen] = useState<boolean>(false);
 
-  // Fetch real crime data on mount
+  // Save preferences to localStorage when they change
+  useEffect(() => {
+    savePreference(STORAGE_KEYS.METRIC, selectedMetric);
+  }, [selectedMetric]);
+
+  useEffect(() => {
+    savePreference(STORAGE_KEYS.DATE_RANGE, dateRange);
+  }, [dateRange]);
+
+  useEffect(() => {
+    savePreference(STORAGE_KEYS.SEVERITY_THRESHOLD, severityThreshold);
+  }, [severityThreshold]);
+
+  useEffect(() => {
+    savePreference(STORAGE_KEYS.SORT_OPTION, sortOption);
+  }, [sortOption]);
+
+  useEffect(() => {
+    savePreference(STORAGE_KEYS.SEARCH, searchQuery);
+  }, [searchQuery]);
+
+  // Map date range to weeks
+  const dateRangeToWeeks = (range: DateRange): number => {
+    switch (range) {
+      case '1week': return 1;
+      case '1month': return 4;
+      case '3months': return 12;
+      case '1year': return 52;
+      default: return 4;
+    }
+  };
+
+  // Fetch real crime data on mount or when date range changes
   useEffect(() => {
     async function loadRealCrimeData() {
       setLoading(true);
       try {
-        console.log('Fetching real crime data from LA Open Data API...');
-        const realData = await fetchCrimeData(4); // 4 weeks of data
+        console.log('Fetching crime data (with caching)...');
+        const weeks = dateRangeToWeeks(dateRange);
+        const realData = await fetchCrimeData(weeks);
 
         if (realData.length === 0) {
           setDataSource('Using sample data (API returned no data)');
@@ -64,8 +154,11 @@ function App() {
         };
 
         setNeighborhoodData(updatedGeoJSON);
-        setDataSource('Real LA Crime Data (last 4 weeks)');
-        console.log('Successfully loaded real crime data');
+        const rangeLabel = dateRange === '1week' ? 'last week' :
+                          dateRange === '1month' ? 'last month' :
+                          dateRange === '3months' ? 'last 3 months' : 'last year';
+        setDataSource(`Real LA Crime Data (${rangeLabel})`);
+        console.log('Successfully loaded crime data');
 
       } catch (error) {
         console.error('Error loading crime data:', error);
@@ -76,12 +169,84 @@ function App() {
     }
 
     loadRealCrimeData();
-  }, []);
+  }, [dateRange]);
 
   // Extract neighborhood data from GeoJSON for the stats panel
-  const neighborhoods: NeighborhoodData[] = neighborhoodData.features.map(
-    feature => feature.properties
+  const neighborhoods: NeighborhoodData[] = useMemo(
+    () => neighborhoodData.features.map(feature => feature.properties),
+    [neighborhoodData]
   );
+
+  // Filter and sort neighborhoods based on user preferences
+  const filteredAndSortedNeighborhoods = useMemo(() => {
+    let filtered = neighborhoods;
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(n =>
+        n.name.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply severity threshold filter
+    if (severityThreshold > 0) {
+      filtered = filtered.filter(n =>
+        (n[selectedMetric] || 0) >= severityThreshold
+      );
+    }
+
+    // Apply sorting
+    if (sortOption === 'alphabetical') {
+      filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      // Sort by crime rate (descending)
+      filtered = [...filtered].sort((a, b) =>
+        (b[selectedMetric] || 0) - (a[selectedMetric] || 0)
+      );
+    }
+
+    return filtered;
+  }, [neighborhoods, searchQuery, severityThreshold, sortOption, selectedMetric]);
+
+  // Debounced hover handler for better performance
+  const handleHover = useMemo(
+    () => debounce((name: string | null) => {
+      setHoveredNeighborhood(name);
+    }, 50),
+    []
+  );
+
+  // Handle neighborhood selection for compare mode
+  const toggleNeighborhoodSelection = useCallback((name: string) => {
+    if (!compareMode) return;
+
+    setSelectedNeighborhoods(prev => {
+      if (prev.includes(name)) {
+        return prev.filter(n => n !== name);
+      } else if (prev.length < 3) {
+        return [...prev, name];
+      } else {
+        // Replace the first selected if at max capacity
+        return [...prev.slice(1), name];
+      }
+    });
+  }, [compareMode]);
+
+  // Toggle compare mode
+  const handleCompareModeToggle = useCallback(() => {
+    setCompareMode(!compareMode);
+    if (compareMode) {
+      setSelectedNeighborhoods([]);
+    }
+  }, [compareMode]);
+
+  // Get comparison data
+  const comparisonData = useMemo(() => {
+    return selectedNeighborhoods.map(name =>
+      neighborhoods.find(n => n.name === name)
+    ).filter(Boolean) as NeighborhoodData[];
+  }, [selectedNeighborhoods, neighborhoods]);
 
   const metricLabels: Record<CrimeMetric, string> = {
     violentCrime: 'Violent Crime',
@@ -90,93 +255,16 @@ function App() {
     pettyTheft: 'Petty Theft'
   };
 
-  // Get color based on crime rate
-  const getColor = (value: number, metric: CrimeMetric): string => {
-    // Different thresholds for different metrics
-    const thresholds: Record<CrimeMetric, number[]> = {
-      violentCrime: [2, 5, 10],
-      carTheft: [5, 10, 15],
-      breakIns: [5, 10, 15],
-      pettyTheft: [10, 20, 30]
-    };
+  // Memoized color function using optimized utility
+  const getColor = useCallback((value: number, metric: CrimeMetric): string => {
+    return getColorMemoized(value, metric);
+  }, []);
 
-    const t = thresholds[metric];
-    if (value < t[0]) return '#00ff00'; // Green - low
-    if (value < t[1]) return '#ffff00'; // Yellow - moderate
-    if (value < t[2]) return '#ff9900'; // Orange - high
-    return '#ff0000'; // Red - very high
-  };
-
-  // Style function for GeoJSON polygons
-  const style = (feature: any) => {
-    const props = feature.properties;
-    const value = props[selectedMetric] || 0;
-    const color = getColor(value, selectedMetric);
-    const isHovered = hoveredNeighborhood === props.name;
-
-    return {
-      fillColor: color,
-      weight: isHovered ? 3 : 2,
-      opacity: 1,
-      color: isHovered ? '#ffffff' : '#666666',
-      dashArray: '',
-      fillOpacity: isHovered ? 0.8 : 0.6
-    };
-  };
-
-  // Event handlers for interactivity
-  const onEachFeature = (feature: any, layer: Layer) => {
-    const props = feature.properties;
-
-    layer.on({
-      mouseover: (e) => {
-        setHoveredNeighborhood(props.name);
-        const layer = e.target;
-        layer.setStyle({
-          weight: 3,
-          color: '#ffffff',
-          fillOpacity: 0.8
-        });
-      },
-      mouseout: (e) => {
-        setHoveredNeighborhood(null);
-        const layer = e.target;
-        layer.setStyle(style(feature));
-      },
-      click: () => {
-        // Scroll to neighborhood in stats panel
-        const element = document.getElementById(`neighborhood-${props.name.replace(/\s+/g, '-')}`);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      }
-    });
-
-    // Bind popup with neighborhood info
-    layer.bindPopup(`
-      <div style="color: #000; font-family: Arial, sans-serif;">
-        <h3 style="margin: 0 0 10px 0; font-size: 16px;">${props.name}</h3>
-        <table style="width: 100%; font-size: 13px;">
-          <tr>
-            <td><strong>Violent Crime:</strong></td>
-            <td style="text-align: right;">${props.violentCrime}/week</td>
-          </tr>
-          <tr>
-            <td><strong>Car Theft:</strong></td>
-            <td style="text-align: right;">${props.carTheft}/week</td>
-          </tr>
-          <tr>
-            <td><strong>Break-ins:</strong></td>
-            <td style="text-align: right;">${props.breakIns}/week</td>
-          </tr>
-          <tr>
-            <td><strong>Petty Theft:</strong></td>
-            <td style="text-align: right;">${props.pettyTheft}/week</td>
-          </tr>
-        </table>
-      </div>
-    `);
-  };
+  // Handler to force refresh cache
+  const handleRefreshData = useCallback(() => {
+    clearCrimeCache();
+    window.location.reload();
+  }, []);
 
   return (
     <div className="App">
@@ -185,80 +273,286 @@ function App() {
         <p>Visualize crime by neighborhood</p>
         <p style={{ fontSize: '0.9em', fontStyle: 'italic', opacity: 0.8 }}>
           {loading ? 'Loading data...' : `Data: ${dataSource}`}
+          {!loading && (
+            <button
+              onClick={handleRefreshData}
+              style={{
+                marginLeft: '10px',
+                fontSize: '0.8em',
+                padding: '2px 8px',
+                cursor: 'pointer'
+              }}
+              title="Clear cache and refresh data"
+            >
+              Refresh
+            </button>
+          )}
         </p>
       </div>
 
-      <div className="metric-selector">
-        {(Object.keys(metricLabels) as CrimeMetric[]).map(metric => (
-          <button
-            key={metric}
-            className={selectedMetric === metric ? 'active' : ''}
-            onClick={() => setSelectedMetric(metric)}
-          >
-            {metricLabels[metric]}
-          </button>
-        ))}
-      </div>
-
-      <div className="map-container">
-        <MapContainer
-          center={[34.0522, -118.2437]}
-          zoom={10}
-          style={{ height: '100%', width: '100%' }}
+      {/* View Mode Tabs */}
+      <div className="view-mode-tabs">
+        <button
+          className={`tab-button ${viewMode === 'map' ? 'active' : ''}`}
+          onClick={() => setViewMode('map')}
         >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          />
-          <GeoJSON
-            key={`${selectedMetric}-${loading}`} // Re-render when metric or data changes
-            data={neighborhoodData}
-            style={style}
-            onEachFeature={onEachFeature}
-          />
-        </MapContainer>
+          Map View
+        </button>
+        <button
+          className={`tab-button ${viewMode === 'analytics' ? 'active' : ''}`}
+          onClick={() => setViewMode('analytics')}
+        >
+          Analytics Dashboard
+        </button>
       </div>
 
-      <div className="stats-panel">
-        <h3>Current Metric: {metricLabels[selectedMetric]}</h3>
+      {viewMode === 'analytics' ? (
+        <DataVisualization
+          neighborhoods={neighborhoods}
+          selectedMetric={selectedMetric}
+        />
+      ) : (
+        <>
+          <div className="controls-container">
+            {/* Search Bar */}
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search neighborhoods..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+              />
+              {searchQuery && (
+                <button
+                  className="clear-search"
+                  onClick={() => setSearchQuery('')}
+                  title="Clear search"
+                >
+                  ×
+                </button>
+              )}
+            </div>
 
-        <div className="legend">
-          <div className="legend-item">
-            <span className="legend-color" style={{ background: '#00ff00' }}></span>
-            <span>Low</span>
-          </div>
-          <div className="legend-item">
-            <span className="legend-color" style={{ background: '#ffff00' }}></span>
-            <span>Moderate</span>
-          </div>
-          <div className="legend-item">
-            <span className="legend-color" style={{ background: '#ff9900' }}></span>
-            <span>High</span>
-          </div>
-          <div className="legend-item">
-            <span className="legend-color" style={{ background: '#ff0000' }}></span>
-            <span>Very High</span>
-          </div>
-        </div>
-
-        <div className="neighborhood-list">
-          {neighborhoods
-            .sort((a, b) => (b[selectedMetric] || 0) - (a[selectedMetric] || 0))
-            .map(n => (
-              <div
-                key={n.name}
-                id={`neighborhood-${n.name.replace(/\s+/g, '-')}`}
-                className={`neighborhood-item ${hoveredNeighborhood === n.name ? 'highlighted' : ''}`}
-                style={{
-                  borderLeft: `4px solid ${getColor(n[selectedMetric] || 0, selectedMetric)}`
-                }}
+            {/* Date Range Selector */}
+            <div className="date-range-selector">
+              <label>Time Period:</label>
+              <select
+                value={dateRange}
+                onChange={(e) => setDateRange(e.target.value as DateRange)}
+                className="date-select"
               >
-                <span className="neighborhood-name">{n.name}</span>
-                <span className="crime-value">{n[selectedMetric] || 0} per week</span>
-              </div>
+                <option value="1week">Last Week</option>
+                <option value="1month">Last Month</option>
+                <option value="3months">Last 3 Months</option>
+                <option value="1year">Last Year</option>
+              </select>
+            </div>
+
+            {/* Severity Threshold Filter */}
+            <div className="severity-filter">
+              <label>Min Severity: {severityThreshold}</label>
+              <input
+                type="range"
+                min="0"
+                max="50"
+                step="1"
+                value={severityThreshold}
+                onChange={(e) => setSeverityThreshold(Number(e.target.value))}
+                className="severity-slider"
+              />
+            </div>
+
+            {/* Sort Options */}
+            <div className="sort-selector">
+              <label>Sort By:</label>
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value as SortOption)}
+                className="sort-select"
+              >
+                <option value="crimeRate">Crime Rate</option>
+                <option value="alphabetical">Alphabetical</option>
+              </select>
+            </div>
+
+            {/* Compare Mode Toggle */}
+            <button
+              className={`compare-toggle ${compareMode ? 'active' : ''}`}
+              onClick={handleCompareModeToggle}
+            >
+              {compareMode ? 'Exit Compare' : 'Compare Mode'}
+            </button>
+          </div>
+
+          <div className="metric-selector">
+            {(Object.keys(metricLabels) as CrimeMetric[]).map(metric => (
+              <button
+                key={metric}
+                className={selectedMetric === metric ? 'active' : ''}
+                onClick={() => setSelectedMetric(metric)}
+              >
+                {metricLabels[metric]}
+              </button>
             ))}
-        </div>
-      </div>
+          </div>
+
+          <div className="map-container">
+            <Suspense fallback={<MapSkeleton />}>
+              <CrimeMap
+                neighborhoodData={neighborhoodData}
+                selectedMetric={selectedMetric}
+                onHover={handleHover}
+                getColor={getColor}
+              />
+            </Suspense>
+
+            {/* Mobile Stats Panel Toggle Button */}
+            <button
+              className="stats-panel-toggle"
+              onClick={() => setStatsPanelOpen(!statsPanelOpen)}
+              aria-label="Toggle statistics panel"
+            >
+              {statsPanelOpen ? '✕' : '☰'}
+            </button>
+
+            <div className={`stats-panel ${statsPanelOpen ? 'open' : ''}`}>
+              <div className="stats-panel-header">
+                <h3>Current Metric: {metricLabels[selectedMetric]}</h3>
+                <button
+                  className="stats-panel-close"
+                  onClick={() => setStatsPanelOpen(false)}
+                  aria-label="Close statistics panel"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {compareMode && selectedNeighborhoods.length > 0 ? (
+                // Compare Mode View
+                <div className="compare-view">
+                  <h3>Compare Neighborhoods ({selectedNeighborhoods.length}/3)</h3>
+                  <p className="compare-hint">Click neighborhoods on the map to compare (max 3)</p>
+
+                  {comparisonData.length > 0 && (
+                    <div className="comparison-table">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Metric</th>
+                            {comparisonData.map(n => (
+                              <th key={n.name}>{n.name}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Violent Crime</td>
+                            {comparisonData.map(n => (
+                              <td key={n.name}>{n.violentCrime}/wk</td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td>Car Theft</td>
+                            {comparisonData.map(n => (
+                              <td key={n.name}>{n.carTheft}/wk</td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td>Break-ins</td>
+                            {comparisonData.map(n => (
+                              <td key={n.name}>{n.breakIns}/wk</td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td>Petty Theft</td>
+                            {comparisonData.map(n => (
+                              <td key={n.name}>{n.pettyTheft}/wk</td>
+                            ))}
+                          </tr>
+                          <tr className="total-row">
+                            <td><strong>Total</strong></td>
+                            {comparisonData.map(n => (
+                              <td key={n.name}>
+                                <strong>
+                                  {n.violentCrime + n.carTheft + n.breakIns + n.pettyTheft}/wk
+                                </strong>
+                              </td>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+
+                  {selectedNeighborhoods.length > 0 && (
+                    <button
+                      className="clear-selection"
+                      onClick={() => setSelectedNeighborhoods([])}
+                    >
+                      Clear Selection
+                    </button>
+                  )}
+                </div>
+              ) : (
+                // Normal View
+                <>
+                  {searchQuery && (
+                    <p className="search-results">
+                      Showing {filteredAndSortedNeighborhoods.length} of {neighborhoods.length} neighborhoods
+                    </p>
+                  )}
+
+                  <div className="legend">
+                    <div className="legend-item">
+                      <span className="legend-color" style={{ background: '#00ff00' }}></span>
+                      <span>Low</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-color" style={{ background: '#ffff00' }}></span>
+                      <span>Moderate</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-color" style={{ background: '#ff9900' }}></span>
+                      <span>High</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-color" style={{ background: '#ff0000' }}></span>
+                      <span>Very High</span>
+                    </div>
+                  </div>
+
+                  <div className="neighborhood-list">
+                    {filteredAndSortedNeighborhoods.length > 0 ? (
+                      filteredAndSortedNeighborhoods.map(n => (
+                        <div
+                          key={n.name}
+                          id={`neighborhood-${n.name.replace(/\s+/g, '-')}`}
+                          className={`neighborhood-item ${hoveredNeighborhood === n.name ? 'highlighted' : ''}`}
+                          style={{
+                            borderLeft: `4px solid ${getColor(n[selectedMetric] || 0, selectedMetric)}`
+                          }}
+                          onClick={() => {
+                            const element = document.getElementById(`neighborhood-${n.name.replace(/\s+/g, '-')}`);
+                            if (element) {
+                              element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }
+                          }}
+                        >
+                          <span className="neighborhood-name">{n.name}</span>
+                          <span className="crime-value">{n[selectedMetric] || 0} per week</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="no-results">No neighborhoods match your filters</p>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

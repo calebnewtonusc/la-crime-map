@@ -1,0 +1,182 @@
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.floating-help-button {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #0066cc 0%, #0055aa 100%);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.5);
+  z-index: 1001;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-help-button:hover {
+  background: linear-gradient(135deg, #0077ee 0%, #0066cc 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.6);
+}
+
+.floating-help-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.floating-help-button:focus {
+  outline: 3px solid #6eb5ff;
+  outline-offset: 3px;
+}
+
+.floating-help-button svg {
+  flex-shrink: 0;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 767px) {
+  .floating-help-button {
+    bottom: 85px;
+    right: 15px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .floating-help-button svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .floating-help-button {
+    bottom: 80px;
+    right: 12px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .floating-help-button svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Hide help button when stats panel is open on mobile */
+@media screen and (max-width: 767px) {
+  .stats-panel.open ~ .floating-help-button {
+    display: none;
+  }
+}
+
+/* View Mode Tabs */
+.view-mode-tabs {
+  display: flex;
+  background: #252525;
+  border-bottom: 2px solid #3a3a3a;
+  padding: 0;
+  gap: 0;
+  position: relative;
+  z-index: 1001;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 15px 20px;
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #aaa;
+}
+
+.tab-button.active {
+  color: #fff;
+  background: #2a2a2a;
+  border-bottom-color: #0066cc;
+}
+
+.tab-button::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #0066cc;
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.tab-button.active::after {
+  transform: scaleX(1);
+}
+
+/* Loading Analytics State */
+.loading-analytics {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #333;
+  border-top-color: #0066cc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-analytics p {
+  font-size: 16px;
+  color: #888;
+}
+
+@media screen and (max-width: 767px) {
+  .view-mode-tabs {
+    padding: 0;
+  }
+
+  .tab-button {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .tab-button {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}

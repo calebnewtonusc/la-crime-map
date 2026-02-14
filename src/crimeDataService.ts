@@ -1,5 +1,6 @@
 // LA Crime Data Service - fetches real crime data from LA City Open Data Portal
 // API: https://data.lacity.org/resource/2nrs-mtv8.json
+import cache from './utils/cacheService';
 
 export interface NeighborhoodData {
   name: string;
@@ -8,6 +9,9 @@ export interface NeighborhoodData {
   breakIns: number;
   pettyTheft: number;
 }
+
+const CACHE_KEY = 'la-crime-data';
+const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
 interface CrimeRecord {
   area_name: string;
@@ -68,9 +72,18 @@ function categorizeCrime(description: string): keyof Omit<NeighborhoodData, 'nam
   return null;
 }
 
-// Fetch crime data from LA Open Data Portal
+// Fetch crime data from LA Open Data Portal with caching
 export async function fetchCrimeData(weeksBack: number = 1): Promise<NeighborhoodData[]> {
   try {
+    // Check cache first
+    const cachedData = cache.get<NeighborhoodData[]>(CACHE_KEY);
+    if (cachedData) {
+      console.log('Using cached crime data');
+      return cachedData;
+    }
+
+    console.log('Cache miss - fetching fresh data from API');
+
     // Note: LA Crime Data dataset is updated periodically
     // Using recent data from late 2024 for demonstration
     // In production, you would use actual current dates
@@ -143,6 +156,10 @@ export async function fetchCrimeData(weeksBack: number = 1): Promise<Neighborhoo
       });
 
     console.log(`Processed ${neighborhoods.length} neighborhoods`);
+
+    // Cache the processed data
+    cache.set(CACHE_KEY, neighborhoods, CACHE_DURATION);
+
     return neighborhoods;
 
   } catch (error) {
@@ -150,6 +167,15 @@ export async function fetchCrimeData(weeksBack: number = 1): Promise<Neighborhoo
     // Return empty array on error - app will handle gracefully
     return [];
   }
+}
+
+/**
+ * Clear the crime data cache
+ * Useful for forcing a data refresh
+ */
+export function clearCrimeCache(): void {
+  cache.remove(CACHE_KEY);
+  console.log('Crime data cache cleared');
 }
 
 // Get sample of popular LA neighborhoods for initial display

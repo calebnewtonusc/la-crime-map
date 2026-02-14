@@ -1,0 +1,89 @@
+.app-footer {
+  background: #1a1a2e;
+  color: #ffffff;
+  padding: 40px 20px 20px;
+  margin-top: 40px;
+  border-top: 3px solid #ff4444;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.footer-section h4 {
+  color: #ff4444;
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-section p {
+  margin: 8px 0;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.footer-section a {
+  color: #6eb5ff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-section a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-section a:focus {
+  outline: 2px solid #6eb5ff;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.footer-note {
+  font-size: 13px;
+  color: #aaaaaa;
+  font-style: italic;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+  text-align: center;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 14px;
+  color: #888888;
+}
+
+.footer-bottom a {
+  color: #6eb5ff;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .app-footer {
+    padding: 30px 15px 15px;
+  }
+}

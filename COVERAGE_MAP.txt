@@ -1,0 +1,67 @@
+========================================================================
+           LA CRIME MAP - GEOGRAPHIC COVERAGE
+========================================================================
+
+                    SAN FERNANDO VALLEY (7 areas)
+    ┌────────────────────────────────────────────────────────┐
+    │  Encino | Sherman Oaks | Studio City | Burbank         │
+    │         | Van Nuys     | N.Hollywood | Glendale        │
+    └────────────────────────────────────────────────────────┘
+                              │
+    ┌─────────────────────────┴──────────────────────────────┐
+    │             HOLLYWOOD & WESTSIDE (9 areas)             │
+    │                                                         │
+    │  Bel Air                                               │
+    │  Brentwood → West LA → Beverly Hills → West Hollywood  │
+    │  Santa Monica → Culver City   Hollywood                │
+    │  Venice → Marina del Rey → Palms  Los Feliz            │
+    └────────────────────────────────────────────────────────┘
+                              │
+    ┌─────────────────────────┴──────────────────────────────┐
+    │          CENTRAL LA (5 areas)                          │
+    │                                                         │
+    │      Echo Park → Silver Lake                           │
+    │      Koreatown → Downtown LA                           │
+    └────────────────────────────────────────────────────────┘
+            │                                  │
+    ┌───────┴────────┐              ┌─────────┴────────────────┐
+    │  SOUTH LA      │              │  EAST LA & SGV (4 areas) │
+    │  (4 areas)     │              │                          │
+    │                │              │  Pasadena                │
+    │  South LA      │              │  Alhambra                │
+    │  Inglewood     │              │  East LA                 │
+    │  Watts         │              │  El Monte                │
+    │  Compton       │              │                          │
+    └────────────────┘              └──────────────────────────┘
+            │
+    ┌───────┴────────────────────────┐
+    │  SOUTH BAY / LONG BEACH        │
+    │  (5 areas)                     │
+    │                                │
+    │  El Segundo → Manhattan Beach  │
+    │  Redondo Beach → Torrance      │
+    │           Long Beach           │
+    └────────────────────────────────┘
+
+
+GEOGRAPHIC BOUNDARIES:
+━━━━━━━━━━━━━━━━━━━━━━
+North:  Burbank/Glendale    (~34.22°N)
+South:  Long Beach          (~33.74°N)
+West:   Santa Monica        (~118.54°W)
+East:   El Monte            (~118.01°W)
+
+COVERAGE STATISTICS:
+━━━━━━━━━━━━━━━━━━━━
+Total Neighborhoods:     36
+Area Coverage:           ~2,600 km²
+North-South Distance:    ~53 km
+East-West Distance:      ~49 km
+
+CRIME DATA INTEGRATION:
+━━━━━━━━━━━━━━━━━━━━━━━
+✓ Compatible with LA City Open Data API
+✓ 4 crime categories tracked per neighborhood
+✓ Weekly crime statistics
+✓ Real-time data updates supported
+

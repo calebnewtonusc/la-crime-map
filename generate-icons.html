@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Icons for LA Crime Map</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px;
+        }
+        button {
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2a2a3e;
+        }
+        .preview {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LA Crime Map Icon Generator</h1>
+        <p>Click the buttons below to download the icon files. Save them in the <code>public/</code> folder.</p>
+
+        <div class="preview">
+            <h3>Icon Preview:</h3>
+            <canvas id="preview" width="64" height="64"></canvas>
+        </div>
+
+        <div>
+            <button onclick="downloadIcon(16, 'favicon-16x16.png')">Download 16x16</button>
+            <button onclick="downloadIcon(32, 'favicon-32x32.png')">Download 32x32</button>
+            <button onclick="downloadIcon(180, 'apple-touch-icon.png')">Download 180x180 (Apple)</button>
+            <button onclick="downloadIcon(192, 'logo192.png')">Download 192x192</button>
+            <button onclick="downloadIcon(512, 'logo512.png')">Download 512x512</button>
+        </div>
+
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click each download button</li>
+            <li>Save the files to the <code>public/</code> folder of the LA Crime Map project</li>
+            <li>Replace existing icon files if prompted</li>
+        </ol>
+    </div>
+
+    <script>
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = size;
+            canvas.height = size;
+
+            // Dark background
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, size, size);
+
+            // Scale factor
+            const scale = size / 100;
+
+            // Map pin
+            ctx.save();
+            ctx.scale(scale, scale);
+
+            // Pin shadow
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.beginPath();
+            ctx.ellipse(50, 66, 8, 3, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Pin body
+            ctx.fillStyle = '#ff4444';
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, 20);
+            ctx.bezierCurveTo(40, 20, 32, 28, 32, 38);
+            ctx.bezierCurveTo(32, 48, 50, 65, 50, 65);
+            ctx.bezierCurveTo(50, 65, 68, 48, 68, 38);
+            ctx.bezierCurveTo(68, 28, 60, 20, 50, 20);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Police badge star
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            const centerX = 50, centerY = 38;
+            const spikes = 5;
+            const outerRadius = 7;
+            const innerRadius = 3;
+
+            for (let i = 0; i < spikes * 2; i++) {
+                const radius = i % 2 === 0 ? outerRadius : innerRadius;
+                const angle = (i * Math.PI) / spikes - Math.PI / 2;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            // Map grid in background
+            ctx.strokeStyle = '#444';
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.4;
+
+            // Horizontal lines
+            ctx.beginPath();
+            ctx.moveTo(15, 75); ctx.lineTo(85, 75);
+            ctx.moveTo(15, 85); ctx.lineTo(85, 85);
+            ctx.stroke();
+
+            // Vertical lines
+            ctx.beginPath();
+            ctx.moveTo(25, 70); ctx.lineTo(25, 90);
+            ctx.moveTo(40, 70); ctx.lineTo(40, 90);
+            ctx.moveTo(60, 70); ctx.lineTo(60, 90);
+            ctx.moveTo(75, 70); ctx.lineTo(75, 90);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        // Draw preview
+        const previewCanvas = document.getElementById('preview');
+        drawIcon(previewCanvas, 64);
+
+        function downloadIcon(size, filename) {
+            const canvas = document.createElement('canvas');
+            drawIcon(canvas, size);
+
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+    </script>
+</body>
+</html>

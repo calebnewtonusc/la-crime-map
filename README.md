@@ -1,112 +1,268 @@
 # LA Crime Map
 
-An interactive map visualization of **real crime statistics** from the Los Angeles Open Data Portal across LA neighborhoods. View crime data by neighborhood with color-coded polygons and interactive features.
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://la-crime-map.vercel.app)
+[![React](https://img.shields.io/badge/React-19.2-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9-blue)](https://www.typescriptlang.org/)
+[![Leaflet](https://img.shields.io/badge/Leaflet-1.9-green)](https://leafletjs.com/)
+
+An interactive, real-time crime data visualization platform for Los Angeles neighborhoods. Explore crime statistics across all 21 LAPD Community Police Station areas with an intuitive map interface, advanced analytics, and customizable time ranges.
+
+## Live Demo
+
+Visit the live application: **[la-crime-map.vercel.app](https://la-crime-map.vercel.app)**
 
 ## Features
 
-- **Real Crime Data** from LA City Open Data API (updated automatically)
-- Interactive neighborhood boundary polygons on Leaflet map
-- Color-coded visualization based on crime severity
-- Multiple crime metrics: Violent Crime, Car Theft, Break-ins, Petty Theft
-- Hover effects to highlight neighborhoods on map and stats panel
-- Click neighborhoods to view detailed crime statistics in popup
-- Synchronized stats panel showing all neighborhoods with current metric
-- Color legend for easy interpretation
+### Interactive Crime Mapping
+- **Real-Time Data Integration**: Fetches live crime data from the LA City Open Data Portal API
+- **21 LAPD Areas**: Complete coverage of all Los Angeles police jurisdictions
+- **Color-Coded Visualization**: Intuitive heat-map style coloring based on crime severity
+- **Interactive Polygons**: Click, hover, and explore neighborhood boundaries
+- **Detailed Popups**: View comprehensive crime statistics for each area
+
+### Advanced Analytics
+- **4 Crime Metrics**:
+  - Violent Crime (assault, robbery, homicide, weapons offenses)
+  - Car Theft (vehicles, motorcycles, bikes)
+  - Break-ins (burglary, excluding vehicle)
+  - Petty Theft (shoplifting, pickpocketing, vehicle burglary)
+- **Analytics Dashboard**:
+  - Bar chart showing top 10 most dangerous neighborhoods
+  - Line chart displaying crime trends over time (12-week historical view)
+  - Pie chart for crime type distribution by neighborhood
+  - Summary statistics cards with key metrics
+  - Export data to CSV functionality
+- **Comparison Mode**: Compare up to 3 neighborhoods side-by-side
+- **Time Range Selection**: View data from 1 week to 1 year
+
+### User Experience
+- **Search & Filter**: Find neighborhoods quickly with real-time search
+- **Severity Threshold**: Filter areas by minimum crime rate
+- **Multiple Sort Options**: Alphabetical or by crime rate
+- **Responsive Design**: Optimized for desktop, tablet, and mobile
+- **Dark Mode Interface**: Easy on the eyes with professional dark theme
+- **Offline Support**: Service worker caching for improved performance
+- **Interactive Tutorial**: First-time help modal with usage instructions
+
+### SEO & Sharing
+- Comprehensive meta tags for search engines
+- Open Graph tags for social media sharing
+- Twitter Card support
+- Structured JSON-LD data for rich snippets
+- Custom favicons and social preview images
+
+## Technology Stack
+
+### Frontend
+- **React 19.2** - Modern UI framework
+- **TypeScript 4.9** - Type-safe development
+- **Leaflet 1.9** - Interactive mapping library
+- **React-Leaflet 5.0** - React bindings for Leaflet
+- **Recharts** - Beautiful and composable charts for data visualization
+
+### Data
+- **LA Open Data API** - Real-time crime statistics
+- **GeoJSON** - Neighborhood boundary definitions
+- **LocalStorage** - User preference persistence
+- **Service Workers** - Offline caching and PWA support
+
+### Optimization
+- **Lazy Loading** - Code splitting for faster initial load
+- **Memoization** - Performance optimization with React hooks
+- **Debouncing** - Smooth interactions with optimized event handlers
+- **Responsive Images** - Optimized assets for all screen sizes
+
+## Getting Started
+
+### Prerequisites
+- Node.js 16+
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/la-crime-map.git
+cd la-crime-map
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm start
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+This creates an optimized production build in the `build/` folder.
+
+### Deploy
+
+The app is optimized for deployment on Vercel, Netlify, or any static hosting service:
+
+```bash
+npm run build
+# Deploy the build/ folder to your hosting provider
+```
 
 ## Data Source
 
-This app uses real crime data from the **Los Angeles Open Data Portal**:
-- **API**: https://data.lacity.org/resource/2nrs-mtv8.json
+### LA City Open Data Portal
+- **API Endpoint**: https://data.lacity.org/resource/2nrs-mtv8.json
 - **Dataset**: Crime Data from 2020 to Present
-- **Update Frequency**: Data is fetched for the most recent 4-week period
+- **Update Frequency**: Updated regularly by LAPD
+- **Data Points**: 50,000+ recent crime records
 - **Coverage**: All 21 LAPD Community Police Station areas
 
-### Crime Categories
+### Crime Classification
+The app intelligently categorizes crimes using keyword matching:
 
-The app categorizes crimes into four metrics:
+| Category | Crime Types |
+|----------|-------------|
+| **Violent Crime** | Assault, robbery, rape, homicide, weapons, kidnapping |
+| **Car Theft** | Vehicle theft (cars, motorcycles, scooters, bicycles) |
+| **Break-ins** | Burglary from residences and businesses |
+| **Petty Theft** | Shoplifting, pickpocketing, theft from vehicles |
 
-1. **Violent Crime**: Assault, robbery, rape, homicide, weapons offenses, kidnapping
-2. **Car Theft**: Vehicle stolen (cars, motorcycles, scooters, bikes)
-3. **Break-ins**: Burglary (excluding vehicle burglary)
-4. **Petty Theft**: All theft crimes, shoplifting, pickpocketing, vehicle burglary
-
-### LAPD Areas Included
-
-All 21 LAPD Community Police Station areas:
+### LAPD Areas
+All 21 Community Police Station areas are included:
 - Central, Rampart, Southwest, Hollenbeck, Harbor
 - Hollywood, Wilshire, West LA, Van Nuys, West Valley
 - Northeast, 77th Street, Newton, Pacific, N Hollywood
 - Foothill, Devonshire, Southeast, Mission, Olympic, Topanga
 
-## Technical Implementation
+## Project Structure
 
-### Data Service (`crimeDataService.ts`)
-
-The data service fetches real crime data from the LA Open Data API using Socrata's SODA API:
-
-```typescript
-// Fetches crime data for the last N weeks
-fetchCrimeData(weeksBack: number = 4): Promise<NeighborhoodData[]>
+```
+la-crime-map/
+├── public/
+│   ├── index.html              # SEO-optimized HTML
+│   ├── manifest.json            # PWA manifest
+│   ├── favicon.svg              # Custom crime map icon
+│   └── og-image.png             # Social media preview
+├── src/
+│   ├── components/
+│   │   ├── CrimeMap.tsx         # Lazy-loaded map component
+│   │   ├── Footer.tsx           # Data attribution footer
+│   │   ├── InfoModal.tsx        # Help and instructions
+│   │   └── MapSkeleton.tsx      # Loading state
+│   ├── utils/
+│   │   ├── debounce.ts          # Performance utilities
+│   │   └── optimizedGeoJSON.ts  # Memoized color functions
+│   ├── App.tsx                  # Main application
+│   ├── AppWrapper.tsx           # Footer & modal wrapper
+│   ├── crimeDataService.ts      # API integration
+│   ├── neighborhoods.ts         # GeoJSON boundaries
+│   └── DataVisualization.tsx    # Analytics dashboard
+└── README.md
 ```
 
-Features:
-- Fetches up to 50,000 recent crime records
-- Categorizes crimes into 4 metrics using keyword matching
-- Aggregates by LAPD area name
-- Calculates per-week rates for consistency
-- Handles API errors gracefully with fallback to sample data
+## Key Features in Detail
 
-### App Integration
+### Interactive Map
+- Pan and zoom across Los Angeles
+- Color-coded neighborhoods based on crime severity
+- Hover effects with visual feedback
+- Click for detailed crime statistics popup
+- Synchronized highlighting between map and statistics panel
 
-The app loads real data on mount via `useEffect`:
-- Displays loading state while fetching
-- Shows data source in header ("Real LA Crime Data" vs "Using sample data")
-- Merges real crime stats with GeoJSON neighborhood boundaries
-- Updates map colors and stats panel dynamically
+### Real-Time Data Fetching
+```typescript
+// Fetch crime data with configurable time range
+const data = await fetchCrimeData(weeks);
 
-## Getting Started with Create React App
+// Automatic caching with cache invalidation
+// Graceful fallback to sample data on API errors
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### User Preferences
+The app remembers your preferences using LocalStorage:
+- Selected crime metric
+- Time range selection
+- Severity threshold
+- Sort order
+- Search queries
 
-## Available Scripts
+### Performance Optimizations
+- Lazy loading of map component
+- Memoized color calculations
+- Debounced hover handlers
+- Service worker caching
+- Optimized GeoJSON rendering
 
-In the project directory, you can run:
+### Accessibility
+- ARIA labels on all interactive elements
+- Keyboard navigation support
+- Screen reader friendly
+- High contrast color schemes
+- Reduced motion support
 
-### `npm start`
+## API Reference
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Crime Data Service
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```typescript
+interface NeighborhoodData {
+  name: string;
+  violentCrime: number;
+  carTheft: number;
+  breakIns: number;
+  pettyTheft: number;
+}
 
-### `npm test`
+// Fetch crime data for specified weeks
+fetchCrimeData(weeksBack: number): Promise<NeighborhoodData[]>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+// Clear cached data
+clearCrimeCache(): void
+```
 
-### `npm run build`
+## Browser Support
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+- Mobile browsers (iOS Safari, Chrome Mobile)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Contributing
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-### `npm run eject`
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## License
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This project is open source and available under the MIT License.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Disclaimer
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This visualization is for informational purposes only. Crime statistics are approximate and may not reflect all incidents. For official crime reports, please contact the [Los Angeles Police Department](https://www.lapdonline.org/).
 
-## Learn More
+## Acknowledgments
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Crime data provided by the [Los Angeles Open Data Portal](https://data.lacity.org/)
+- Map tiles from [OpenStreetMap](https://www.openstreetmap.org/)
+- Built with [React](https://reactjs.org/) and [Leaflet](https://leafletjs.com/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Contact & Support
+
+- Report issues on [GitHub Issues](https://github.com/yourusername/la-crime-map/issues)
+- For questions about the data, visit the [LA Open Data Portal](https://data.lacity.org/)
+
+---
+
+Made with data from the City of Los Angeles
