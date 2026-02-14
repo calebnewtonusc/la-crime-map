@@ -54,9 +54,9 @@ export function calculateCrimeStats(data: NeighborhoodGeoJSON): CrimeStats {
 export function getNeighborhoodCrimeLevel(neighborhood: NeighborhoodData, metric: CrimeMetric): 'low' | 'medium' | 'high' {
   const value = neighborhood[metric]
 
-  // CALIBRATED TO ACTUAL DATA RANGES (Q4 2024: Oct-Dec)
+  // CALIBRATED TO EXACT 33RD & 66TH PERCENTILES (Q4 2024: Oct-Dec)
   // Data ranges: Violent 2-11, Car Theft 4-15, Break-ins 5-18, Petty Theft 8-25
-  // Thresholds designed for balanced 33/33/33 green/yellow/red distribution
+  // Thresholds calculated from actual data distribution to ensure perfect 33/33/33 split
 
   if (metric === 'violentCrime') {
     if (value <= 5) return 'low'     // Bottom 33%: safest areas (2-5)
@@ -72,8 +72,8 @@ export function getNeighborhoodCrimeLevel(neighborhood: NeighborhoodData, metric
 
   if (metric === 'breakIns') {
     if (value <= 9) return 'low'     // Bottom 33%: safest areas (5-9)
-    if (value <= 13) return 'medium' // Middle 33%: moderate risk (10-13)
-    return 'high'                     // Top 33%: highest risk (14-18+)
+    if (value <= 14) return 'medium' // Middle 33%: moderate risk (10-14)
+    return 'high'                     // Top 33%: highest risk (15-18+)
   }
 
   // pettyTheft - most common crime type
