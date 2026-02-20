@@ -165,7 +165,7 @@ describe('Accessibility Compliance', () => {
       const { container } = render(
         <div>
           <header role="banner">Header</header>
-          <nav role="navigation">Navigation</nav>
+          <nav>Navigation</nav>
           <main role="main">Main Content</main>
           <aside role="complementary">Sidebar</aside>
           <footer role="contentinfo">Footer</footer>
@@ -173,7 +173,7 @@ describe('Accessibility Compliance', () => {
       );
 
       expect(container.querySelector('[role="banner"]')).toBeInTheDocument();
-      expect(container.querySelector('[role="navigation"]')).toBeInTheDocument();
+      expect(container.querySelector('nav')).toBeInTheDocument();
       expect(container.querySelector('[role="main"]')).toBeInTheDocument();
       expect(container.querySelector('[role="complementary"]')).toBeInTheDocument();
       expect(container.querySelector('[role="contentinfo"]')).toBeInTheDocument();

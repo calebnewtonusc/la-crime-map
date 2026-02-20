@@ -1,6 +1,12 @@
 import React from 'react';
 import './ErrorDisplay.css';
 
+const EMPTY_ACTIONS: {
+  label: string;
+  onClick: () => void;
+  primary?: boolean;
+}[] = [];
+
 export interface ErrorDisplayProps {
   title?: string;
   message: string;
@@ -19,7 +25,7 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   title,
   message,
   type = 'error',
-  actions = [],
+  actions = EMPTY_ACTIONS,
   onDismiss,
   showDetails = false,
   details
@@ -88,9 +94,9 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
 
       {actions.length > 0 && (
         <div className="error-display-actions">
-          {actions.map((action, index) => (
+          {actions.map((action) => (
             <button
-              key={index}
+              key={action.label}
               className={`error-action-btn ${action.primary ? 'primary' : 'secondary'}`}
               onClick={action.onClick}
             >

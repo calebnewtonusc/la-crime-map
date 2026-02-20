@@ -25,12 +25,12 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate }) => {
   };
 
   return (
-    <nav className="main-navigation" role="navigation">
+    <nav className="main-navigation">
       <div className="nav-container">
-        <div className="nav-brand" onClick={() => handleNavigate('map')}>
-          <span className="brand-icon">📍</span>
-          <span className="brand-text">LA Crime Map</span>
-        </div>
+        <button className="nav-brand" onClick={() => handleNavigate('map')} aria-label="Go to map">
+          <span className="nav-brand-icon">📍</span>
+          <span className="nav-brand-text">LA Crime Map</span>
+        </button>
 
         <button
           className="mobile-menu-toggle"

@@ -51,20 +51,20 @@ const Footer: React.FC<FooterProps> = ({ onNavigate, lastDataUpdate }) => {
             Data updated weekly by LAPD. Last fetched: {lastDataUpdate ? formatDate(lastDataUpdate) : 'Loading...'}
           </p>
           <p className="footer-note">
-            <a href="/data-sources" onClick={(e) => { e.preventDefault(); handleNavClick('data-sources'); }}>
+            <button className="footer-nav-link" onClick={() => handleNavClick('data-sources')}>
               View all data sources →
-            </a>
+            </button>
           </p>
         </div>
 
         <div className="footer-section">
           <h4>Resources</h4>
           <ul className="footer-links">
-            <li><a href="/about" onClick={(e) => { e.preventDefault(); handleNavClick('about'); }}>About & Methodology</a></li>
-            <li><a href="/faq" onClick={(e) => { e.preventDefault(); handleNavClick('faq'); }}>FAQ</a></li>
-            <li><a href="/disclaimers" onClick={(e) => { e.preventDefault(); handleNavClick('disclaimers'); }}>Disclaimers & Limitations</a></li>
-            <li><a href="/privacy" onClick={(e) => { e.preventDefault(); handleNavClick('privacy'); }}>Privacy Policy</a></li>
-            <li><a href="/contact" onClick={(e) => { e.preventDefault(); handleNavClick('contact'); }}>Contact Us</a></li>
+            <li><button className="footer-nav-link" onClick={() => handleNavClick('about')}>About & Methodology</button></li>
+            <li><button className="footer-nav-link" onClick={() => handleNavClick('faq')}>FAQ</button></li>
+            <li><button className="footer-nav-link" onClick={() => handleNavClick('disclaimers')}>Disclaimers & Limitations</button></li>
+            <li><button className="footer-nav-link" onClick={() => handleNavClick('privacy')}>Privacy Policy</button></li>
+            <li><button className="footer-nav-link" onClick={() => handleNavClick('contact')}>Contact Us</button></li>
           </ul>
         </div>
 

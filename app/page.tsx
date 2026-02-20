@@ -1,21 +1,25 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import { MainLayout } from '@/components/layout/main-layout'
 import { MapWrapper } from '@/components/map/map-wrapper'
 import { MetricSelector } from '@/components/ui/metric-selector'
-import { StatsDashboard } from '@/components/ui/stats-dashboard'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
-import { laNeighborhoods } from '@/lib/data/neighborhoods' // GeoJSON boundaries only
+import { SearchBar } from '@/components/ui/search-bar'
+import { TimeFilter, TimeFilterValue } from '@/components/ui/time-filter'
+import { ExportButton } from '@/components/ui/export-button'
+import { TopNeighborhoods } from '@/components/ui/top-neighborhoods'
+import { EnhancedStatsPanel } from '@/components/ui/enhanced-stats-panel'
+import { laNeighborhoods } from '@/lib/data/neighborhoods'
 import { useRealCrimeData } from '@/lib/hooks/use-real-crime-data'
 import { mergeCrimeDataWithBoundaries, formatLastUpdated, isDataStale } from '@/lib/utils/merge-crime-data'
 import { calculateCrimeStats } from '@/lib/utils/crime-stats'
-import { CrimeMetric } from '@/lib/data/types'
-import { RefreshCw, AlertTriangle } from 'lucide-react'
+import { CrimeMetric, NeighborhoodData } from '@/lib/data/types'
+import { RefreshCw, AlertTriangle, Map, BarChart2 } from 'lucide-react'
 
-// Dynamic imports for AI features - NOW ENABLED BY DEFAULT
+// Dynamic imports for AI features
 const AIChatAssistant = dynamic(() => import('@/components/features').then(mod => ({ default: mod.AIChatAssistant })), {
   ssr: false,
   loading: () => null
@@ -40,28 +44,53 @@ const heroVariants = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 
 const staggerContainer = { hidden: { opacity: 0 }, visible: { opacity: 1 } }
 const fadeInUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }
 
+const defaultTimeFilter: TimeFilterValue = { mode: 'preset', days: 30, label: 'Last 30 Days' }
+
+// Convert TimeFilterValue to days for the API
+function timeFilterToDays(filter: TimeFilterValue): number {
+  if (filter.mode === 'preset') return filter.days ?? 30
+  if (filter.mode === 'year') return 365
+  if (filter.mode === 'season') return 90
+  if (filter.mode === 'month') return 31
+  return 30
+}
+
 export default function Home() {
   const [selectedMetric, setSelectedMetric] = useState<CrimeMetric>('violentCrime')
+  const [timeFilter, setTimeFilter] = useState<TimeFilterValue>(defaultTimeFilter)
+  const [activeTab, setActiveTab] = useState<'map' | 'analytics'>('map')
+  const [highlightedNeighborhood, setHighlightedNeighborhood] = useState<NeighborhoodData | null>(null)
 
-  // CRITICAL FIX: Fetch real-time data for LAST 30 DAYS (not 365!)
+  const days = timeFilterToDays(timeFilter)
+
   const { neighborhoods: crimeData, metadata, loading, error, refetch } = useRealCrimeData({
-    days: 30, // Last 30 days only - recent and actionable
+    days,
     autoFetch: true
   })
 
-  // CRITICAL FIX #2: Merge real crime data with GeoJSON boundaries
   const mergedNeighborhoods = useMemo(() => {
     if (crimeData.length === 0) {
-      return laNeighborhoods // Fallback to static during loading
+      return laNeighborhoods
     }
     return mergeCrimeDataWithBoundaries(crimeData, laNeighborhoods)
   }, [crimeData])
 
-  // Calculate stats from REAL data
   const stats = calculateCrimeStats(mergedNeighborhoods)
-
-  // Check if data is stale
   const dataIsStale = metadata ? isDataStale(metadata.lastUpdated) : false
+
+  const handleNeighborhoodSelect = useCallback((neighborhood: NeighborhoodData) => {
+    setHighlightedNeighborhood(neighborhood)
+    // Switch to map tab and scroll to map
+    setActiveTab('map')
+    setTimeout(() => {
+      document.getElementById('explore-map')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 100)
+  }, [])
+
+  const metricLabel =
+    selectedMetric === 'violentCrime' ? 'Violent Crime' :
+    selectedMetric === 'carTheft' ? 'Car Theft' :
+    selectedMetric === 'breakIns' ? 'Break-ins' : 'Petty Theft'
 
   return (
     <ErrorBoundary>
@@ -100,12 +129,25 @@ export default function Home() {
                   className="text-xl sm:text-2xl leading-relaxed max-w-3xl mx-auto font-light"
                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}
                 >
-                  View recent crime data from <strong>Oct-Dec 2024</strong> across Los Angeles. Compare neighborhoods and make informed decisions about where to live.
+                  Interactive crime data from the <strong>LAPD Open Data Portal</strong>. Compare neighborhoods, explore trends, and make informed decisions.
                 </motion.p>
+
+                {/* Hero search bar */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="max-w-xl mx-auto"
+                >
+                  <SearchBar
+                    onSelect={handleNeighborhoodSelect}
+                    placeholder="Search any LA neighborhood..."
+                    showPopularSearches={true}
+                    className="shadow-2xl"
+                  />
+                </motion.div>
 
                 <motion.div
                   variants={fadeInUp}
-                  className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4"
+                  className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2"
                 >
                   <a
                     href="#explore-map"
@@ -126,7 +168,7 @@ export default function Home() {
 
                 <motion.div
                   variants={fadeInUp}
-                  className="flex flex-wrap justify-center items-center gap-8 pt-8"
+                  className="flex flex-wrap justify-center items-center gap-8 pt-4"
                   style={{ color: 'rgba(255, 255, 255, 0.8)' }}
                 >
                   <div className="flex items-center gap-2">
@@ -155,13 +197,13 @@ export default function Home() {
           {/* Data Freshness Warning */}
           {(dataIsStale || error) && (
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-              <div className="bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-400 p-4 rounded-r-lg">
+              <div className="bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-400 p-4 rounded-r-lg" role="alert">
                 <div className="flex items-center gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-600" />
+                  <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" aria-hidden="true" />
                   <div className="flex-1">
                     {error ? (
                       <p className="text-sm text-amber-800 dark:text-amber-200">
-                        <strong>Error loading data:</strong> {error}
+                        <strong>Error loading data:</strong> {error}. Showing cached data.
                       </p>
                     ) : (
                       <p className="text-sm text-amber-800 dark:text-amber-200">
@@ -171,9 +213,9 @@ export default function Home() {
                   </div>
                   <button
                     onClick={() => refetch()}
-                    className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500"
                   >
-                    <RefreshCw className="w-4 h-4" />
+                    <RefreshCw className="w-4 h-4" aria-hidden="true" />
                     Refresh
                   </button>
                 </div>
@@ -181,70 +223,122 @@ export default function Home() {
             </div>
           )}
 
-          {/* Stats Overview */}
+          {/* Stats + Analytics Section */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
             {loading ? (
-              <div className="text-center py-12">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-la-sunset-orange"></div>
-                <p className="mt-4 text-gray-600 dark:text-gray-400">Loading real-time crime data...</p>
+              <div className="text-center py-16" role="status" aria-live="polite">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-la-sunset-orange mb-4" aria-hidden="true"></div>
+                <p className="text-gray-600 dark:text-gray-400 font-medium">Loading real-time crime data...</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Fetching {days}-day window from LAPD</p>
               </div>
             ) : (
-              <>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+              >
+                <EnhancedStatsPanel
+                  stats={stats}
+                  data={mergedNeighborhoods}
+                  selectedMetric={selectedMetric}
+                />
+
+                {metadata && (
+                  <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                    Showing data from{' '}
+                    <strong className="text-gray-700 dark:text-gray-300">{new Date(metadata.dateRange.start).toLocaleDateString()}</strong>
+                    {' '}to{' '}
+                    <strong className="text-gray-700 dark:text-gray-300">{new Date(metadata.dateRange.end).toLocaleDateString()}</strong>
+                    {' • '}
+                    {formatLastUpdated(metadata.lastUpdated)}
+                    {' • '}
+                    <strong>{metadata.totalIncidents.toLocaleString()}</strong> total incidents
+                  </div>
+                )}
+
+                {/* AI Smart Insights */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.6 }}
-                >
-                  <StatsDashboard stats={stats} />
-
-                  {/* Data Source Info */}
-                  {metadata && (
-                    <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-                      Showing data from <strong>{new Date(metadata.dateRange.start).toLocaleDateString()}</strong> to <strong>{new Date(metadata.dateRange.end).toLocaleDateString()}</strong>
-                      {' • '}
-                      {formatLastUpdated(metadata.lastUpdated)}
-                      {' • '}
-                      {metadata.totalIncidents.toLocaleString()} total incidents
-                    </div>
-                  )}
-                </motion.div>
-
-                {/* AI Smart Insights - ENABLED BY DEFAULT */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
+                  transition={{ delay: 0.35, duration: 0.6 }}
                   className="mt-6"
                 >
                   <AISmartInsights />
                 </motion.div>
-              </>
+              </motion.div>
             )}
           </div>
 
-          {/* Interactive Map Section */}
+          {/* Interactive Map + Sidebar Section */}
           <div id="explore-map" className="bg-gray-50 dark:bg-gray-950 py-12 sm:py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+              {/* Section header */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="text-center max-w-3xl mx-auto"
+                className="flex flex-col sm:flex-row sm:items-end justify-between gap-4"
               >
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                  Explore Every Neighborhood
-                </h2>
-                <p className="text-lg text-gray-700 dark:text-gray-300">
-                  Click on any area to see detailed crime statistics from Oct-Dec 2024
-                </p>
+                <div>
+                  <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100">
+                    Explore Every Neighborhood
+                  </h2>
+                  <p className="text-base text-gray-600 dark:text-gray-400 mt-2">
+                    Click any area for detailed stats. Filter by crime type and time period.
+                  </p>
+                </div>
+
+                {/* Time filter + Export controls */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <TimeFilter
+                    value={timeFilter}
+                    onChange={setTimeFilter}
+                  />
+                  <ExportButton
+                    data={mergedNeighborhoods}
+                    selectedMetric={selectedMetric}
+                    dateLabel={timeFilter.label}
+                  />
+                </div>
               </motion.div>
 
+              {/* Tab switcher */}
+              <div className="flex gap-1 bg-gray-200 dark:bg-gray-800 rounded-xl p-1 w-fit" role="tablist" aria-label="View mode">
+                <button
+                  role="tab"
+                  aria-selected={activeTab === 'map'}
+                  onClick={() => setActiveTab('map')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    activeTab === 'map'
+                      ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  }`}
+                >
+                  <Map className="w-4 h-4" aria-hidden="true" />
+                  Map View
+                </button>
+                <button
+                  role="tab"
+                  aria-selected={activeTab === 'analytics'}
+                  onClick={() => setActiveTab('analytics')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    activeTab === 'analytics'
+                      ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  }`}
+                >
+                  <BarChart2 className="w-4 h-4" aria-hidden="true" />
+                  Analytics
+                </button>
+              </div>
+
+              {/* Crime type selector */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.1, duration: 0.6 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
               >
                 <MetricSelector
                   selectedMetric={selectedMetric}
@@ -252,39 +346,94 @@ export default function Home() {
                 />
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.98 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden"
-              >
-                <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
-                    {selectedMetric === 'violentCrime' ? 'Violent Crime' :
-                     selectedMetric === 'carTheft' ? 'Car Theft' :
-                     selectedMetric === 'breakIns' ? 'Break-ins' : 'Petty Theft'} Map
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mt-2">
-                    Darker shades = higher crime rates. Showing Q4 2024 data (Oct-Dec).
-                  </p>
-                </div>
-                <div className="h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px]">
-                  {loading ? (
-                    <div className="h-full flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-                      <div className="text-center">
-                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-la-sunset-orange mb-4"></div>
-                        <p className="text-gray-600 dark:text-gray-400">Loading map...</p>
+              {activeTab === 'map' ? (
+                /* Map + Sidebar layout */
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.15, duration: 0.5 }}
+                  className="grid grid-cols-1 lg:grid-cols-4 gap-6"
+                >
+                  {/* Map */}
+                  <div className="lg:col-span-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl overflow-hidden">
+                    <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                          {metricLabel} Map
+                        </h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                          Darker = higher incidents. Click neighborhood for details.
+                        </p>
+                      </div>
+                      {/* Inline search */}
+                      <div className="hidden sm:block w-56">
+                        <SearchBar
+                          onSelect={handleNeighborhoodSelect}
+                          placeholder="Find neighborhood..."
+                          showPopularSearches={false}
+                        />
                       </div>
                     </div>
-                  ) : (
-                    <MapWrapper
+                    <div className="h-[500px] sm:h-[600px] md:h-[700px]">
+                      {loading ? (
+                        <div className="h-full flex items-center justify-center bg-gray-100 dark:bg-gray-900" role="status" aria-live="polite">
+                          <div className="text-center">
+                            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-la-sunset-orange mb-4" aria-hidden="true"></div>
+                            <p className="text-gray-600 dark:text-gray-400 font-medium">Loading map...</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <MapWrapper
+                          data={mergedNeighborhoods}
+                          selectedMetric={selectedMetric}
+                          onNeighborhoodClick={setHighlightedNeighborhood}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Sidebar: Top 10 */}
+                  <div className="lg:col-span-1">
+                    <TopNeighborhoods
                       data={mergedNeighborhoods}
                       selectedMetric={selectedMetric}
+                      onNeighborhoodSelect={handleNeighborhoodSelect}
                     />
+                  </div>
+                </motion.div>
+              ) : (
+                /* Analytics view */
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {loading ? (
+                    <div className="text-center py-16" role="status">
+                      <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-la-sunset-orange mb-4" aria-hidden="true"></div>
+                      <p className="text-gray-600 dark:text-gray-400">Loading analytics...</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      <div className="lg:col-span-2">
+                        <EnhancedStatsPanel
+                          stats={stats}
+                          data={mergedNeighborhoods}
+                          selectedMetric={selectedMetric}
+                        />
+                      </div>
+                      <div>
+                        <TopNeighborhoods
+                          data={mergedNeighborhoods}
+                          selectedMetric={selectedMetric}
+                          onNeighborhoodSelect={handleNeighborhoodSelect}
+                        />
+                      </div>
+                    </div>
                   )}
-                </div>
-              </motion.div>
+                </motion.div>
+              )}
             </div>
           </div>
 
@@ -315,18 +464,18 @@ export default function Home() {
               >
                 <FeatureCard
                   number="01"
-                  title="Explore Visually"
-                  description="Browse an interactive heat map showing crime density across all LA neighborhoods. See patterns at a glance."
+                  title="Filter & Search"
+                  description="Filter by crime type, time period, or season. Search for any LA neighborhood instantly with full keyboard support."
                   icon={
                     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   }
                 />
                 <FeatureCard
                   number="02"
-                  title="Dive Into Details"
-                  description="Click any neighborhood to see comprehensive crime breakdowns from recent months with detailed statistics."
+                  title="Explore & Analyze"
+                  description="Click any neighborhood to see detailed crime breakdowns. Toggle between map view and analytics charts."
                   icon={
                     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -335,11 +484,11 @@ export default function Home() {
                 />
                 <FeatureCard
                   number="03"
-                  title="Compare & Decide"
-                  description="Stack neighborhoods side by side, filter by crime type, and find the area that matches your safety priorities."
+                  title="Compare & Export"
+                  description="See the top 10 safest and most dangerous neighborhoods. Export the full dataset as CSV for your own analysis."
                   icon={
                     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
                   }
                 />
@@ -369,10 +518,10 @@ export default function Home() {
                     </h3>
                     <div className="space-y-3 text-gray-700 dark:text-gray-300 leading-relaxed">
                       <p className="text-base sm:text-lg">
-                        Our crime data comes directly from the <strong>Los Angeles Police Department Open Data Portal</strong>, showing recent incidents from <strong>Oct-Dec 2024</strong>. Data is from official LAPD records.
+                        Our crime data comes directly from the <strong>Los Angeles Police Department Open Data Portal</strong>. Data is from official LAPD records updated regularly.
                       </p>
                       <p className="text-base sm:text-lg">
-                        Remember: Safety is personal and multifaceted. Crime data is just one factor to consider when choosing where to live. Use this tool alongside other research, neighborhood visits, and local insights.
+                        Remember: Safety is personal and multifaceted. Crime data is just one factor to consider. Use this tool alongside neighborhood visits and local insights.
                       </p>
                     </div>
                   </div>
@@ -396,12 +545,12 @@ export default function Home() {
                   Ready to Find Your Perfect Neighborhood?
                 </h2>
                 <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                  Start exploring real-time LA crime data and make your next move with confidence
+                  Start exploring real LA crime data and make your next move with confidence
                 </p>
                 <a
                   href="#explore-map"
                   style={{ background: 'linear-gradient(to right, #FF6B35, #FF2E97)' }}
-                  className="inline-block px-10 py-5 text-white text-lg font-semibold rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105"
+                  className="inline-block px-10 py-5 text-white text-lg font-semibold rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-400"
                 >
                   Get Started Free
                 </a>
@@ -410,7 +559,7 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* AI Chat Assistant - ENABLED BY DEFAULT */}
+        {/* AI Chat Assistant */}
         <AIChatAssistant />
       </MainLayout>
     </ErrorBoundary>
@@ -431,10 +580,10 @@ function FeatureCard({ number, title, description, icon }: FeatureCardProps) {
       className="relative group"
     >
       <div className="h-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-        <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-la-sunset-orange to-la-sunset-pink rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
+        <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-la-sunset-orange to-la-sunset-pink rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg" aria-hidden="true">
           {number}
         </div>
-        <div className="mb-6 p-4 bg-gradient-to-br from-la-sunset-orange/10 to-la-sunset-pink/10 dark:from-la-sunset-orange/20 dark:to-la-sunset-pink/20 rounded-xl text-la-sunset-orange inline-block">
+        <div className="mb-6 p-4 bg-gradient-to-br from-la-sunset-orange/10 to-la-sunset-pink/10 dark:from-la-sunset-orange/20 dark:to-la-sunset-pink/20 rounded-xl text-la-sunset-orange inline-block" aria-hidden="true">
           {icon}
         </div>
         <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">

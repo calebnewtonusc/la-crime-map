@@ -11,6 +11,30 @@ import Privacy from './pages/Privacy';
 
 type Page = 'map' | 'about' | 'data-sources' | 'disclaimers' | 'faq' | 'contact' | 'privacy';
 
+interface PageContentProps {
+  currentPage: Page;
+}
+
+const PageContent: React.FC<PageContentProps> = ({ currentPage }) => {
+  switch (currentPage) {
+    case 'about':
+      return <About />;
+    case 'data-sources':
+      return <DataSources />;
+    case 'disclaimers':
+      return <Disclaimers />;
+    case 'faq':
+      return <FAQ />;
+    case 'contact':
+      return <Contact />;
+    case 'privacy':
+      return <Privacy />;
+    case 'map':
+    default:
+      return <AppWrapper />;
+  }
+};
+
 const Router: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>('map');
   const [lastDataUpdate, setLastDataUpdate] = useState<Date>(new Date());
@@ -65,31 +89,11 @@ const Router: React.FC = () => {
     document.title = titles[newPage];
   };
 
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'about':
-        return <About />;
-      case 'data-sources':
-        return <DataSources />;
-      case 'disclaimers':
-        return <Disclaimers />;
-      case 'faq':
-        return <FAQ />;
-      case 'contact':
-        return <Contact />;
-      case 'privacy':
-        return <Privacy />;
-      case 'map':
-      default:
-        return <AppWrapper />;
-    }
-  };
-
   return (
     <div className="app-root">
       <Navigation currentPage={currentPage} onNavigate={handleNavigate} />
       <main role="main">
-        {renderPage()}
+        <PageContent currentPage={currentPage} />
       </main>
       {currentPage !== 'map' && (
         <Footer onNavigate={handleNavigate} lastDataUpdate={lastDataUpdate} />

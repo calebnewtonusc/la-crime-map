@@ -121,7 +121,7 @@ const AppWrapper: React.FC = () => {
       </button>
 
       {/* View Mode Tabs */}
-      <nav id="navigation" role="navigation" aria-label="View selection">
+      <nav id="navigation" aria-label="View selection">
         <div className="view-mode-tabs">
           <button
             className={`tab-button ${viewMode === 'map' ? 'active' : ''}`}

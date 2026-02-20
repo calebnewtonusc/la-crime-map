@@ -7,6 +7,7 @@ export { LoadingSkeleton, MapSkeleton, DashboardSkeleton } from './loading-skele
 export { MetricCard } from './metric-card'
 export { MetricSelector } from './metric-selector'
 export { StatsDashboard } from './stats-dashboard'
+export { EnhancedStatsPanel } from './enhanced-stats-panel'
 export { Legend } from './legend'
 export {
   InfoCard,
@@ -23,3 +24,7 @@ export {
   SafetyBadgeWithDescription,
   TrafficLight
 } from './safety-badge'
+export { TimeFilter } from './time-filter'
+export type { TimeFilterValue } from './time-filter'
+export { ExportButton } from './export-button'
+export { TopNeighborhoods } from './top-neighborhoods'
